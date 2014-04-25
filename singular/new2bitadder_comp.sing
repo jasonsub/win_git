@@ -12,6 +12,8 @@ proc relative_prime(ideal I)
   }
 }
 
+/* need to add proc to calc term by term */
+
 ring rr = (2,X),(z0,z1,CO,t0,t1,d,g1,g0,p1,a0,b0,a1,b1,Z,ct0_z0,ct1_z1,ct0_z1,ct1_z0,c0_CO,c1_CO,cn0,cn1,
 		 pa0,pa1,pb0,pb1,c0_A0,c0_A1,c0_B0,c0_B1,c1_A0,c1_A1,c1_B0,c1_B1,c2_A0,c2_A1,c2_B0,c2_B1,s0,s1,s2),lp;
 /*
