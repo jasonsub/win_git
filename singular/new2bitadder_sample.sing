@@ -1,3 +1,5 @@
+/* seems no need to change inputs bits */
+
 LIB "teachstd.lib";
 
 ring rr = (2,X),(z0,z1,t,p,g,s0,s1,s2,Z,pa0,pa1,pb0,pb1,
