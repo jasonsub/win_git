@@ -1,0 +1,878 @@
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=latex 2012.7.13)  15 AUG 2012 21:25
+entering extended mode
+ %&-line parsing enabled.
+**thesis.tex
+(./thesis.tex
+LaTeX2e <2009/09/24>
+Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
+yphenation, loaded.
+(./uuthesis2e.cls
+Document Class: uuthesis2e 1998/04/01 v1.3 University of Utah Thesis Class
+Document Style `uuthesis2e'. Version 1.8d - 6 Apr 1996
+(./Chicago.clo) (/usr/share/texmf-texlive/tex/latex/base/size12.clo
+File: size12.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+Using 12pt option
+\footheight=\dimen102
+\numberofappendices=\count79
+\c@part=\count80
+\c@chapter=\count81
+\@titlesize=\dimen103
+\@maxsize=\dimen104
+\c@figure=\count82
+\c@table=\count83
+\descriptionmargin=\dimen105
+\minilength=\skip41
+\c@oldchapter=\count84
+\c@oldtocdepth=\count85
+) (/usr/share/texmf-texlive/tex/latex/cite/cite.sty
+LaTeX Info: Redefining \cite on input line 285.
+LaTeX Info: Redefining \nocite on input line 356.
+Package: cite 2009/08/29  v 5.2
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/epsfig.sty
+Package: epsfig 1999/02/16 v1.7a (e)psfig emulation (SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf-texlive/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/etc/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2009/08/28 v1.8 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: dvips.def on input line 91.
+
+(/usr/share/texmf-texlive/tex/latex/graphics/dvips.def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+\Gin@req@height=\dimen106
+\Gin@req@width=\dimen107
+)
+\epsfxsize=\dimen108
+\epsfysize=\dimen109
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/color.sty
+Package: color 2005/11/14 v1.0j Standard LaTeX Color (DPC)
+
+(/etc/texmf/tex/latex/config/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: dvips.def on input line 130.
+
+(/usr/share/texmf-texlive/tex/latex/graphics/dvipsnam.def
+File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+(/usr/share/texmf-texlive/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count86
+\float@exts=\toks15
+\float@box=\box26
+\@float@everytoks=\toks16
+\@floatcapt=\box27
+)
+(/usr/share/texmf-texlive/tex/latex/subfigure/subfigure.sty
+Package: subfigure 2002/03/15 v2.1.5 subfigure package
+
+
+Package subfigure Warning: Your document class has a bad definition
+ of \endfigure, most likely
+ \let\endfigure=\end@float
+ which has now been changed to
+ \def\endfigure{\end@float}
+ because otherwise subsequent changes to \end@float
+ (like done by several packages changing float behaviour)
+ can't take effect on \endfigure.
+ Please complain to your document class author.
+
+
+Package subfigure Warning: Your document class has a bad definition
+ of \endtable, most likely
+ \let\endtable=\end@float
+ which has now been changed to
+ \def\endtable{\end@float}
+ because otherwise subsequent changes to \end@float
+ (like done by several packages changing float behaviour)
+ can't take effect on \endtable.
+ Please complain to your document class author.
+
+\subfigtopskip=\skip42
+\subfigcapskip=\skip43
+\subfigcaptopadj=\dimen110
+\subfigbottomskip=\skip44
+\subfigcapmargin=\dimen111
+\subfiglabelskip=\skip45
+\c@subfigure=\count87
+\c@lofdepth=\count88
+\c@subtable=\count89
+\c@lotdepth=\count90
+****************************************
+* Local config file subfigure.cfg used *
+****************************************
+(/usr/share/texmf-texlive/tex/latex/subfigure/subfigure.cfg)
+\subfig@top=\skip46
+\subfig@bottom=\skip47
+)
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip48
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texmf-texlive/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks17
+\ex@=\dimen112
+))
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen113
+)
+(/usr/share/texmf-texlive/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count91
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count92
+\leftroot@=\count93
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count94
+\DOTSCASE@=\count95
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box28
+\strutbox@=\box29
+\big@size=\dimen114
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count96
+\c@MaxMatrixCols=\count97
+\dotsspace@=\muskip10
+\c@parentequation=\count98
+\dspbrk@lvl=\count99
+\tag@help=\toks18
+\row@=\count100
+\column@=\count101
+\maxfields@=\count102
+\andhelp@=\toks19
+\eqnshift@=\dimen115
+\alignsep@=\dimen116
+\tagshift@=\dimen117
+\tagwidth@=\dimen118
+\totwidth@=\dimen119
+\lineht@=\dimen120
+\@envbody=\toks20
+\multlinegap=\skip49
+\multlinetaggap=\skip50
+\mathdisplay@stack=\toks21
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amssymb.sty
+Package: amssymb 2009/06/22 v3.00
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/amsfonts.sty
+Package: amsfonts 2009/06/22 v3.00 Basic AMSFonts support
+\symAMSa=\mathgroup4
+\symAMSb=\mathgroup5
+LaTeX Font Info:    Overwriting math alphabet `\mathfrak' in version `bold'
+(Font)                  U/euf/m/n --> U/euf/b/n on input line 96.
+))
+(/usr/share/texmf-texlive/tex/latex/tools/xspace.sty
+Package: xspace 2006/05/08 v1.12 Space after command names (DPC,MH)
+)
+(/usr/share/texmf-texlive/tex/latex/tools/tabularx.sty
+Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
+
+(/usr/share/texmf-texlive/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen121
+\extrarowheight=\dimen122
+\NC@list=\toks22
+\extratabsurround=\skip51
+\backup@length=\skip52
+)
+\TX@col@width=\dimen123
+\TX@old@table=\dimen124
+\TX@old@col=\dimen125
+\TX@target=\dimen126
+\TX@delta=\dimen127
+\TX@cols=\count103
+\TX@ftn=\toks23
+)
+(/usr/share/texmf-texlive/tex/latex/rotating/rotating.sty
+Package: rotating 2009/03/28 v2.16a rotated objects in LaTeX
+
+(/usr/share/texmf-texlive/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+)
+\c@r@tfl@t=\count104
+\rotFPtop=\skip53
+\rotFPbot=\skip54
+\rot@float@box=\box30
+\rot@mess@toks=\toks24
+)
+(/usr/share/texmf-texlive/tex/latex/graphics/lscape.sty
+Package: lscape 2000/10/22 v3.01 Landscape Pages (DPC)
+)
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/url.sty
+\Urlmuskip=\muskip11
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+(/usr/share/texmf-texlive/tex/latex/listings/listings.sty
+\lst@mode=\count105
+\lst@gtempboxa=\box31
+\lst@token=\toks25
+\lst@length=\count106
+\lst@currlwidth=\dimen128
+\lst@column=\count107
+\lst@pos=\count108
+\lst@lostspace=\dimen129
+\lst@width=\dimen130
+\lst@newlines=\count109
+\lst@lineno=\count110
+\abovecaptionskip=\skip55
+\belowcaptionskip=\skip56
+\lst@maxwidth=\dimen131
+
+(/usr/share/texmf-texlive/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count111
+\lst@skipnumbers=\count112
+\lst@framebox=\box32
+)
+(/usr/share/texmf-texlive/tex/latex/listings/listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
+(/usr/share/texmf-texlive/tex/latex/multirow/multirow.sty
+\bigstrutjot=\dimen132
+) (./algorithm2e.sty
+
+LaTeX Warning: You have requested package `./algorithm2e',
+               but the package provides `algorithm2e'.
+
+Package: algorithm2e 2008/00/00 v3.10 algorithms environments
+\c@AlgoLine=\count113
+(/usr/share/texmf-texlive/tex/latex/ltxmisc/relsize.sty
+Package: relsize 2003/07/04 ver 3.1
+)
+********************************************************
+Package `algorithm2e' Release 4.01 -- december 14 2009 --
+- algorithm2e-announce@lirmm.fr mailing list for announcement about releases
+- algorithm2e-discussion@lirmm.fr mailing list for discussion about package
+subscribe by emailing sympa@lirmm.fr with 'subscribe <list> <firstname name>'
+- Author: Christophe Fiorio (fiorio@lirmm.fr)
+********************************************************
+\skiptotal=\skip57
+\skiplinenumber=\skip58
+\skiprule=\skip59
+\skiphlne=\skip60
+\skiptext=\skip61
+\skiplength=\skip62
+\algomargin=\skip63
+\skipalgocfslide=\skip64
+\algowidth=\dimen133
+\inoutsize=\dimen134
+\inoutline=\dimen135
+\interspacetitleruled=\dimen136
+\interspacealgoruled=\dimen137
+\interspacetitleboxruled=\dimen138
+\algocf@inoutbox=\box33
+\algocf@inputbox=\box34
+\AlCapSkip=\skip65
+\AlCapHSkip=\skip66
+\algocf@nlbox=\box35
+\algocf@hangingbox=\box36
+\algocf@capbox=\box37
+\algoheightruledefault=\skip67
+\algoheightrule=\skip68
+\algotitleheightruledefault=\skip69
+\algotitleheightrule=\skip70
+\c@algocfline=\count114
+\c@algocfproc=\count115
+\c@algocf=\count116
+\algocf@algoframe=\box38
+\algocf@algobox=\box39
+) (/usr/share/texmf-texlive/tex/latex/psnfss/times.sty
+Package: times 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+\c@Theorem=\count117
+\c@Definition=\count118
+\c@Example=\count119
+\c@Proposition=\count120
+\c@Lemma=\count121
+\c@Corollary=\count122
+\c@section=\count123
+\c@subsection=\count124
+\c@paragraph=\count125
+\c@subsubsection=\count126
+ (./thesis.aux
+(./ch2.aux) (./ch3.aux) (./ch4.aux) (./ch5pk.aux) (./ch6.aux) (./ch7.aux
+
+LaTeX Warning: Label `fig:mas4' multiply defined.
+
+) (./ch8.aux))
+\openout1 = `thesis.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 119.
+LaTeX Font Info:    ... okay on input line 119.
+LaTeX Font Info:    Try loading font information for OT1+ptm on input line 119.
+
+ (/usr/share/texmf-texlive/tex/latex/psnfss/ot1ptm.fd
+File: ot1ptm.fd 2001/06/04 font definitions for OT1/ptm.
+)
+\c@lstlisting=\count127
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 126.
+LaTeX Font Info:    Try loading font information for U+msa on input line 126.
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsa.fd
+File: umsa.fd 2009/06/22 v3.00 AMS symbols A
+)
+LaTeX Font Info:    Try loading font information for U+msb on input line 126.
+
+(/usr/share/texmf-texlive/tex/latex/amsfonts/umsb.fd
+File: umsb.fd 2009/06/22 v3.00 AMS symbols B
+)
+Title.
+[-1
+
+]
+LaTeX Font Info:    Try loading font information for OMS+ptm on input line 127.
+
+ (/usr/share/texmf-texlive/tex/latex/psnfss/omsptm.fd
+File: omsptm.fd 
+)
+LaTeX Font Info:    Font shape `OMS/ptm/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 127.
+
+Copyright.
+[-1]
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <17.28> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 128.
+
+Committee Approval.
+[0]
+Reading Approval.
+[1]
+Dedication.
+[2] (./thesis.toc
+LaTeX Font Info:    Font shape `OT1/ptm/bx/n' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/n' tried instead on input line 1.
+
+Overfull \hbox (1.59389pt too wide) in paragraph at lines 34--34
+ [][] []\OT1/ptm/b/n/12 IMPLEMENTATION VER-I-FI-CA-TION US-ING IDEAL MEM-BER-SH
+IP 
+ []
+
+[3]
+Overfull \hbox (30.36877pt too wide) in paragraph at lines 46--46
+ [][] []\OT1/ptm/b/n/12 GATE-LEVEL EQUIV-A-LENCE CHECK-ING OF ARITH-METIC CIR-C
+UITS 
+ []
+
+
+Overfull \hbox (5.37729pt too wide) in paragraph at lines 64--64
+ [][] []\OT1/ptm/m/n/12 Computer Al-ge-bra Based Ap-proaches for Equiv-a-lence 
+Check-ing of Arith- 
+ []
+
+)
+\tf@toc=\write3
+\openout3 = `thesis.toc'.
+
+
+Contents.
+[4]
+List of Figures.
+(./thesis.lof)
+\tf@lof=\write4
+\openout4 = `thesis.lof'.
+
+ [5]
+List of Tables.
+(./thesis.lot
+Overfull \hbox (6.16298pt too wide) in paragraph at lines 2--2
+ [] []\OT1/ptm/m/n/12 Bit-vector, Ex-po-nen-tial and Poly-no-mial rep-re-sen-ta
+-tion of el-e-ments in $\U/msb/m/n/12 F[] \OT1/cmr/m/n/12 = 
+ []
+
+
+Overfull \hbox (23.08952pt too wide) in paragraph at lines 17--17
+ [] []\OT1/ptm/m/n/12 Verification of Bar-rett mul-ti-plier vs. Mont-gomery mul
+-ti-plier. $\OML/cmm/m/it/12 TO$\OT1/ptm/m/n/12 =$\OT1/cmr/m/n/12 10$\OT1/ptm/m
+/n/12 hrs.$\OML/cmm/m/it/12 ?$\OT1/ptm/m/n/12 =Out 
+ []
+
+
+Overfull \hbox (11.61084pt too wide) in paragraph at lines 18--18
+ [] []\OT1/ptm/m/n/12 Verification of Mas-tro-vito mul-ti-plier vs. Mont-gomery
+ mul-ti-plier. $\OML/cmm/m/it/12 TO$\OT1/ptm/m/n/12 =$\OT1/cmr/m/n/12 10$\OT1/p
+tm/m/n/12 hrs. 
+ []
+
+
+Overfull \hbox (6.96046pt too wide) in paragraph at lines 20--20
+ [] []\OT1/ptm/m/n/12 Verification of Mas-tro-vito mul-ti-plier over $\U/msb/m/
+n/12 F[]$ \OT1/ptm/m/n/12 Us-ing Pro-posed Ap-proach. 
+ []
+
+[6])
+\tf@lot=\write5
+\openout5 = `thesis.lot'.
+
+ [7] (./acknowledge.tex)
+Acknowledgements.
+[8] (./abstract.tex [1]) (./ch1.tex [2]
+CHAPTER 1.
+[3
+
+]
+File: ./figures/cadflow.eps Graphic file (type eps)
+ <./figures/cadflow.eps> [4] [5]
+Overfull \hbox (4.22133pt too wide) in paragraph at lines 160--169
+[]\OT1/ptm/m/n/12 As an in-ten-sively in-ves-ti-gated topic, tech-niques and ap
+-proaches for equiv-a-lence check-
+ []
+
+[6] [7]
+Title Error: (5.94357pt too wide)
+Page 8, Title="Objective and Contributions of this Dissertation"
+
+[8] [9]) [10] [11]
+\openout2 = `ch2.aux'.
+
+ (./ch2.tex
+CHAPTER 2.
+[12
+
+
+]
+File: figures/bmd-2-bit.eps Graphic file (type eps)
+ <figures/bmd-2-bit.eps> [13]
+File: figures/bmd-2-bit-fixed.eps Graphic file (type eps)
+ <figures/bmd-2-bit-fixed.eps> [14] [15]
+[16] [17] [18]
+Overfull \hbox (5.45116pt too wide) in paragraph at lines 255--262
+[]\OT1/ptm/m/n/12 The theorem-proving ap-proach of [45] ver-i-fies a fi-nite fi
+eld $\U/msb/m/n/12 F[]$ \OT1/ptm/m/n/12 im-ple-men-ta-tion against
+ []
+
+) [19]
+\openout2 = `ch3.aux'.
+
+ (./ch3.tex
+CHAPTER 3.
+[20
+
+
+
+] [21] (/usr/share/texmf-texlive/tex/latex/listings/lstlang1.sty
+File: lstlang1.sty 2004/09/05 1.3 listings language file
+)
+(/usr/share/texmf-texlive/tex/latex/listings/lstlang2.sty
+File: lstlang2.sty 2004/09/05 1.3 listings language file
+)
+(/usr/share/texmf-texlive/tex/latex/listings/lstlang3.sty
+File: lstlang3.sty 2004/09/05 1.3 listings language file
+)
+LaTeX Font Info:    Font shape `OT1/ptm/bx/it' in size <12> not available
+(Font)              Font shape `OT1/ptm/b/it' tried instead on input line 113.
+LaTeX Font Info:    Try loading font information for OML+ptm on input line 122.
+
+
+(/usr/share/texmf-texlive/tex/latex/psnfss/omlptm.fd
+File: omlptm.fd 
+)
+LaTeX Font Info:    Font shape `OML/ptm/m/it' in size <12> not available
+(Font)              Font shape `OML/cmm/m/it' tried instead on input line 122.
+ [22] [23] [24]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+[25]
+Title Error: (33.6986pt too wide)
+Page 26, Title="Hardware Implementations of Arithmetic Operations Over $\mathbb
+ {F}_{2^k}$"
+
+[26]
+File: figures/adder4bit.eps Graphic file (type eps)
+ <figures/adder4bit.eps> [27] [28]
+File: figures/mul4bit.eps Graphic file (type eps)
+ <figures/mul4bit.eps> [29]
+File: figures/mmcircuit.eps Graphic file (type eps)
+
+<figures/mmcircuit.eps>
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 531.
+
+ (/usr/share/texmf-texlive/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+)
+[30]
+File: figures/barrett.eps Graphic file (type eps)
+ <figures/barrett.eps> [31] [32]) [33]
+\openout2 = `ch4.aux'.
+
+ (./ch4.tex
+CHAPTER 4.
+[34
+
+
+
+] [35] [36]
+Overfull \hbox (16.0761pt too wide) in paragraph at lines 194--196
+[]\OT1/ptm/m/it/12 Let $\U/msb/m/n/12 K$ \OT1/ptm/m/it/12 be a field, and let $
+\OML/cmm/m/it/12 f[]; [] ; f[] \OMS/cmsy/m/n/12 2 \U/msb/m/n/12 K\OT1/cmr/m/n/1
+2 [\OML/cmm/m/it/12 x[]; x[]; [] ; x[]\OT1/cmr/m/n/12 ]$\OT1/ptm/m/it/12 . We c
+all $\OML/cmm/m/it/12 V\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 f[]; [] ; f[]\OT1/cmr/
+m/n/12 )$
+ []
+
+
+Overfull \hbox (22.61993pt too wide) in paragraph at lines 201--203
+[]$\OML/cmm/m/it/12 V\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 f[]; [] ; f[]\OT1/cmr/m/
+n/12 ) \OMS/cmsy/m/n/12 2 \U/msb/m/n/12 K[]$ \OT1/ptm/m/n/12 is \OT1/ptm/b/n/12
+ the set of all so-lu-tions \OT1/ptm/m/n/12 of the sys-tem of equa-tions: $\OML
+/cmm/m/it/12 f[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 x[]; [] ; x[]\OT1/cmr/m/n/12 
+) =
+ []
+
+[37] [38]
+Overfull \hbox (29.15182pt too wide) in paragraph at lines 297--300
+[]\OT1/ptm/m/it/12 Let $\OML/cmm/m/it/12 f; f[]; [] ; f[]$ \OT1/ptm/m/it/12 be 
+poly-no-mi-als in $\U/msb/m/n/12 K\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 x[]; [] ; x
+[]\OT1/cmr/m/n/12 ]$\OT1/ptm/m/it/12 . Let ideal $\OML/cmm/m/it/12 I \OT1/cmr/m
+/n/12 = \OMS/cmsy/m/n/12 h\OML/cmm/m/it/12 f[]; [] ; f[]\OMS/cmsy/m/n/12 i ^^Z
+ []
+
+
+Overfull \hbox (3.66048pt too wide) in paragraph at lines 302--305
+\OT1/ptm/m/n/12 pose, we re-quire a de-ci-sion pro-ce-dure to un-equiv-o-cally 
+de-cide ideal mem-ber-ship. Gr[]obner
+ []
+
+[39]
+Overfull \hbox (19.88173pt too wide) in paragraph at lines 358--360
+[]\OT1/ptm/m/it/12 For a field $\U/msb/m/n/12 K\OML/cmm/m/it/12 ; f; g \OMS/cms
+y/m/n/12 2 \U/msb/m/n/12 K\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 x[]; [] ; x[]\OT1/c
+mr/m/n/12 ]\OML/cmm/m/it/12 ; L \OT1/cmr/m/n/12 = \OML/cmm/m/it/12 lcm []$\OT1/
+ptm/m/it/12 , an \OT1/ptm/b/n/12 S-polynomial
+ []
+
+[40] [41] [42] [43] [44] [45]) [46]
+\openout2 = `ch5pk.aux'.
+
+ (./ch5pk.tex
+CHAPTER 5.
+
+Overfull \hbox (3.74976pt too wide) in paragraph at lines 41--46
+[]\OT1/ptm/m/n/12 Given a word-level spec-i-fi-ca-tion poly-no-mial $\OML/cmm/m
+/it/12 S \OT1/cmr/m/n/12 = \OMS/cmsy/m/n/12 F\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 
+A[]; A[]; [] ; A[]\OT1/cmr/m/n/12 )([]\OML/cmm/m/it/12 P\OT1/cmr/m/n/12 (\OML/c
+mm/m/it/12 x\OT1/cmr/m/n/12 ))$\OT1/ptm/m/n/12 ,
+ []
+
+[47
+
+
+
+]
+Overfull \hbox (13.71986pt too wide) in paragraph at lines 47--52
+\OT1/ptm/m/n/12 cuit are $\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 a[]; a[]; [] ; a[]
+\OMS/cmsy/m/n/12 g$\OT1/ptm/m/n/12 , for $\OML/cmm/m/it/12 j \OT1/cmr/m/n/12 = 
+1\OML/cmm/m/it/12 ; [] ; n$\OT1/ptm/m/n/12 ; the pri-mary out-puts are $\OMS/cm
+sy/m/n/12 f\OML/cmm/m/it/12 z[]; [] ; z[]\OMS/cmsy/m/n/12 g \OT1/cmr/m/n/12 =
+ []
+
+[48]
+File: ./figures/setmember.eps Graphic file (type eps)
+ <./figures/setmember.eps> [49] [50]
+File: ./figures/2bitmultiplier.eps Graphic file (type eps)
+ <./figures/2bitmultiplier.eps>
+[51] [52]
+Title Error: (44.18968pt too wide)
+Page 53, Title="Verification Formulation as Ideal Membership Testing"
+
+[53] [54]
+Overfull \hbox (8.9006pt too wide) in paragraph at lines 468--471
+[]$[]$ \OT1/ptm/m/it/12 Let $\OML/cmm/m/it/12 J \OMS/cmsy/m/n/12 ^^Z \U/msb/m/n
+/12 F[]\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 x[]; x[]; []  ; x[]\OT1/cmr/m/n/12 ]$
+ []
+
+[55] [56] [57] [58]
+Overfull \hbox (4.43494pt too wide) in paragraph at lines 757--761
+[]\OT1/ptm/m/it/12 Consider the cir-cuit of Fig-ure 5.2[], re-pro-duced be-low.
+ Vari-ables $\OML/cmm/m/it/12 a[]; a[]; b[]; b[]$
+ []
+
+File: ./figures/2bitmultiplier.eps Graphic file (type eps)
+<./figures/2bitmultiplier.eps> [59] [60] [61] [62]
+LaTeX Font Info:    Font shape `OMS/ptm/m/it' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1024.
+
+ [63] [64] [65]
+Overfull \hbox (10.23445pt too wide) in paragraph at lines 1241--1253
+ [] 
+ []
+
+
+Overfull \hbox (4.35951pt too wide) in paragraph at lines 1289--1303
+ [] 
+ []
+
+[66] [67]
+Overfull \hbox (21.33156pt too wide) in paragraph at lines 1393--1403
+ [] 
+ []
+
+
+Overfull \hbox (9.58168pt too wide) in paragraph at lines 1415--1425
+ [] 
+ []
+
+[68]) [69]
+\openout2 = `ch6.aux'.
+
+ (./ch6.tex
+CHAPTER 6.
+[70
+
+
+
+]
+Overfull \hbox (0.16762pt too wide) in paragraph at lines 80--86
+\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 x[]; [] ; x[]\OMS/cmsy/m/n/12 g$\OT1/ptm/m/n
+/12 ; The pri-mary out-puts of $\OML/cmm/m/it/12 C[]$ \OT1/ptm/m/n/12 are $\OMS
+/cmsy/m/n/12 f\OML/cmm/m/it/12 y[]; [] ; y[]\OMS/cmsy/m/n/12 g$\OT1/ptm/m/n/12 
+, where $\OML/cmm/m/it/12 a[]; b[]; x[]; y[] \OMS/cmsy/m/n/12 2
+ []
+
+File: ./figures/miter.eps Graphic file (type eps)
+<./figures/miter.eps> [71] [72]
+File: ./figures/2bitadder.eps Graphic file (type eps)
+ <./figures/2bitadder.eps> [73]
+Title Error: (8.07295pt too wide)
+Page 74, Title="Verification Problem Formulation as Weak Nullstellensatz"
+
+[74]
+Overfull \hbox (4.50627pt too wide) in paragraph at lines 288--293
+\OT1/ptm/m/n/12 know that the unit ideal $\OMS/cmsy/m/n/12 h\OT1/cmr/m/n/12 1\O
+MS/cmsy/m/n/12 i$ \OT1/ptm/m/n/12 can gen-er-ate the en-tire set of poly-no-mi-
+als in $[]\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 x[]; x[]; []  ; x[]\OT1/cmr/m/n/12 
+]$\OT1/ptm/m/n/12 .
+ []
+
+[75]
+File: ./figures/closure.eps Graphic file (type eps)
+ <./figures/closure.eps> [76]
+Overfull \hbox (8.65144pt too wide) in paragraph at lines 377--386
+\OT1/ptm/m/it/12 Given $\OML/cmm/m/it/12 f[]; f[]; []  ; f[] \OMS/cmsy/m/n/12 2
+ \U/msb/m/n/12 F[]\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 x[]; x[]; []  ; x[]\OT1/cmr
+/m/n/12 ]$\OT1/ptm/m/it/12 . Let $\OML/cmm/m/it/12 J \OT1/cmr/m/n/12 = \OMS/cms
+y/m/n/12 h\OML/cmm/m/it/12 f[]; f[]; []  ; f[]\OMS/cmsy/m/n/12 i ^^Z \U/msb/m/n
+/12 F[]\OT1/cmr/m/n/12 [\OML/cmm/m/it/12 x[]; x[]; []  ; x[]\OT1/cmr/m/n/12 ]$
+ []
+
+
+Overfull \hbox (4.26273pt too wide) in paragraph at lines 388--394
+\OT1/ptm/b/n/12 Proof. \OT1/ptm/m/n/12 Ac-cord-ing to the def-i-ni-tion of van-
+ish-ing poly-no-mi-als over $\U/msb/m/n/12 F[]$\OT1/ptm/m/n/12 , we have $\OML/
+cmm/m/it/12 V[]\OT1/cmr/m/n/12 (\OML/cmm/m/it/12 J[]\OT1/cmr/m/n/12 ) =
+ []
+
+[77]
+Overfull \hbox (6.06778pt too wide) in paragraph at lines 425--432
+[]\OT1/ptm/m/n/12 For our ver-i-fi-ca-tion prob-lem, we take the poly-no-mi-als
+ $\OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 F[]; F[]; f[]\OMS/cmsy/m/n/12 g \OT1/cmr/m
+/n/12 = \OMS/cmsy/m/n/12 f\OML/cmm/m/it/12 f[]; [] ; f[]; f[]\OMS/cmsy/m/n/12 g
+$
+ []
+
+[78]
+Title Error: (151.49786pt too wide)
+Page 79, Title="Verification Uusing a Minimum Number of S-polynomial Computatio
+ns"
+
+
+Overfull \hbox (5.72452pt too wide) in paragraph at lines 579--592
+[]\OT1/ptm/m/it/12 Let $\OML/cmm/m/it/12 F[]; F[]$ \OT1/ptm/m/it/12 cor-re-spon
+d to the set of poly-no-mi-als de-rived from cir-cuits $\OML/cmm/m/it/12 C[]; C
+[]$\OT1/ptm/m/it/12 ,
+ []
+
+[79] [80] [81] [82]
+Title Error: (57.14699pt too wide)
+Page 83, Title="Improving Polynomial Division using $F_4$-style Reduction"
+
+[83] [84] [85] [86]
+Underfull \hbox (badness 10000) in paragraph at lines 1054--1055
+
+ []
+
+[87]
+Underfull \hbox (badness 10000) in paragraph at lines 1063--1064
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1072--1073
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1081--1082
+
+ []
+
+[88]
+Underfull \hbox (badness 10000) in paragraph at lines 1090--1091
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1100--1101
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1109--1110
+
+ []
+
+[89]
+Underfull \hbox (badness 10000) in paragraph at lines 1118--1119
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1127--1128
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1137--1138
+
+ []
+
+[90]
+Underfull \hbox (badness 10000) in paragraph at lines 1147--1148
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1157--1158
+
+ []
+
+[91] [92] [93] [94]
+Title Error: (3.46436pt too wide)
+Page 95, Title="Equivalence Checking of Structurally Dissimilar Circuits"
+
+[95]
+Underfull \hbox (badness 4779) in paragraph at lines 1383--1383
+[]\OT1/ptm/b/n/12 Table 6.8\OT1/ptm/m/n/12 . Ver-i-fi-ca-tion of Bar-rett mul-t
+i-plier vs. Mont-gomery mul-ti-plier.
+ []
+
+
+Overfull \hbox (17.48605pt too wide) in paragraph at lines 1385--1400
+ [] 
+ []
+
+
+Overfull \hbox (17.48605pt too wide) in paragraph at lines 1409--1423
+ [] 
+ []
+
+[96]) [97]
+\openout2 = `ch7.aux'.
+
+ (./ch7.tex
+CHAPTER 7.
+[98
+
+
+
+] [99] [100] [101] [102]
+File: figures/mul4bit.eps Graphic file (type eps)
+ <figures/mul4bit.eps>
+File: ./figures/cfmultiplier.eps Graphic file (type eps)
+ <./figures/cfmultiplier.eps>
+Title Error: (12.36673pt too wide)
+Page 103, Title="Problem Formulation and Hierarchy Verification"
+
+[103] [104] [105] [106] [107] [108]) [109] [110]
+\openout2 = `ch8.aux'.
+
+ (./ch8.tex
+CHAPTER 8.
+Title Error: (293.46234pt too wide)
+Page 111, Title="Computer Algebra Based Approaches for Equivalence Checking of 
+Arithmetic Circuit over ${\mathbb {F}_{2^k}}$"
+
+[111
+
+
+
+] [112]
+Title Error: (9.20056pt too wide)
+Page 113, Title="Speeding up Verification using a Graphics Processing Unit"
+
+[113] [114]) [115] (./thesis.bbl [116
+
+] [117] [118] [119] [120] [121]
+Underfull \hbox (badness 1365) in paragraph at lines 420--425
+\OT1/ptm/m/n/12 1-3 --- A com-puter al-ge-bra sys-tem for poly-no-mial com-pu-t
+a-tions'',  2011,
+ []
+
+[122]
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no ¸ in font ptmr7t!
+ [123]
+Missing character: There is no Ã in font ptmr7t!
+Missing character: There is no § in font ptmr7t!
+) [124] (./thesis.aux (./ch2.aux) (./ch3.aux) (./ch4.aux)
+(./ch5pk.aux) (./ch6.aux) (./ch7.aux) (./ch8.aux))
+
+LaTeX Warning: There were multiply-defined labels.
+
+ )
+(\end occurred inside a group at level 2)
+
+### simple group (level 2) entered at line 2 ({)
+### simple group (level 1) entered at line 2 ({)
+### bottom level 
+Here is how much of TeX's memory you used:
+ 5575 strings out of 495062
+ 72417 string characters out of 1182644
+ 181436 words of memory out of 3000000
+ 8575 multiletter control sequences out of 15000+50000
+ 26998 words of font info for 84 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 32i,20n,43p,333b,1408s stack positions out of 5000i,500n,10000p,200000b,50000s
+
+Output written on thesis.dvi (135 pages, 454992 bytes).

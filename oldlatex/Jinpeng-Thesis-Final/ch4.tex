@@ -1,0 +1,849 @@
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Computer Algebra Fundamentals} \label{ch:ideals}
+This chapter reviews preliminary fundamental concepts of commutative and computer algebra that are 
+utilized in our work. The concepts of polynomial ideals, varieties and Gr\"obner bases are described with regard to their
+algorithmic computation. Finally, the results of Hillbert's Nullstellensatz are described which are employed 
+for verification over finite fields in subsequent chapters. The material is mostly referred from 
+the textbooks \cite{ideals:book} \cite{gb_book}. 
+
+\section{Monomials and Their Orderings}
+
+\begin{Definition} \label{def:mono}
+A {\bf monomial} in $x_1,x_2,\cdots,x_d$ is a product of this form:
+\begin{equation}
+x_1^{{\alpha}_1} \cdot x_2^{{\alpha}_2} \cdot \cdots x_d^{{\alpha}_d},
+\end{equation}
+where $\alpha_i \ge 0, i\in\{1,\cdots,d\}$. 
+The total degree of the monomial is $\alpha_{1}+\cdots+\alpha_{d}$.
+\end{Definition}
+
+For simplicity, we will denote a monomial $x_1^{{\alpha}_1} \cdot x_2^{{\alpha}_2} \cdot \cdots x_d^{{\alpha}_d}=x^{\alpha}$, 
+where $\alpha=({\alpha}_1,\cdots,{\alpha}_d)$, i.e., $\alpha \in \mathbb{Z}_{\ge 0}^{d}$.
+  
+%From Definition \ref{def:poly}, we know a polynomial can be expressed as:
+%\begin{equation} \label{eq:poly1}
+%f= \sum_i a_i x^i = a_0 + a_1 x + a_2 x^2 + \cdots + a_d x^d, a_i \in k;
+%\end{equation}
+
+\begin{Definition}
+A {\bf multivariate polynomial} $f$ in variables $x_1, x_2, \ldots, x_d$ with coefficients in any 
+given field $\mathbb{K}$ is a finite linear combination (with coefficients in $\mathbb{K}$) of monomials:
+\begin{equation}
+	f=\sum_{\alpha}a_{\alpha}\cdot x^{\alpha}, ~~a_{\alpha}\in \mathbb{K} \nonumber
+\end{equation}
+\end{Definition}
+
+The set of all polynomials in $x_1, x_2, \ldots, x_d$ with coefficients in field $\mathbb{K}$ 
+is denoted by $\mathbb{K}[x_1, x_2, \ldots, x_d]$.
+
+%$\mathbb{R}[x]$ is the set of polynomials in $x$ with coefficients in $\mathbb{R}$, so $2x^3+\frac{7}{4}x \in \mathbb{R}[x]$. 
+%$\mathbb{Z}_p[x,y]$ is the set of polynomials in $x,y$ with coefficients in $\mathbb{Z}_p$, where $p$ is a prime number. 
+%$\mathbb{F}_{2^k}[x_0,x_1, x_2, \ldots, x_d]$ is the set of polynomials in $x_0,x_1, x_2, \ldots, x_d$ with coefficients in $\mathbb{F}_{2^k}$, where $k>0$.
+
+\begin{Definition}
+Let $f=\sum_{\alpha} a_{\alpha} x^{\alpha}$ be a polynomial in $\mathbb{K}[x_1, x_2, \ldots, x_d]$. 
+\begin{enumerate}
+\item We refer to the constant $a_{\alpha} \in \mathbb{K}$ as the \textit{coefficient} of the monomial $a_{\alpha} x^{\alpha}$.
+\item If $a_{\alpha} \neq 0$, we call $a_{\alpha} x^{\alpha}$ a term of $f$.
+\end{enumerate}
+\end{Definition}
+
+As an example, $2x^2+y$ is a polynomial with two terms $2x^2$ and $y$, with $2$ and $1$ as coefficients respectively. 
+In contrast, $x+y^{-1}$ is not a polynomial because the exponent of $y$ is less than $0$.
+
+An important fact of polynomials is that a polynomial is a sum of terms and 
+these terms have to be arranged unambiguously so that they can be manipulated in a consistent manner.
+Therefore, we need establish the concept {\bf monomial ordering (or term ordering)}.
+A term ordering, represented by $>$, defines how
+terms in a polynomial are ordered.  Term-orderings are totally ordered,
+i.e. anti-symmetric, transitive, total, with constant terms last in the ordering. 
+More formally, we have the following definitions:
+%%%%%%%%%%%%%%%%%%%   monomial    Ordering   %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{Definition}
+Let $\mathbb{T}^{d}=\{x^{\alpha}: \alpha\in \mathbb{Z}_{\ge 0}^{d}\}$ be the set of all monomials in $x_{1},\dots,x_{d}$.
+A {\bf monomial order} $>$ on $\mathbb{T}^{d}$ is a total well-ordering satisfying:
+\begin{itemize}
+	\item For any $x^{\alpha} \in \mathbb{T}^{d}$, $x^{\alpha}>1$
+	\item For all $\alpha, \beta, \gamma$, $x^{\alpha}>x^{\beta} \Rightarrow x^{\alpha} \cdot x^{\gamma}> x^{\beta} \cdot x^{\gamma}$
+\end{itemize}
+\end{Definition}
+
+A total-order ensures that there is no ambiguity with respect to where a term is found in 
+the term-ordering.  Total orderings for monomials come in different forms, notably 
+{\bf lexicographic orderings} (lex), and its variants: {\bf degree-lexicographic ordering} (deglex) 
+and {\bf reverse degree-lexicographic ordering} (revdeglex).
+
+A {\bf lexicographic ordering} (lex) is a total-ordering $>$ such that variables
+in the terms are lexicographically ordered.  Higher variable-degrees take 
+precedence over lower degrees (e.g. $a^3 = a a a$).
+\begin{Definition}
+{\bf Lexicographic order:} Let $x_1 > x_2 > \dots > x_d$
+lexicographically. Also let $\alpha = (\alpha_1, \dots, \alpha_d);
+~\beta = (\beta_1, \dots, \beta_d) \in \mathbb{Z}^d_{\geq 0}$. Then we
+have: 
+\begin{equation}
+x^{\alpha} > x^{\beta} \iff 
+\begin{cases}
+& \text{Starting  from the  left, the first co-ordinates of $\alpha_i, \beta_i$} \\
+& \text{that are different satisfy $\alpha_i > \beta_i$}
+
+\end{cases}
+\end{equation}
+\end{Definition}
+
+A {\bf degree-lexicographic ordering} (deglex) is a total-ordering $>$ such that 
+the total degree of a term takes precedence over the lexicographic ordering.  A
+{\bf degree-reverse-lexicographic ordering} (degrevlex) is the same as a
+deglex ordering, however terms are lexed in reverse.
+
+\begin{Definition}
+{\bf Degree Lexicographic order:} Let $x_1 > x_2 > \dots > x_d$
+lexicographically. Also let $\alpha = (\alpha_1, \dots, \alpha_d);
+~\beta = (\beta_1, \dots, \beta_d) \in \mathbb{Z}^d_{\geq 0}$. Then we
+have: 
+\begin{equation}
+x^{\alpha} > x^{\beta} \iff 
+\begin{cases}
+\sum_{i=1}^{d}\alpha_i > \sum_{i=1}^{d} \beta_i & \text{ or }\\
+\sum_{i=1}^{d}\alpha_i = \sum_{i=1}^{d} \beta_i  \text{ and }
+x^{\alpha} > x^{\beta} & \text{w.r.t. lex order}
+\end{cases}
+\end{equation}
+\end{Definition}
+
+
+\begin{Definition}
+{\bf Degree Reverse Lexicographic order:} Let $x_1 > x_2 > \dots > x_d$
+lexicographically. Also let $\alpha = (\alpha_1, \dots, \alpha_d);
+~\beta = (\beta_1, \dots, \beta_d) \in \mathbb{Z}^d_{\geq 0}$. Then we
+have: 
+\begin{equation}
+x^{\alpha} > x^{\beta} \iff 
+\begin{cases}
+\sum_{i=1}^{d}\alpha_i > \sum_{i=1}^{d} \beta_i  \text{ or }\\
+\sum_{i=1}^{d}\alpha_i = \sum_{i=1}^{d} \beta_i  \text{ and the first co-ordinates}\\
+\text{$\alpha_i, \beta_i$ from the right, which are different, satisfy $\alpha_i < \beta_i$}
+\end{cases}
+\end{equation}
+
+\end{Definition}
+
+As a consequence of these term orderings, we have the following relations, where $a > b > c$.
+
+\begin{eqnarray}
+    \eqntext{lex:}  
+    a^2b > a^2 > abc > ab > ac^2 > ac > b^2c > b^2 > bc^3 > 1 
+    \label{ex:ordering:lex}\\
+    \eqntext{deglex:} 
+    bc^3 > a^2b > abc > ac^2 > b^2c > a^2 > ab >
+    ac > b^2 > 1
+    \label{ex:ordering:deglex}\\
+    \eqntext{degrevlex:}  
+    bc^3 > a^2b > abc > b^2c > ac^2 > a^2 > ab >
+    b^2 > ac > 1
+    \label{ex:ordering:degrevlex}
+\end{eqnarray}
+
+The difference between the {\it lex} and two {\it deg-} orderings is
+obvious, while the difference between the two degree-based orderings can be
+seen by considering from which direction the term is lexed, e.g. $ac^2 > b^2c$ (deglex, left-to-right)
+versus $b^2c > ac^2$ (degrevlex, right-to-left). 
+
+\begin{Example}
+Let $f = 2x^2yz + 3xy^3 - 2x^3$. Effects of different term orderings on $f$ are shown below:
+\begin{itemize}
+\item lex $x> y> z$: $f = -2x^3 + 2x^2yz + 3xy^3$
+\item deglex $x>y>z$:  $f = 2x^2yz + 3xy^3 -2x^3$
+\item degrevlex $x>y>z$: $f = 3xy^3 + 2x^2yz - 2x^3$
+\end{itemize}
+\end{Example}
+
+%Based on the {\it monomial ordering}, we have the following concepts:
+
+\begin{Definition}
+The {\bf leading term} is the first term in a term-ordered polynomial.
+Likewise, the {\it leading coefficient} is the coefficient of
+the leading term.  Finally, a {\it leading power product} is the leading term 
+lacking the coefficient.  We use the following notation:
+\begin{eqnarray}
+     lt(f)&& \text{--- Leading Term} \\
+     lc(f)&& \text{--- Leading Coefficient} \\
+     lm(f)&& \text{--- Leading Monomial}
+\end{eqnarray}
+\end{Definition}
+
+\begin{Example}
+\begin{eqnarray}
+     f      &=& 3a^2b + 2ab + 4bc \\
+     lt(f)  &=& 3a^2b \\
+     lc(f)  &=& 3 \\
+     lm(f)  &=& a^2b
+\end{eqnarray}
+\end{Example}
+
+\section{Varieties and Ideals}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%  variety %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+In verification applications, it is often required to analyze (the presence or absence of) solutions to a given system of constraints.
+In our applications, these constraints are polynomials and their solutions are described as {\bf varieties}.
+
+\begin{Definition}
+Let $\mathbb{K}$ be a field, and let $f_1, \ldots, f_s \in \mathbb{K}[x_1, x_2, 
+\ldots, x_d]$. We call $V(f_1, \dots, f_s)$ the {\bf affine variety} defined by $f_1, \dots, f_s$ as:
+\begin{equation}
+V(f_1, \ldots, f_s)= \{(a_1, \ldots, a_{d})\in \mathbb{K}^d:f_i(a_1, \ldots, a_d)=0, \forall{i},1\le i \le s\}.
+\end{equation}
+\end{Definition}
+
+$V(f_1, \dots, f_s)\in \mathbb{K}^d$ is {\bf the set of  all solutions} of the system of equations: 
+$f_1(x_1,\ldots,x_d)=\dots=f_s(x_1,\dots,x_d)=0$. 
+
+\begin{Example}
+Given $\mathbb{R}\left[x,y\right]$, $V(x^2+y^2)=\{(0,0)\}$. 
+Similarly, in $\mathbb{R}\left[x,y\right]$, $V(x^2+y^2-1)=\{all\  points\  on\ the\ circle: x^2+y^2-1=0\}$.
+However, varieties depend on which field we are operating on. For the same polynomial $x^2+1$, we have:
+\begin{itemize}
+\item In $\mathbb{R}[x]$, $V(x^2+1)=\emptyset$.
+\item In $\mathbb{C}[x]$, $V(x^2+1)=\{(\pm i)\}$.
+\end{itemize}
+\end{Example}
+
+The above example shows the variety can be infinite, finite (non-empty set) or empty.
+It is interesting to note that we will be operating over finite fields $\mathbb{F}_{q}$, 
+and any finite set of points is a variety.  
+Consider the points $\{(a_1,\dots, a_d): a_1, \dots, a_d \in \mathbb{F}_q\}$
+in $\mathbb{F}_q^d$. Any single point is a variety of some polynomial system:
+e.g. $(a_1,\dots, a_d)$ is a variety of $x_1-a_1 = x_2 - a_2 = \dots =
+x_d-a_d=0$. Moreover, {\bf finite unions and finite  intersections} of
+varieties are also varieties. Let $U = V(f_1, \dots, f_s)$ and $W =
+V(g_1, \dots, g_t)$. Then:  
+\begin{itemize}
+\item $U \cap W = V(f_1, \dots, f_s, g_1, \dots, g_t)$
+\item $U \cup W = V(f_i g_j: 1 \leq i \leq s, 1 \leq j \leq t)$
+\end{itemize}
+
+Another important concept related to varieties is that the variety depends not just on the given system of polynomial equations,but
+rather on the {\bf ideal} generated by the polynomials.
+
+%%%%%%%%%%%%%%%%%%%%%  ideal %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{Definition} 
+A subset $I \subset \mathbb{K}[x_1, x_2, \ldots, x_d]$ is an {\bf ideal} if it satisfies:
+\begin{itemize}
+\item $0 \in I$
+\item $I$ is closed under addition: $x, y \in I \Rightarrow x+y \in I$
+\item If $x \in \mathbb{K}[x_1, x_2, \ldots, x_d]$ and $y \in I$, then $x\cdot y \in I$ as well as $y\cdot x \in  I$.
+\end{itemize}
+\end{Definition}
+
+Any ideal is generated by its {\it basis} or {\it generators}.
+
+%%%%%%%%%%%%%%%%%%%%%  ideal basis%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{Definition}
+Let $f_1, f_2, \ldots, f_s$ be the given elements of $\mathbb{K}[x_1, x_2, \ldots, x_d]$. 
+Let $I$ be an ideal in $\mathbb{K}[x_1, x_2, \ldots, x_d]$. If:
+\begin{equation}
+I = \{g_1 f_1 + g_2 f_2 + \ldots + g_s f_s: g_1, \ldots, g_s \in \mathbb{K}[x_1, x_2, \ldots, x_d]\}
+\end{equation}
+then, $f_1, \ldots, f_s$ are called the {\bf basis (or generators)} of the ideal $I$ and 
+correspondingly $I$ is denoted as $I = \langle f_1, f_2, \ldots, f_s \rangle$. 
+\end{Definition}
+
+
+\begin{Example}
+The set of even integers, which is a subset of the ring of integers
+$Z$, forms an ideal of $Z$. This can be seen from the following;
+\begin{itemize}
+\item $0$ belongs to the set of even integers.
+\item The sum of two even integers $x$ and $y$ is always an even
+  integer.
+\item The product of any integer $x$ with an even integer $y$ is
+  always an even integer.
+\end{itemize}
+\end{Example}
+
+\begin{Example}
+Given $\mathbb{R}\left[x,y\right]$, $I = \langle x, y \rangle$ is an 
+ideal containing all polynomials generated by $x$ and $y$, such as $x^2+y$, $x\cdot y+x$. 
+$J = \langle x^2, y^2 \rangle$ is an ideal containing all polynomials generated by $x^2$ and $y^2$, 
+such as $x^2+y^2$, $x^2\cdot y^2+x^{10}$. Notice $I\neq J$ because $x+y$ can only be generated by $I$.
+\end{Example}
+
+
+Any ideal may have many different bases. For instance, it is possible to have different sets of polynomials
+$\{f_1,\dots,f_{s}\}$ and $\{g_{1},\dots,g_{t}\}$ that may generate the same ideal, i.e., 
+$\langle f_{1},\dots,f_{s}\rangle=\langle g_{1},\dots,g_{t}\rangle$. Since variety depends on the ideal, 
+these sets of polynomials have the same solutions.
+
+\begin{Proposition}
+	If $f_1,\dots,f_{s}$ and $g_{1},\dots,g_{t}$ are bases of the same ideal in $\mathbb{K}[x_{1},\dots,x_{d}]$,
+	so that $\langle f_{1},\dots,f_{s}\rangle=\langle g_{1},\dots,g_{t}\rangle$, then 
+	$V(f_{1},\dots,f_{s})=V(g_{1},\dots,g_{t})$.
+\end{Proposition}
+
+\begin{Example}
+	Consider the two bases $F_{1}=\{(2x^{2}+3y^{2}-11,x^{2}-y^{2}-3\}$ and $F_{2}=\{x^{2}-4,y^{2}-1\}$.
+	These two bases generate the same ideal, i.e., $\langle F_{1}\rangle= \langle F_{2} \rangle$.{}
+	Therefore, they represent the same variety, i.e., 
+	\begin{equation}
+		V(F_{1})= V( F_{2})=\{\pm 2, \pm 1\}.
+	\end{equation}
+\end{Example}
+
+An important fundamental problem that we need to solve is one of ideal membership testing.
+\begin{Definition}
+	Let $f, f_{1},\dots, f_{s}$ be polynomials in $\mathbb{K}[x_{1},\dots,x_{d}]$.
+	Let ideal $I=\langle f_{1},\dots, f_{s} \rangle \subset \mathbb{K}[x_{1},\dots,x_{d}]$.
+	If $f$ can be written as $f=f_{1}h_{1}+\dots+f_{s}h_{s}$, then we say $f$ is a member of the ideal $I$. 
+\end{Definition}
+
+Our verification problems are formulated as ideal membership testing. For this purpose, we require a decision procedure
+to unequivocally decide ideal membership. Gr\"obner basis provides such a decision procedure, and this is described in 
+the next section. 
+
+%%%%%%%%%%%%%%%%%%%%	Grobner bases	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Gr\"obner Bases}
+
+As mentioned above, different generating sets may constitute the same ideal. However, some generating sets
+may be better than others -- that is they may be a better representation of the ideal. A {\bf Gr\"obner basis}
+is one such ideal representation that has many important properties that allow to solve many polynomial decision
+questions. By analyzing the Gr\"obner basis, one can deduce the presence or absence of solutions (varieties), 
+find the dimension of the varieties, and also deduce ideal membership. 
+A Gr\"obner basis, in essence, is a canonical representation of an ideal.
+Buchberger's work \cite{buchberger_thesis} laid the
+foundation for computing a Gr\"obner basis of an ideal.  
+This section provides a synopsis of some of these concepts.
+
+%The theory of Gr\"obner's bases provides an algorithmic
+%framework to determine a better generating set for any ideal. 
+
+Among many equivalent definitions of Gr\"obner bases, we start with the definition that can best describe the 
+properties of Gr\"obner bases:
+
+\begin{Definition}
+    A set of non-zero polynomials
+    $G=\{g_1,\dots,g_t\}$ contained in an ideal $I$, is called a {\bf Gr\"obner
+    basis} for $I$ if and only if for all $f \in I$ such that $f \neq 0$,
+    there exists $i \in \{1,\dots,t\}$ such that $lm(g_i)$ divides $lm(f)$.
+    \begin{eqnarray}
+        G = \text{Gr\"obner{Basis}} (I) \iff \forall f \in I: f \neq 0, \exists
+        g_i \in G: lm(g_i)\ |\ lm(f)
+        \label{eqn:groebnermin}
+    \end{eqnarray}
+    
+\end{Definition}
+
+Given a set of polynomials $F=\{f_{1},\dots,f_{s}\}$ that generate ideal $I=\langle f_{1},\dots,f_{s} \rangle$, 
+Buchberger gives an algorithm to compute a Gr\"obner basis $G=\langle g_{1},\dots,g_{t}\rangle$. This algorithm relies on 
+the notions of $S$-polynomials and polynomial reduction, which are described below.
+
+%Little can be understood about a Gr\"obner basis without understanding
+%how the basis is derived.  To derive a Gr\"obner basis, some additional definitions are necessary:
+
+%\begin{Definition}
+    %The {\bf least common multiple} of a pair of numbers $f$ and $g$,
+    %denoted $lcm(f,g)$, is the smallest number, greater than zero,  which is 
+    %a multiple of both.
+%\end{Definition}
+
+%For example:
+%\begin{eqnarray*}
+    %lcm(3,4) = 12 \\
+    %lcm(6,8) = 24 
+%\end{eqnarray*}
+
+\begin{Definition}
+    For a field $\mathbb{K}, f, g \in \mathbb{K}[x_1,\dots,x_d], L = lcm\left(lt(f), lt(g)\right)$,
+    an {\bf S-polynomial} $Spoly(f,g)$ is defined as:
+    \begin{equation}
+        Spoly(f,g)=\frac{L}{lt(f)}\cdot f - \frac{L}{lt(g)}\cdot g
+        \label{eqn:spoly}
+    \end{equation}
+Note $lcm$ denotes least common multiple. 
+\end{Definition}
+
+\begin{Definition}
+    The {\bf reduction} of a polynomial $f$, by another polynomial $g$, to
+    a reduced polynomial $r$ is denoted:
+    \begin{equation*}
+        f\stackrel{g}{\textstyle\longrightarrow}r
+    \end{equation*}
+    Reduction is carried out using multivariate, polynomial long division. 
+    % The long division is performed according to a term-ordering on polynomials, and the division algorithm 
+    %terminates when the leading term of the divisor does not divide any 
+    %other term in the dividend.
+  
+    For sets of polynomials, the notation 
+    \begin{equation*}
+    f\stackrel{F}{\textstyle\longrightarrow}_+r    
+    \end{equation*}
+    represents the reduced polynomial $r$ resulting from $f$ as reduced by a 
+    set of non-zero polynomials $F = \{f_1,\dots,f_s\}$.  The polynomial $r$ is considered {\bf reduced} if 
+    $r = 0$  or no term in $r$ is divisible  by a $lm(f_i), \forall f_i \in F$.
+\end{Definition}
+
+  For all intents and purposes, the reduction process
+    $f\stackrel{F}{\textstyle\longrightarrow}_+r$, of dividing a 
+    polynomial $f$ by a set of polynomials of $F$, can be modeled as
+    repeated long-division of $f$ by each of the polynomials in $F$ until no
+    further reductions can be made---the result of which is $r$, as shown in Algorithm \ref{alg:polydiv}.
+
+\begin{algorithm}[hbt]
+\SetAlgoNoLine
+
+ \KwIn{$f,f_{1},\dots,f_{s}$}
+ \KwOut{$r,a_{1},\dots,a_{s}$, such that $f=a_{1}\cdot f_{1}+\dots+a_{s}\cdot f_{s}+r$.}
+ 
+ $a_{1}=a_{2}=\dots=a_{s}=0$; $r=0$\;
+ $p:=f$\;
+ 
+ \While { $p \neq 0$ }
+ {
+	i=1\;
+	divisionmark = false\;
+	\While { $i\le s  $ \&\& divisionmark = false }
+	{
+		\eIf {$f_{i}$ can divide $p$}
+		{
+			$a_{i}=a_{i}+lt(p)/lt(f_{i})$\;
+			$p=p-lt(p)/lt(f_{i}) \cdot f_{i}$\;
+			divisionmark = true\;
+		}
+		{
+			i=i+1\;
+		}
+	}
+	
+	\If {divisionmark = false}
+	{
+		$r=r+lt(p)$\;
+		$p=p-lt(p)$\;
+	}
+
+ }
+\caption{Polynomial Division}\label{alg:polydiv}
+\end{algorithm}
+
+The division algorithm keeps cancelling the leading terms of polynomials until no more leading terms can be further cancelled.
+So the key step is $p=p-lt(p)/lt(f_{i}) \cdot f_{i}$, as the following example shows.
+\begin{Example}
+	Given $f_{1} = y^{2}-x$ and $f_{2} = y - x$ in $\mathbb{Q}[x,y]$ with $deglex$: $y>x$. 
+Then $f_{1}/f_{2}=f_{1}-lt(f_{1})/lt(f_{2}) \cdot f_{2}=y^{2}-x-(y^{2} /y) \cdot (y-x)=y\cdot x-x$.
+Then $y\cdot x-x$ can be further divided by $f_{2}$: $(y\cdot x-x)/f_{2}=x^{2}-x$ which is the final result.
+\end{Example}
+
+We now present Buchberger's Algorithm \cite{buchberger_thesis} for computing Gr\"obner
+bases. 
+
+\begin{algorithm}[hbt]
+\SetAlgoNoLine
+ \KwIn{$F = \{f_1, \dots, f_s\}$, such that $I=\langle f_1, \dots, f_s\rangle$}
+ \KwOut{$G = \{g_1,\dots ,g_t\}$, a Gr\"{o}bner basis of $I$ }
+  $G:= F$\;
+  \Repeat{$G = G'$}
+  {
+  	$G' := G$\;
+  	\For{ each pair $\{f_{i}, f_{j}\}, i \neq j$ in $G'$} 
+	{
+		$Spoly(f_{i}, f_{j}) \stackrel{G'}{\textstyle\longrightarrow}_+r$ \;
+		\If{$r \neq 0$}
+		{
+			$G:= G \cup \{r\}$ \;
+		}
+	}
+   }
+\caption {Buchberger's Algorithm}\label{alg:gb}
+\end{algorithm}
+
+
+For Gr\"obner basis computation, a monomial (term) ordering is
+fixed to ensure that polynomials are manipulated in a consistent manner. 
+Buchberger's algorithm then takes pairs of polynomials ($f_{i}, f_{j}$) in the basis $G$
+and combines them into ``$S$-polynomials'' (Spoly($f_{i}, f_{j}$)) to cancel leading terms. The
+$S$-polynomial is then reduced (divided) by all elements of $G$ to a
+remainder $r$, denoted as  $S(f_{i}, f_{j}) \stackrel{G}{\textstyle\longrightarrow}_+r$. 
+Multivariate polynomial division is used for this reduction step. This
+process is repeated for all unique pairs of polynomials, including
+those created by newly added elements, until no new polynomials are
+generated; ultimately constructing the Gr\"{o}bner basis.
+
+\begin{Example}\label{exp:gbsimple}
+Consider the ideal $I \subset \mathbb{Q}[x, y]$, $I = \langle f_1, f_2 \rangle$,
+where $f_1 = yx - y, ~f_2 = y^2 - x$. Assume a degree-lexicographic term ordering with $y > x$ is imposed. 
+
+First, we need to compute $Spoly(f_{1},f_{2})=x\cdot f_{2}-y\cdot f_{1}=y^{2}-x^{2}$.
+Then we conduct a polynomial reduction 
+$y^{2}-x^{2}\stackrel{f_{2}}{\textstyle\longrightarrow}x^{2}-x \stackrel{f_{1}}{\textstyle\longrightarrow}x^{2}-x$.
+Let $f_{3}=x^{2}-x$. Then $G$ is updated as $\{f_{1},f_{2},f_{3}\}$. Next we compute $Spoly(f_{1},f_{3})=0$. So there
+is no new polynomial generated. Similarly, we compute $Spoly(f_{2},f_{3})=x\cdot y^{2}-x^{3}$, followed by 
+$x\cdot y^{2}-x^{3}\stackrel{f_{1}}{\textstyle\longrightarrow}y^{2}-x^{3} \stackrel{f_{2}}{\textstyle\longrightarrow}x-x^{3}
+\stackrel{f_{2}}{\textstyle\longrightarrow}0$. Again, no polynomial is generated. Finally, $G=\{f_{1,}f_{2},f_{3}\}$.
+
+\end{Example}
+
+
+Gr\"obner basis now gives a decision procedure to test for membership in an ideal.
+
+%With the knowledge of Gr\"obner basis and polynomial reduction procedure,  we get the following {\bf ideal
+%membership testing} algorithm: given an ideal $I =\langle f_1, \cdots,f_s \rangle$, we can decide whether a
+%given polynomial $f$ is a member of the ideal $I$. 
+%First, we compute a Gr\"obner basis $G = {g_1,\cdots,g_t }$ using Algorithm \ref{alg:gb}.
+
+    
+\begin{Theorem}\label{the:membership}
+	Let $G = \{g_1,\cdots,g_t \}$ be a Gr\"obner basis for an ideal $I \subset \mathbb{K}[x_1,\cdots,x_d ]$
+	and let $f \in \mathbb{K}[x_{1},\dots, x_{d}]$. Then $f \in I$ if and only if the remainder on division of $f$ by
+	$G$ is zero.
+\end{Theorem}
+In other words, 
+\begin{equation}
+f \in I \iff f \stackrel{G}{\textstyle\longrightarrow}_+0
+\end{equation}
+
+
+
+\begin{Example}
+Consider Example \ref{exp:gbsimple}. Let $f = y^2x - x$ be another
+polynomial. Note that $f = yf_1 + f_2$, so $f \in I$. If we divide $f$
+by $f_1$ first and then by $f_2$, we will obtain a zero
+remainder. However, since the set $\{f_1, f_2\}$ is not a Gr\"{o}bner
+basis, we find that the reduction $f
+\stackrel{f_2}{\textstyle\longrightarrow} x^2 - x
+\stackrel{f_1}{\textstyle\longrightarrow} x^2 - x  \neq 0$;
+i.e. dividing $f$ by $f_2$ first and then by $f_1$ does not lead to a
+zero remainder. However,  if we compute the Gr\"{o}bner basis $G$ of
+$I$, $G = \{x^2 - x, yx - y, y^2 - x\}$, dividing $f$ by polynomials
+in $G$ in any order will always lead to the zero remainder. Therefore,
+one can decide ideal membership unequivocally using the Gr\"{o}bner
+basis. 
+\end{Example}
+
+\begin{Definition}\label{def:minigb}
+A {\bf minimal Gr\"obner basis} for a polynomial ideal $I$ is a Groebner basis $G$ for $I$ such that
+	\begin{itemize}
+		\item $lc(g_{i})=1,\forall g_{i}\in G$
+		\item $\forall g_{i} \in G$,  $lt(g_{i}) \notin \langle lt(G-\{g_{i}\})\rangle$
+	\end{itemize}
+\end{Definition}
+A {\bf minimal} Gr\"obner basis is a Gr\"obner basis such that 
+no leading term of any element in $G$ divides another in $G$.
+A  minimal Gr\"obner basis can be computed by removing 
+any polynomial whose leading term can be divided by another in a given Gr\"obner basis.
+    
+A minimal Gr\"obner basis can be further reduced.
+\begin{Definition}
+	A {reduced Gr\"obner basis} for a polynomial ideal $I$ is a Gr\"obner basis $G=\{g_{1},\dots,g_{t}\}$ such that:
+	\begin{itemize}
+		\item $lc(g_{i})=1,\forall g_{i}\in G$
+		\item $\forall g_{i} \in G$, no monomial of $g_{i}$ lies in $\langle lt(G-\{g_{i}\})\rangle$
+	\end{itemize}
+\end{Definition}
+$G$ is a reduced Gr\"obner basis when no monomial of any element in $G$ divides the leading term of another element.
+
+For a given monomial ordering, 
+the reduced Gr\"obner basis is a canonical representation of the ideal, as given by Proposition \ref{pro:unique} below.
+
+
+\begin{Proposition}\label{pro:unique}
+Let $I \neq \{0\}$ be a polynomial ideal. Then, for a given monomial ordering, $I$ has a unique reduced Gr\"obner basis.
+\end{Proposition}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Hillbert's Nullstellensatz}
+
+In this section, we further describe some correspondence between ideals and varieties in
+the context of algebraic geometry. The celebrated results of Hillbert's Nullstellensatz
+establish such correspondences, and these results, together with Gr\"obner bases, 
+provide a basis for our verification solutions. 
+
+%%%%%%%%%%%%%%%%%algebraically closed field%%%%%%%%%%%%%
+\begin{Definition}\label{def:acf}
+A field $\overline {\mathbb{K}}$ is an algebraically closed field if every polynomial in one variable with degree at least $1$, with coefficients 
+in $\overline {\mathbb{K}}$, has a root in $\overline {\mathbb{K}}$.
+\end{Definition}
+In other words, any non-constant polynomial equation over $\overline {\mathbb{K}}\left[x\right]$ always has at least one root 
+in $\overline {\mathbb{K}}$. Every field $\mathbb{K}$ is contained in an algebraically closed one $\overline {\mathbb{K}}$. 
+For example, the field of reals $\mathbb{R}$ is not an algebraically closed field, because $x^2+1=0$ 
+has no root in $\mathbb{R}$. However, $x^2+1=0$ has roots in the field of complex numbers $\mathbb{C}$, 
+which is an algebraically closed field. 
+In fact, $\mathbb{C}$ is the algebra closure of $\mathbb{R}$.
+Every algebraically closed field is an infinite field.
+
+%%%%%%%%%%%%%%%%weak nullstellensatz%%%%%%%%%%%%%
+\begin{Theorem}
+$\left[\bf{Weak\  Nullstellensatz}\right]$ Let $I \subset \overline {\mathbb{K}}[x_1, x_2, \cdots, x_d]$ be an ideal satisfying $V(I)=\emptyset$. 
+Then $I=\overline {\mathbb{K}}[x_1, x_2, \cdots, x_d]$, Or equivalently, 
+\begin{equation}
+V(I)=\emptyset\ \iff\ I=\overline {\mathbb{K}}[x_1, x_2, \cdots, x_d]=\langle 1 \rangle 
+\end{equation}
+\end{Theorem}
+
+\begin{Corollary}
+	Let $I=\langle f_{1},\dots,f_{s} \rangle \subset \overline {\mathbb{K}}[x_1, x_2, \cdots, x_d]$. 
+	Let $G$ be the reduced Gr\"obner basis of $I$. Then $V(I)=0 \iff G=\{1\}$.
+\end{Corollary}
+
+The {\it Weak Nullstellensatz} offers a way to evaluate whether or not the system of multivariate polynomial equations (ideal $I$) has common solutions 
+in ${\overline {\mathbb{K}}}^d$. For this purpose, we only need to check if the ideal is generated by the unit element, i.e., $1\in I$. 
+This approach can be used to evaluate the feasibility of constraints in our verification problems. 
+Another interesting result that we will employ is one of {\bf Strong Nullstellensatz} to describe which we need the concepts of ``ideals of varieties" and 
+radicals.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%strong Nullstellensatz%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Let $\mathbb{K}$ be any field and let $\mathbf{a}=(a_{1},\dots,a_{d}) \in \mathbb{K}^d$ be a point, and $f \in
+\mathbb{K}[x_1,\dots, x_d]$ be a polynomial. We say that $f$ {\it vanishes} on $\mathbf{a}$ if $f(\mathbf{a}) = 0$, i.e.,
+$\mathbf{a}$ is in the variety of $f$.
+
+\begin{Definition}
+For any variety $V$ of $\mathbb{K}^d$, the ideal of polynomials that vanish on $V$,
+called the {\it vanishing ideal of $V$}, is defined as $I(V) = \{f\in
+\mathbb{F}[x_1,\dots, x_d]: \forall \mathbf{a} \in V, f(\mathbf{a}) =
+0\}$. 
+\end{Definition}
+
+\begin{Proposition}\label{pro:iofv}
+	If a polynomial $f$ vanishes on a variety $V$, then $f \in I(V)$. 
+\end{Proposition}
+
+
+\begin{Example}
+	Let ideal $J=\langle x^{2},y^{2}\rangle$. Then $V(J)=\{(0,0)\}$.
+	All polynomials in $J$ will obviously agree with the solution and vanish on this variety.
+	However, the polynomials $x,y$ are not in $J$ but they also vanish on this variety. 
+	Therefore, $I(V(J))$ is the set of all polynomials that vanish on $V(J)$, and the polynomials
+	$x,y$ are members of $I(V(J))$.
+\end{Example}
+
+\begin{Definition}\label{def:radical}
+Let $J \subset \mathbb{K}[x_1,\dots, x_d]$ be an ideal. The {\it radical of $J$} is defined as $\sqrt{J} = \{f \in
+\mathbb{K}[x_1,\dots, x_d]: \exists m \in \mathbb{N}, f^m \in J\}$. 
+\end{Definition}
+
+\begin{Example}
+Let $J=\langle x^2,y^2\rangle \subset \mathbb{K}\left[x,y\right]$.
+Note neither $x$ nor $y$ belongs to $J$, but they belong to $\sqrt J$.
+Similarly, $x\cdot y \notin J$, but since $(x \cdot y)^{2}=x^{2}\cdot y^{2}\in J$, therefore,
+$x\cdot y \in \sqrt J$. 
+\end{Example} 
+
+When $J = \sqrt J$, then $J$ is said to be a {\it radical
+  ideal}. Moreover, $I(V)$ is a radical ideal. The strong
+Nullstellensatz establishes the correspondence between radical ideals
+and varieties. 
+
+\begin{Theorem}\label{thm:sns}
+({\it Strong Nullstellensatz} \cite{gb_book}) 
+Let $\overline{\mathbb{K}}$ be an algebraically closed field, and let $J$
+be an ideal in $\overline{\mathbb{K}}[x_1,\dots, x_d]$. Then we have $I(V_{\overline{\mathbb{K}}}(J)) =\sqrt{J}$. 
+\end{Theorem}
+
+\section{Concluding Remarks}
+For verification, we have to analyze constraints corresponding to the circuit functionality.
+Solutions to these constraints are viewed as varieties and the constraints themselves are
+analyzed as polynomial ideals. Since Nullstellensatz defines the correspondences between ideals and varieties, 
+the verification problems are modeled using Nullstellensatz. 
+These are subsequently solved using Gr\"obner basis techniques. 
+While Nullstellensatz applies over algebraically closed fields, 
+and finite fields are not algebraically closed, our approach 
+requires modifications to suit our problems, as described in the subsequent chapters.  
+
+
+%We are dealing with Galois fields, and they are not algebraically
+%closed. When $\mathbb{F}$ is not algebraically closed, then the above
+%result can be suitably applied over the algebraic closure of
+%$\mathbb{F}$.  
+%\begin{Corollary}
+%Let $\mathbb{F}$ be an arbitrary field and $J$ be an ideal in
+%$\mathbb{F}[x_1,\dots, x_d]$. Let $\overline{\mathbb{F}}$ denote the
+%algebraic closure of $\mathbb{F}$, and let
+%$V_{\overline{\mathbb{F}}}(J)$ denote the variety of $J$ over
+%$\overline{\mathbb{F}}$. Then $I(V_{\overline{\mathbb{F}}}(J)) =
+%\sqrt{J}$.     
+%\end{Corollary}
+
+
+%The solution of $I_{ori} = \langle f_1, f_2, \cdots, f_d, f_{CC},f_A,f_B,f_C, f_{neq} \rangle$ is a common root of $f_1=0, f_2=0, \cdots, f_d=0,
+%f_{CC}=0,f_A=0,f_B=0,f_C=0, f_{neq}=0$ which can be denoted as $V(I_{ori})=V(f_1, f_2, \cdots, f_d, f_{CC},f_A,f_B,f_C, f_{neq})$. Direct computation to
+%determine whether variety $V(I)=\emptyset$ is usually computationally infeasible, especially when handling large problems. Instead, by analyzing properties
+%of ideal $I$ and correspondence between ideal and variety, we can derive an indirect way to determine whether variety $V(I)=\emptyset$. The most important
+%property of ideal is each ideal has a canonical representation: Gr\"obner basis, it is beneficial to view each ideal in the perspective of its Gr\"obner 
+%basis, as shown in Example \ref{gb:example}. However, the varieties of the same Gr\"obner basis over different fields (or rings) may be distinct. For
+%example, $V(\langle x^2+1\rangle)=\emptyset$ over $\mathbb{Z}$ while $V(\langle x^2+1\rangle)=\{(\pm i)\}$ over $\mathbb{C}$. Thus, a further understanding
+%of the relationship between ideal and variety is needed.
+
+%Definition \ref{def:IV} gives a map from variety to ideal which can generate all polynomial in $\mathbb{K}[x_1,\cdots,x_n]$ that vanishes on $V$. 
+%For example, in $\mathbb{R}\left[x\right]$, let $V=\{(0)\}$, then $I(V)=\{x,x^2,\cdots\}$.
+%Definition \ref{def:VI} gives a map from ideal to variety. For example, let $I_1=\langle x \rangle$, $I_2=\langle x^2 \rangle$,$V(I_1)=V(I_2)=\{(0)\}$.
+
+%Given $\langle J\rangle$, $I(V(J))$ includes all polynomials that vanish on solutions of $\langle J\rangle$. We are more interested in $I(V(J))$ 
+%but there is no way computing $I(V(J))$ directly. Fortunately, {\it Strong  Nullstellensatz} offers a way to do so indirectly.
+
+%Before presenting {\it Strong  Nullstellensatz}, let us first take a look at the field over which {\it Nullstellensatz} is working.
+
+%%%%%%%%%%%%%%%%%%strong nullstellensatz%%%%%%%%%%%%%
+%\begin{Theorem}
+%$\left[\bf{Strong\  Nullstellensatz}\right]$ If $J$ is an ideal in $\overline {\mathbb{K}}[x_1, x_2, \cdots, x_n]$ , then 
+%\begin{equation}
+%I(V(J))=\sqrt {J}
+%\end{equation}
+%\end{Theorem}
+%According to {\it Strong  Nullstellensatz}, we can obtain $I(V(J))$ by computing a radical ideal $\sqrt {J}$ which is described in Definition \ref{radical}. 
+%%%%%%%%%%%%%%%%%%radical ideal%%%%%%%%%%%%%
+%\begin{Definition}\label{radical}
+%Let $J\subset \mathbb{K}[x_1, x_2, \cdots, x_n]$ be be an ideal, the radical of $J$, denoted as $\sqrt {J}$  is a set of polynomials satisfying:
+%\begin{equation}
+%\{f:f^m \in J for\ some\  integer\  m \ge 1\}.
+%\end{equation}
+%\end{Definition}
+%For example, let $J=\langle x^2,y^2\rangle \subset \mathbb{K}\left[x,y\right]$, then $(x+y) \in J$, because $x^2,y^2 \in J$, $x,y\in J$ and then $(x+y) \in J$.
+ 
+%Notice $\sqrt {J}$ is also an ideal and thus is a radical ideal. {\it Strong  Nullstellensatz} identifies a one-to-one mapping between ideal and variety. 
+%Now our question arises: if a variety is empty, what is the corresponding ideal? As an immediate corollary of {\it Strong  Nullstellensatz},  
+%{\it Weak  Nullstellensatz} explicitly specifies the condition when variety is empty.
+
+%%%%%%%%%%%%%%%%%weak nullstellensatz%%%%%%%%%%%%%
+%\begin{Theorem}
+%$\left[\bf{Weak\  Nullstellensatz}\right]$ Let $I \subset \overline {\mathbb{K}}[x_1, x_2, \cdots, x_n]$ be an ideal satisfying $V(I)=\emptyset$. 
+%Then $I=\overline {\mathbb{K}}[x_1, x_2, \cdots, x_n]$.
+%\end{Theorem}
+
+%With Eqn. \ref{ideal1}, we can get:
+%\begin{equation}
+%V(I)=\emptyset\ \iff\ I=\overline {\mathbb{K}}[x_1, x_2, \cdots, x_n]=\langle 1 \rangle 
+%\end{equation}
+%The {\it Weak Nullstellensatz} offers us a way to evaluate whether the system of multivariate polynomial equations has a common solutions 
+%in ${\overline {\mathbb{K}}}^n$. It seems our problem (Eqn. \ref{problemodel}) is solved.
+
+%However, our problem (Eqn. \ref{problemodel}) is modeled over finite field $F_{2^k}$ while {\it Weak Nullstellensatz} requires an algebraically closed 
+%field. So {\it Weak Nullstellensatz} will bound to fail when applying to finite field.
+
+%Let us explain how {\it Weak Nullstellensatz} fails when applying to  finite field by an example.
+%\begin{Example}
+%We are given an implementation of a circuit over $F_2$: 
+%\begin{equation}
+%t_1=a \vee (\neg a \wedge b)
+%\end{equation}
+%Its corresponding specification is :
+%\begin{equation}
+%t_2=a \vee b
+%\end{equation}
+%$t_1$ and $t_2$ are symbolically different but computationally equivalent. Then as described in Section \ref{sec:model}, 
+%we formulate this example as follows:
+%\begin{eqnarray}
+%t_1=a \vee (\neg a \wedge b) &\mapsto& t1 + a + b*(a+1) + a*b*(a+1) \pmod 2 \nonumber \\
+%t_2=a \vee b  &\mapsto& a+b+a\cdot b \pmod 2 \nonumber \\
+%t_1 \neq t_2  &\mapsto& t_1+t_2+1 \pmod 2 \nonumber
+%\end{eqnarray}
+%\end{Example}
+%Then Gr\"obner basis of above polynomials is: 
+%\begin{eqnarray}
+%t_1+t_2+1 \nonumber \\
+%a\cdot b+a+b+t_2 \nonumber \\
+%a^2+a\cdot t_2+1 \nonumber \\
+%a\cdot t_2+b\cdot t_2+t_2^2+a+t_2+1 \nonumber \\
+%b^2\cdot t_2+b\cdot t_2^2+b\cdot t_2+1 \nonumber 
+%\end{eqnarray}
+
+%which is supposed to be $\langle 1\rangle$. The reason is $F_2$ is not an algebraically closed field, which means that 
+%although there is no solution in $F_2$, the solution (variety) of above ideal is lying somewhere in $\overline F_2-F_2$. 
+%Thus it is critical for our problem solving to find out what $I(V(J))$ is in $F_{2^k}$.
+
+%To solve this problem, an analogue in finite field $F_{2^k}$ of Strong Nullstellensatz is introduced in \cite{gao:gf-gb-ms}. 
+%However, the proof contains some flaw. Here we prove it with a different way.
+%%%%%%%%%%%%%%%%%strong nullstellensatz in finite field%%%%%%%%%%%%%
+%\begin{Theorem}
+%$\left[\bf{Strong\  Nullstellensatz\ in\ Finite\ Fields}\right]$ Let $J \subset F_{2^k}[x_1, x_2, \cdots, x_n]$ be an ideal, then 
+%\begin{equation}
+%I(V(J))=J+\langle x_1^{2^k}-x_1,x_2^{2^k}-x_2,\cdots,x_n^{2^k}-x_n\rangle
+%\end{equation}
+%\end{Theorem} 
+%\begin{proof}
+%Firstly, we need prove $J+\langle x_1^{2^k}-x_1,x_2^{2^k}-x_2,\cdots,x_n^{2^k}-x_n\rangle$ is radical. For convenience, let $q$ denote $2^k$, 
+%let $I=J+\langle x_1^{2^k}-x_1,x_2^{2^k}-x_2,\cdots,x_n^{2^k}-x_n\rangle$.
+
+%From Def. \ref{radical}, we claim: 
+
+%$f^m\in J \Rightarrow f\in J$, for some $m>0$.
+
+%Let $I_0$ denoted $\langle x_i^q-x_i\rangle$. Let $R$ denote $F_q\left[x_1,x_2,\cdots,x_n\right]$.
+
+%$\frac{R}{I_0}=F_q\left[\overline x_i \mid {\overline x_i}^q=\overline x_i \right]$, 
+%which means all variables have degree less than q in $\frac{R}{I_0}$.
+%\begin{equation} \label{proofbasis}
+%\forall g\in I_0\ \Leftrightarrow \ \bar{g}=0,\ where \bar{g}\in \frac{R}{I_0}.
+%\end{equation}
+
+%Let $g'=f^q-f$, where $f\in I$ .
+
+%$\overline {f^q-f}=\overline {f^q}-\overline{f}$.
+
+%$f\in I$ can be denoted as:
+%\begin{equation}
+%f=\displaystyle\sum\limits_{i=1}^n{a_i\cdot x_1^{i_1} \cdot x_2^{i_2} \cdots \cdot x_n^{i_n}}. \nonumber 
+%\end{equation}
+
+%then we can have the following two equations:
+%\begin{equation}\label{fq}
+%f^q=\displaystyle\sum\limits_{i=1}^n{a_i^q\cdot (x_1^q)^{i_1} \cdot (x_2^q)^{i_2} \cdots \cdot x_n^{i_n}}=\overline f. 
+%\end{equation}
+%\begin{equation}\label{fqbar}
+%\overline {f^q}=\displaystyle\sum\limits_{i=1}^n{a_i^q\cdot (x_1^q)^{i_1} \cdot (x_2^q)^{i_2} \cdots \cdot x_n^{i_n}}. 
+%\end{equation}
+
+%From Eqn.\ref{fq} and Eqn.\ref{fqbar}, we can get
+%\begin{equation}
+%\overline {f^q}=\overline f \  \Leftrightarrow \ \overline {f^q}-\overline f=0 
+%\end{equation}
+
+%Then from Eqn.\ref{proofbasis}, we can have $f^q-f\ \in I_0 $, which then generates $(f^q-f)^q=f^{q^2}-f^q \in I_0$.
+
+%\begin{equation}
+ %\left.\begin{aligned}
+        %f^q-f \in I_0 \\
+        %f^{q^2}-f^q \in I_0
+       %\end{aligned}
+ %\right\}
+ %\qquad  \Longrightarrow {f^{q^2}-f \in I_0} \nonumber
+%\end{equation}
+
+%Iteratively, we can have $\forall k\in\{0,1,2,\cdots\}, f^{q^k}-f\in I_0$.
+
+%Then $\exists k',q^{k'} \ge m$, such that $f^m\in I \Rightarrow f^{q^k}\in I$.
+
+%$f$ can be expressed as:
+
+%$f=\underbrace{f-f^{q^k}}_{\in I_0 \subset I}+\underbrace{f^{q^k}}_{\in I}$.
+
+%Now our claim is justified: if $f^m\in I$, then $f\in I$. In other words, $\sqrt{J+I_0}=J+I_0$.
+
+%Secondly, we need prove $I(V(J))=J+I_0$.
+
+%From Strong Nullstellensatz, we have:
+
+%$I(V_{\overline {F_q}}(J+I_0))=\sqrt{J+I_0}=J+I_0$.
+
+%Notice $V_{\overline {F_q}}(J+I_0)=V_{F_q}(J)$.
+
+%So we finally have $I(V_{F_q}(J))=\sqrt{J+I_0}=J+I_0$. \hfill $\square$
+
+%\end{proof}
+%Similarly, we can have an immediate corollary of $Strong$ $Nullstellensatz$ $in$ $Finite$ $Fields$.
+%%%%%%%%%%%%%%%%%weak nullstellensatz in finite field%%%%%%%%%%%%%
+%\begin{Theorem}\label{wnull:ff}
+%$\left[\bf{Weak\  Nullstellensatz\ in\ Finite Fields}\right]$ 
+%Given $f_1,f_2,\cdots,f_d \in F_{2^k}\left[x_1,x_2,\cdots,x_n\right]$, 
+%$I=\langle f_1,f_2,\cdots,f_d\rangle \subset F_{2^k}[x_1, x_2, \cdots, x_n]$ be an ideal. 
+%If $V(I,x_1^{2^k}-x_1,x_2^{2^k}-x_2,\cdots,x_n^{2^k}-x_n)=\emptyset$. Then $I=F_{2^k}[x_1, x_2, \cdots, x_n]=\langle 1\rangle$.
+%\end{Theorem} 
+
+%Theorem \ref{wnull:ff} offers an explicit way to conduct $\emptyset$ testing for multivariate polynomial system over $F_{2^k}$. 
+
+%To evaluate whether Eqn. \ref{problemodel} holds, we need add {\it field equation} $<x_i^{2^k}-x_i>$ to 
+%original ideal $I_{ori}$ representing our problem and then compute Gr\"obner basis 
+%of $\langle I_{ori},x_0^{2^k}-x_0,x_1^{2^k}-x_1,\cdots x_n^{2^k}-x_n\rangle$ to check whether result is $1$. 
+%If result is $1$, Eqn. \ref{problemodel} holds. 
+%Otherwise, there is a solution in $V(I_{ori})$, which means {\it implementation} does not match {\it specification}.
+

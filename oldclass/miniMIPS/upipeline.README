@@ -1,0 +1,27 @@
+This is a simulation setup for micropipeline designs.
+
+This is set up to characterize using modelsim the forward latency
+backward latency, buffering depth, and cycle time of the pipeline.
+
+To run this, include the following files in a modelsim project:
+
+upipeline.v
+unit-delay-gates.v
+
+Then compile the files.
+
+Run a simulation with:
+
+vsim -novopt work.UPIPELINE_4x
+  -- or --
+vsim -novopt work.UPIPELINE2_4x
+
+Then run the simulation script:
+
+do n2-protocol-delays.do
+
+
+To add a datapath to these signals, put a flop bank tied to the la
+signal from the UPIPELINE or UPIPELINE2 modules.
+
+

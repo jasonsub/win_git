@@ -1,0 +1,90 @@
+Def. 2.2: Ring: is a Group + some more....
+
+What is a 'commutative ring with unity?' Then say that R is henceforth
+a commutative ring with unity. 
+
+A: Para 3, p 13:
+You want to describe Z_{2^m} arithmetic.
+
+Many hardware and software applications perform bit-vector
+arithmetic. Arithmetic over m-bit vectors manifests itself as algebra
+ove the finite integr ring Z_{2^m}, as a m-bit vector represents
+integer values from {0, ...., 2^m - 1}.
+
+Example 2.1:
+Consider the following hardware description given in Verilog. It takes
+as inputs two 4-bit vectors, and computes the sum which is also
+represented in 4-bits......
+
+This code exemplifies arithmetic computations over the ring Z_{2^m}
+implemented in hardware.....
+
+
+Def. 2.3: \mathbb{F}
+
+B pp. 14:
+
+R, Q, C = field, Z = int = ring.
+
+In sec 2.2, Def 2.6 is OK.
+
+Then:
+Move Z_p to 2.2.
+Try lemma:
+The finite integer ring Z_n forms a field when n = p..... this is Z_p.
+
+Example: Z_5, show every non-zero element has an inverse.
+
+Z_4 is not a field, show example non-inverse.
+
+Z_p is a field with p = prime number of elements. While Z_2^m is not a
+field, there do exist fields non-prime cardinality. Such fields are
+called extension fields, which are of the focus in this thesis...
+Notation: F_p = Z_p, but F_q \neq Z_q.
+
+Define characteristic of a field. 'p' [Notes scanned notes... from class]
+
+Def. 2.7: OK. But confirm.
+
+Give example of irreducible polynomials: x^2 + 1 in R[x]. then get
+into irreducible polynomials over finite fields. Take F_2, get
+irreducible polynomials of degree k, irreucible in F_2[x]. Examples of
+irreducible polynomials in F_2 of degree k. Irred. poly of any degree
+k always exist. Irredecuble polynomials over F_p play a key role in
+constructing F_p^k.
+
+Then: Construction of finite fields:
+Theorem: F_p[x] (mod P(x)) = F_q, q = p^k.
+Proof: Given in textbook.
+
+(Def. 2.8 will come later)
+
+Example F_2^4 construction.
+
+Add example: Addition and multiplication of elements (example from
+your proposal). this should be used as GF-arithmetic.
+
+
+Subsection: Hardware design of Arithmetic Circuits over GF(2^k)
+
+Addition is trivial. Show a simple circuit w/ example. Something like
+2.3. Only XOR gates. 
+
+Multiplication is hard. Conceptually, multiply and then mod
+P(x). Therefore, VLSI...... Multiplication lies at the core....
+
+Page 15 onwards: Finite Fields ==> finite fields.
+
+Page 21, after Fig 2.3:
+
+Other hardware designs: What is done in coding theory or
+point-addition in ECC.
+
+Such circuits are custom designed. Moreover, the circuit size is very
+large. Therefore, verification is hard. Why, because of lack of the
+correct models of abstraction and associated decision procedures. As
+shown in subsequent chapters, bit-level and BV-level SMT solvers fail
+to verify. We propose GF-arithmetic/polynomial abstractions to model
+and verify such circuits. The next chapter, presents the theory of
+computer algebra, as applied over Galois fields, to verify such
+circuits. 

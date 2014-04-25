@@ -1,0 +1,21 @@
+\contentsline {table}{\numberline {3.1}{\ignorespaces Additive and multiplicative inverses in $\mathbb {Z}_5$.}}{24}
+\contentsline {table}{\numberline {3.2}{\ignorespaces Bit-vector, Exponential and Polynomial representation of elements in $\mathbb {F}_{2^4} = \mathbb {F}_2[x] \penalty \z@ \mkern 8mu({\mathgroup \symoperators mod}\mkern 6mux^4+x^3+1)$}}{26}
+\contentsline {table}{\numberline {5.1}{\ignorespaces Runtime for verification of Montgomery versus Mastrovito multipliers over $\mathbb {F}_{2^k}$ for BDDs, SAT, SMT-solver and AIG/ABC based methods. TO = timeout of 10hrs. Time is given in seconds.}}{65}
+\contentsline {table}{\numberline {5.2}{\ignorespaces Verification of Mastrovito multipliers by computing Gr\"obner bases using {\sc singular}. $MO$=out of $8$G memory. Time is given in seconds.}}{66}
+\contentsline {table}{\numberline {5.3}{\ignorespaces Runtime for verifying bug-free and buggy Mastrovito multipliers using our approach. TO = timeout of 10hrs. Time is given in seconds.}}{67}
+\contentsline {table}{\numberline {5.4}{\ignorespaces Runtime for verifying bug-free and buggy Montgomery multipliers using our approach. TO = timeout of 10hrs. Time is given in seconds.}}{67}
+\contentsline {table}{\numberline {5.5}{\ignorespaces Runtime for verifying bug-free and buggy Barrett multipliers using our approach. TO = timeout of 10hrs. Time is given in seconds.}}{68}
+\contentsline {table}{\numberline {5.6}{\ignorespaces Verification of ECC point addition. Run-time given is seconds. TO = timeout of 24hrs.}}{68}
+\contentsline {table}{\numberline {5.7}{\ignorespaces Verification of ECC point doubling. Run-time given is seconds. TO = timeout of 24hrs.}}{68}
+\contentsline {table}{\numberline {6.1}{\ignorespaces Matrix representation for polynomials.}}{84}
+\contentsline {table}{\numberline {6.2}{\ignorespaces Matrix subtraction of polynomials.}}{84}
+\contentsline {table}{\numberline {6.3}{\ignorespaces Matrix reduction for polynomials: representation.}}{85}
+\contentsline {table}{\numberline {6.4}{\ignorespaces Matrix reduction for polynomials: subtraction.}}{85}
+\contentsline {table}{\numberline {6.5}{\ignorespaces Matrix created for polynomial reduction for Example 6.8\hbox {}.}}{92}
+\contentsline {table}{\numberline {6.6}{\ignorespaces Subtraction result of the matrix created for polynomial reduction.}}{94}
+\contentsline {table}{\numberline {6.7}{\ignorespaces Verification of Mastrovito multiplier vs. Barrett multiplier. $TO$=$10$hrs. $\star $=Out of variable limitation. Time is given in seconds.}}{95}
+\contentsline {table}{\numberline {6.8}{\ignorespaces Verification of Barrett multiplier vs. Montgomery multiplier. $TO$=$10$hrs.$\star $=Out of variable limitation. Time is given in seconds.}}{96}
+\contentsline {table}{\numberline {6.9}{\ignorespaces Verification of Mastrovito multiplier vs. Montgomery multiplier. $TO$=$10$hrs. Time is given in seconds.}}{96}
+\contentsline {table}{\numberline {7.1}{\ignorespaces Verification Setup over $\mathbb {F}_{(2^2)^2}$}}{108}
+\contentsline {table}{\numberline {7.2}{\ignorespaces Verification of Mastrovito multiplier over $\mathbb {F}_{(2^m)^n}$ Using Proposed Approach. All times are given in seconds.}}{110}
+\contentsline {table}{\numberline {7.3}{\ignorespaces Statistics of Designs over $\mathbb {F}_{2^m}$}}{110}

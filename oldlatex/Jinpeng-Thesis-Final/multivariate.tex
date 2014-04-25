@@ -1,0 +1,120 @@
+\section{Reducibility of Multi-variate Polynomials}\label{sec:multi}
+In this section, we provide the necessary theoretical foundation for our proposed algorithm to reduce the given polynomial
+into a canonical representation. In short, this procedure eliminates redundancies in the RTL computations, usually
+resulting in smaller, compact and efficient designs. Most of the work in this section is based on the concepts in
+\cite{smarandache_function}.
+
+\cite{smarandache_function} extended the interpretation of the Smarandache function, introduced in Section \ref{sec:sing},
+to $d$ variables according to, $s_d(n) = |S_d(n)|$, where $S_d(n) = \{\textbf{k} \in N^d_0:~n ~does ~not ~divide
+~\textbf{k!}\}$. For instance, in $Z_8$, $s_d(8) = |S_d(8)| = |\{0,1,2,3\}| = 4$.
+We also define $\nu_2(k!)$ as the maximum degree $x$ such that $2^x$ divides $k!$. In $Z_{2^8}$, for example, $\nu_2(2^8) =
+8$. Note that $\nu_2(k!)$ gives \textit{the number-of-factors-2} in $k!$.
+%%%%Include a definition here%%%
+
+Based on the above, Lemma $4$ \cite{smarandache_function} provides the necessary and sufficient conditions to reduce a given
+multivariate polynomial (say $p$) in $d$ variables over $Z_{2^m}^d$. Each of its constituent monomials are successively
+reduced to a unique form, such that the resulting polynomial is equivalent to the original. If the given monomial
+$a$\textbf{$x^{k}$} can be reduced modulo $2^m$ then $2^m|a\textbf{k!}$. In other words, if $\nu_2$(\textbf{$2^m$}) $= m
+\leq \nu_2(a) +
+\nu_2(\textbf{k!})$, then the given monomial is reducible. We have the following results -
+% or, the monomial is in reduced form if both $\nu_2(a) < m$ and $\nu_2(\textbf{k!}) < m$ and their sum is $< m$.
+
+\begin{theorem}: \label{th:nu} $\nu_2(\textbf{k!}) < i$ iff $\textbf{k} \in S_d(2^i)$
+\end{theorem}
+\begin{proof}
+$2^i|\textbf{k!}$ iff $\textbf{k!}$ has atleast $i$ $factors-of-2$. If  $\nu_2(\textbf{k!}) < i$, then the number of factors
+of $2$ are lesser than $i$ or, $2^i$ does not divide $\textbf{k!}$. From the above definition of the Smarandache function,
+$\textbf{k!} \in S_d(2^i)$. From Sec. \ref{sec:sing}, this means that the minimum degree of the monomial is lesser than that
+required for divisibility by $2^m$. In $Z_8$, if $i=m=3$ then, for a monomial $4x^2y$, $\nu_2(2!) + \nu_2(1!) = 1 < 3$ $\Rightarrow$ $2 \in S_2(2^3)$.
+\end{proof}
+
+Let us now define the set $A_m$ as all values $\textbf{k}$, such that, $\nu_2(\textbf{k!}) < m $. In $Z_8$, $A_3 = \{0,1,2,3\}$. From Lemma $4$ stated above, $\textbf{k} \in A_m$ is one of the conditions for a reduced form. This follows directly from Theorem \ref{th:nu}. The next two results provide the conditions to check if a given monomial is in reduced form.
+
+\begin{theorem}: If $\nu_2(\textbf{k!}) \geq m$, then the given monomial can be reduced.
+\end{theorem}
+\begin{proof}
+This follows from Lemma 4. Also, from Theorem \ref{th:nu}, this implies that $\textbf{k} \notin S_d(2^m)$, or $2^m | a\textbf{k!}$.
+\end{proof}
+
+\begin{theorem}: If $a$\textbf{$x^{k}$} is in reduced form then $a < 2^{m-\nu_2(\textbf{k!})}$.
+\end{theorem}
+\begin{proof}
+Assume $\nu_2(\textbf{k!}) < m$, then from Lemma $4$, $\nu_2(a) = m - \nu_2(\textbf{k!})$ for the monomial to be reducible.
+The $number-of-factors-2$ less than $m$, has to be compensated for, by those in $a$. This means that, $a =
+2^{m-\nu_2(\textbf{k!})}$ is reducible or $2^{m-\nu_2(\textbf{k!})}|a$. Hence $a$ has to be less than this value.
+\end{proof}
+
+What if $2^m$ does not divide $a\textbf{k!}$, but $a \geq 2^{m-\nu_2(\textbf{k!})}$? The $number-of-factors-2$ is less than
+$m$ or $\nu_2(\textbf{k!}) < m$ $\Rightarrow$ $2^{m-\nu_2(\textbf{k!})}$ does not divide $a$. We write the given monomial
+as, $a$\textbf{$x^k$} $= q.2^{m-\nu_2(\textbf{k!})}$\textbf{$x^k$}$ + r.$\textbf{$x^k$} where, $q.2^{m-\nu_2(\textbf{k!})}$
+is reducible, while $r$ is in reduced form. We now present the algorithm for this reduction procedure implemented within MAPLE.
+
+\subsection{Algorithm}
+\begin{algo*}{PolyReduce}{poly, m}
+Input: A ~multivariate ~polynomial, \textbf{poly}, ~its ~\textbf{d} ~variables ~\textbf{var_list} ~and ~its ~bit-width ~\textbf{m}
+Output: Polynomial ~p ~reduced ~mod ~2^{m}.
+
+%
+%
+%
+%
+
+|mon-list| \: |~Get ~the ~list ~of ~monomials ~from ~p ~in ~lexicographic ~order|
+
+%
+%
+%
+%Process each monomial
+\FOR {~each ~monomial ~\textit{\textbf{mon}} ~in ~\textbf{\textit{mon-list}}}  ~~~~~~\@{/*Loop through all the monomials in the given polynomial*/}
+~~~|flag| \: 0
+~~~|a| \: |Coefficient(mon)| ~~~~~~\@{/*Get the coefficient of the monomial*/}
+
+~~~\FOR {~each ~variable ~\textbf{\textit{v_i}} ~in ~\textbf{\textit{var-list}}}
+~~~~~~K_{i} \: |Degree($v_i$) in \textbf(mon)|  ~~~~~~\@{/*Get the degree of the monomial*/}
+~~~\ENDFOR
+~~~|\textbf{K!}| \: \Sigma K_i!
+~~~\nu (\textbf{\textit{K!}}) \: \Sigma \nu(K_i!)
+~~~\alpha_{k} \: 2^{m - \nu(\textbf{K!})} - 1  ~~~~~~\@{/*Get the range of values for the coefficient of the monomial*/}
+
+%
+%
+%Reduction
+%
+%
+~~~\IF {(a > \alpha_{k})}  ~~~~~~\@{/*If the coefficient is out of range, then reduce*/}
+~~~~~~|flag| \: 1
+~~~~~~\IF {(a*\textbf{\textit{K!}} ~mod ~2^m = 0)}  ~~~~~~\@{/*$2^m$ divides ak!*/}
+~~~~~~~~~|temp-poly| \: mon - a*\prod^{d}_{j=1}\prod^{k_d}_{i=1}(v_j+i)
+~~~~~~\ELSE  ~~~~~~\@{/*$a = q*2^{m-\nu(k!)} + r$: quo and rem give the quotient and remainder*/} %when $a$ is divided by $(\alpha_{k}+1)$ */}
+~~~~~~~~~|temp-poly| \: quo[{a \over (\alpha_{k}+1)}] (\alpha_k+1)(\prod^{d}_{j=1}v_j^{k_j}-\prod^{d}_{j=1}\prod^{k_j}_{i=1}(v_j+i)) + rem[{a \over (\alpha_k + 1)}]\prod^{d}_{j=1}(v_j^{k_j})
+~~~~~~\ENDIF
+~~~~~~|mon| \: |temp-poly|  ~~~~~~\@{/*Update the monomial*/}
+~~~\ENDIF
+
+%
+%
+%
+%
+%
+~~~|reduced-poly| \: \Sigma mon ~mod ~2^m ~~~~~~\@{/*Update the polynomial*/}\\
+
+%
+%
+~~~\IF{(reduced-poly)=0}
+~~~~~~\RETURN ~0
+~~~\ENDIF
+
+%
+%
+\ENDFOR
+
+%
+%
+\IF{(flag)} ~~~~~~\@{/*If any of the monomials have been reduced, recurse again to check*/}
+~~~\RETURN ~|PolyReduce(reduced-poly)|
+\ELSE
+~~~\RETURN ~|reduced-poly| ~~~~~~\@{/*All the monomials are in reduced form-return the polynomial and stop*/}
+\ENDIF
+%
+%
+\end{algo*}

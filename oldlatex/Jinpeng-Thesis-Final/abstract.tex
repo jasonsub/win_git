@@ -1,0 +1,92 @@
+\begin{center}{\bf ABSTRACT}\end{center}
+
+With the spread of internet and mobile devices, transferring
+information safely and securely has become more important than ever. 
+Finite fields have widespread applications in such domains, such as
+in cryptography, error correction codes, signal processing, 
+among many others. Therefore, dedicated hardware (VLSI)
+implementations of finite field arithmetic abound. In most finite
+field applications, the field size  -- and therefore the bit-width of
+the operands -- can be very large. For example, the U.S. National
+Institute for Standards and Technology (NIST) recommends the use of
+finite fields corresponding to data-path sizes of $163$-bits or more
+for elliptic curve cryptography.  
+The high complexity of arithmetic operations over such large fields
+requires circuits to be (semi-) custom designed. This raises the
+potential for errors/bugs in the implementation, which can be
+maliciously exploited and can compromise the security of such
+systems. Formal verification of finite field arithmetic circuits
+has therefore become an imperative. 
+
+
+This dissertation targets the problem of {\it formal verification of 
+hardware implementations of combinational arithmetic circuits over
+finite fields of the type ${\mathbb{F}}_{2^k}$}. Two specific problems
+are addressed: i) verifying the correctness of a custom-designed
+arithmetic circuit implementation against a given word-level
+polynomial specification over ${\mathbb{F}_{2^k}}$; and ii) gate-level
+equivalence checking of two different arithmetic circuit implementations. 
+
+In practical applications, the very large size and complexity of
+finite field arithmetic circuits  makes design verification a very
+hard problem to solve. Contemporary automatic verification approaches,
+including those that rely on solver-based technology (such as SAT and
+SMT solvers), decision-diagram based methods (BDDs and BMDs), or those
+based on And-Invert-Graph based reductions (AIG/ABC), etc.,
+are infeasible in proving the correctness of large-scale custom designed
+arithmetic circuits. In general, these techniques lack the requisite
+power of abstraction and the mathematical wherewithal to efficiently
+model and verify modulo-arithmetic circuits. In such cases, efficient
+symbolic reasoning is required that can model and analyze the
+underlying arithmetic/polynomial nature of such implementations. 
+
+This dissertation proposes polynomial abstractions over finite fields
+to model and represent the circuit constraints. Subsequently, 
+decision procedures based on modern computer algebra techniques --
+notably, Gr\"obner bases related theory and technology -- are
+engineered to solve the verification problem efficiently. The
+arithmetic circuit is modeled as a polynomial system in the ring
+${\mathbb{F}}_{2^k}[x_1,x_2,\cdots,x_d]$, and computer-algebra and
+algebraic-geometry based results (Hilbert's Nullstellensatz) over
+finite fields are exploited for verification. Two formulations are
+presented to address the implementation verification and the
+equivalence checking problems.
+
+Gr\"obner basis theory is very powerful as it allows to decide many
+polynomial decision questions. However, the Gr\"obner basis
+computation (Buchberger's algorithm) is known to have
+double-exponential worst-case complexity in the input data. Therefore,
+straight-forward use of Gr\"obner basis engines for verification is
+infeasible for large circuits. To overcome this complexity, {\it we
+  analyze the given circuit topology} to get more theoretical insights
+into the polynomial ideals corresponding to the circuit
+constraints. Based on this circuit information,  we derive efficient
+{\it term orderings} to represent the polynomials. Subsequently, using
+the theory of Gr\"obner bases over finite fields, we prove that our
+term orderings render the set of polynomials itself a Gr\"obner basis
+-- thus obviating the need for Buchberger's algorithm. We also analyze
+the optimality of our term orderings and identify a minimum number of
+computations required for verification via Gr\"obner basis reduction.
+
+%Our techniques are fully automated and integrated with the symbolic
+%computer algebra tool {\sc Singular}. As {\sc Singular} is a
+%general-purpose computer algebra tool, its data-structures are not
+%fine-tuned for circuit verification problems. To further improve our
+%approach, we develop our own polynomial manipulation engines based on a
+%{\it dense} representation for circuit polynomials and an $F_4$-style
+%Gr\"obner Basis reduction. Tight integration of circuit analysis,
+%finite field and Gr\"obner basis theory, along with an efficient
+%implementation, scales verification significantly -- and these are the
+%main contributions of our work.
+
+Using our approach, experiments are performed on a variety of
+custom-designed finite field arithmetic benchmark circuits. The
+results are also compared against contemporary methods, based on SAT
+and SMT solvers, BDDs, and AIG-based methods. Our tools can verify the
+correctness of, and detect bugs in, upto $163$-bit circuits in
+$\mathbb{F}_{2^{163}}$; whereas contemporary approaches are
+infeasible beyond $48$-bit circuits. Experimental results are analyzed and
+the advantages and limitations of our approaches are
+discussed. Finally, future research directions are discussed based on
+the work presented in this dissertation.
+

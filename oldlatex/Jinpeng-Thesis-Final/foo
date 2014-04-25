@@ -1,0 +1,237 @@
+4,14c4,6
+< verification, with emphasis on those applied for equivalence of
+< datapath-dominated systems. Extensive work has been done in this context, with
+< respect to various data-structures and their manipulative algorithms,
+< bit-vector decision procedures, constraint satisfaction tools, simulation-based
+< approaches and symoblic algebra-based frameworks. We begin with a brief survey
+< of canonical graph-based structures and their applications to arithmetic
+< datapath verification.
+< 
+< % We briefly describe the theory
+< %and novelty of some of these methods before analyzing their application with
+< %regard to our problem model.
+---
+> verification, with emphasis on those used for equivalence of datapath-dominated
+> systems. We briefly describe the theory and novelty of some of these methods
+> before analyzing their application with regard to our problem model. 
+64c56
+< original functions need to be reconstructed in terms of the primary
+---
+> original functions need to be re-represented in terms of the primary
+73,90c65,83
+< Numerous approaches have attempted to extend the capabilities of Boolean
+< engines to target arithmetic units while also modeling their interaction with
+< Boolean logic. Majority of these are based on generic {\it Word Level Decision
+< Diagrams} (WLDDs); graph-based representations for functions with a Boolean
+< domain and an integer range. Examples of WLDDs are MTBDDs \cite{mtbdd}
+< \cite{add}, EVBDDs \cite{evbdd}, *BMDs \cite{bmd}, K*BMDs \cite{kbmd}, FDDs
+< \cite{fdd}, KFDDs \cite{drechsler:dac94}, HDDs \cite{hdd}, PHDDs \cite{phdd},
+< etc.  A thorough review of WLDDs can be found in \cite{WLS}.
+< 
+< Multi-Terminal BDDs (MTBDDs) \cite{mtbdd}, also known as Algebraic Decision
+< Diagrams (ADDs) \cite{add}, and Edge-Valued Decision Diagrams (EVBDDs)
+< \cite{evbdd}, provide a mechanism for denoting a function (say, $f$) from the
+< binary domain to the integer domain or ($f:B \rightarrow Z$). The decomposition
+< at each node/variable is still binary and leads to exactly two
+< terms. Restricting the decomposition to a binary type disallows the abstraction
+< of integer variables, as they have to be decomposed into their bit-level
+< components. Consequently, the increase in size in the worst case can be
+< exponential in the number of input bits.
+---
+> Numerous approaches have attempted to extend the capabilities of
+> verification engines to target arithmetic units while also modeling
+> their interaction with Boolean logic. Majority of these are based on
+> generic {\it Word Level Decision Diagrams} (WLDDs); graph-based
+> representations for functions with a Boolean domain and an integer
+> range. Examples of WLDDs are MTBDDs \cite{mtbdd} \cite{add}, EVBDDs
+> \cite{evbdd}, *BMDs \cite{bmd}, K*BMDs \cite{kbmd}, FDDs \cite{fdd},
+> KFDDs \cite{drechsler:dac94}, HDDs \cite{hdd}, PHDDs \cite{phdd}, etc.
+> A thorough review of WLDDs can be found in \cite{WLS}.
+> 
+> Multi-Terminal BDDs (MTBDDs) \cite{mtbdd}, also known as Algebraic
+> Decision Diagrams (ADDs) \cite{add}, and Edge-Valued Decision Diagrams
+> (EVBDDs) \cite{evbdd}, provide a mechanism for expressing a map from
+> the binary domain to the integer domain. The decomposition at each
+> node/variable is still binary and leads to exactly two
+> terms. Restricting the decomposition to a binary type disallows the
+> abstraction of integer variables, as they have to be decomposed into
+> their bit-level components. Consequently, the increase in size in the
+> worst case can be exponential in the number of input bits.
+109,110c102,103
+< BDDs. As a result, they are canonical and efficient for several applications
+< but also inherit the memory limitations of BDDs.
+---
+> BDDs. As a result, they are canonical and efficient several applications but
+> also inherit the memory limitations of BDDs.
+208,210c201,203
+< implement the same functionality with different logic operations will result in
+< the same diagram only if the expansion with respect to every variable is known
+< beforehand, making it cumbersome to use in practice. 
+---
+> implement the same functionality with different logic operations may
+> be expanded differently using the algorithm, resulting in
+> incorrectly failed matches.
+300,318c293,305
+<   employed for testing the validity of the formula. While these
+<   techniques have been successful in the verification of control-logic
+<   (particularly that of pipelined microprocessors), they have found
+<   limited application in the verification of designs with large
+<   data-path components. Another limitation is that algebraic
+<   computations are abstracted as uninterpreted function
+<   symbols. Consequently, description of the functionality of the
+<   component in question (say, an adder or a multiplier) is lost in the
+<   abstraction. Satisfiability modulo theories (SMT) have recently
+<   gained attention as a generalization of a Boolean SAT instance in
+<   which various sets of variables are replaced by predicates from a
+<   variety of underlying theories. Obviously, SMT formulas provide a
+<   much richer modeling language than is possible with Boolean SAT
+<   formulas, even allowing word-level representations of datapath
+<   operations. Solvers based on these theories \cite{yices}
+<   \cite{mathsat} have improved abilities to represent arithmetic
+<   computations, but ultimately rely on SAT tools to solve the
+<   verification instance, making them prone to the similar limitations.
+< 
+---
+>   employed for testing the validity of the formula. In fact, several
+>   solvers \cite{yices} \cite{mathsat} have been recently developed to
+>   model and solve such logic formulas as Boolean SAT instances. The
+>   are collectively called SMT (Satisfiability Modulo Theory) solvers
+>   and have been shown to have a better abilities to model problem
+>   instances. While these techniques have been successful in the
+>   verification of control-logic (particularly that of pipelined
+>   microprocessors), they have found limited application in the
+>   verification of designs with large data-path components. Another
+>   limitation is that algebraic computations are abstracted as
+>   uninterpreted function symbols. Consequently, description of the
+>   functionality of the component in question (say, an adder or a
+>   multiplier) is lost in the abstraction.
+343,353c330,339
+< \cite{gp_book} have recently attracted interest due to their capacity to
+< express bit-vector operations as polynomials. A geometric program is a type of
+< mathematical optimization problem, characterized by objective and constraint
+< functions that have a special form. Solving these constraints for integer
+< arithmetic problems is difficult, since the associated heuristics have
+< exponential complexity. 
+< 
+< %involves an attempt to express verification instances
+< %in this predetermined format. This representation is sometimes an
+< %approximation of the original specification, due to the fact the the
+< %model is ultimately, a system of constraints. Additionally, the
+---
+> \cite{gp_book} have recently attracted interest due to their capacity
+> to express bit-vector operations as polynomials. A geometric program
+> is a type of mathematical optimization problem, characterized by
+> objective and constraint functions that have a special form. The
+> problem modeling involves an attempt to express verification instances
+> in this predetermined format. This representation is sometimes an
+> approximation of the original specification, due to the fact the the
+> model is ultimately, a system of constraints. Additionally, the
+> complexity of such heuristics when handling integer arithmetic
+> problems is exponential.
+356,404d341
+< 
+< \section {Simulation Vector Generation}
+< 
+< Generation of simulation vectors has remained the mainstream approach
+< for ensuring functional correctness of designs. It is generally
+< accepted that logic simulation has a major flaw- the number of tests
+< required to guarantee correctness grows exponentially with input
+< size. Therefore, only a small subset of vectors is simulated for large
+< designs, resulting in incomplete coverage. Several attempts have been
+< made to reduce the required number of test vectors while maintaining
+< completeness. This section reviews some of those techniques. 
+< 
+< Bryant, in \cite{bryant:91sim} \cite{bryant:91mem}, used multivalued
+< logic simulation to reduce the computational effort for circuit
+< verification. The methodology involves using the value $X$ (in
+< addition to $0$ and $1$) to represent a $'$don't-care$'$ input, and
+< augmenting the verifier with a symbolic Boolean
+< manipulator. Structural analysis of the circuit specification is
+< performed in \cite{brand:iccad92} to enumerate properties and thereby,
+< obtain a reduced test set for exhaustive simulation. It is possible,
+< however, that the resulting number of vectors may still be too large.
+< 
+< Symbolic simulation is another approach designed to ensure functional
+< correctness without exhaustive simulation. The input patterns are
+< allowed to contain Boolean variables, in addition to the constants
+< ($0$, $1$ and $X$). Efficient symbolic manipulation techniques for
+< Boolean functions allow multiple input patterns to be simulated in one
+< step, potentially leading to much better results than conventional
+< simulation. Efforts of this type have been described in
+< \cite{brand_dac79} \cite {zhuang_dac86}. A hybrid approach combining
+< both symbolic and numeric simulation was used in
+< \cite{srinivas_ieee88}, which uses numeric values of variables to
+< reduce complexity. Analysis of input constraints using BDDs was used
+< in \cite{yuan:iccad99} to form a simulation environment to effectively
+< verify corner cases. Like all BDD-based techniques, there is a
+< possibility of memory explosion for some applications.
+< 
+< An algebraic approach to reducing the test vector
+< set was proposed in \cite{polynomial_sanchez99}, and later extended in
+< \cite{sanchez:hldvt05}. These works are based on abstracting the
+< system as a polynomial model, where all signal values are assumed to
+< be integral. The fundamental theorem of algebra, which enumerates
+< properties of the polynomial, is then used to limit the number of
+< simulation vectors necessary for verification. Such methods do not
+< take into account the bit-vector information, resulting in incorrect
+< modeling in some cases. 
+< 
+< %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+< 
+541a479,523
+> \section {Simulation Vector Generation}
+> 
+> Generation of simulation vectors has remained the mainstream approach
+> for ensuring functional correctness of designs. It is generally
+> accepted that logic simulation has a major flaw- the number of tests
+> required to guarantee correctness grows exponentially with input
+> size. Therefore, only a small subset of vectors is simulated for large
+> designs, resulting in incomplete coverage. Several attempts have been
+> made to reduce the required number of test vectors while maintaining
+> completeness. This section reviews some of those techniques. 
+> 
+> Bryant, in \cite{bryant:91sim} \cite{bryant:91mem}, used multivalued
+> logic simulation to reduce the computational effort for circuit
+> verification. The methodology involves using the value $X$ (in
+> addition to $0$ and $1$) to represent a $'$don't-care$'$ input, and
+> augmenting the verifier with a symbolic Boolean
+> manipulator. Structural analysis of the circuit specification is
+> performed in \cite{brand:iccad92} to enumerate properties and thereby,
+> obtain a reduced test set for exhaustive simulation. It is possible,
+> however, that the resulting number of vectors may still be too large.
+> 
+> Symbolic simulation is another approach designed to ensure functional
+> correctness without exhaustive simulation. The input patterns are
+> allowed to contain Boolean variables, in addition to the constants
+> ($0$, $1$ and $X$). Efficient symbolic manipulation techniques for
+> Boolean functions allow multiple input patterns to be simulated in one
+> step, potentially leading to much better results than conventional
+> simulation. Efforts of this type have been described in
+> \cite{brand_dac79} \cite {zhuang_dac86}. A hybrid approach combining
+> both symbolic and numeric simulation was used in
+> \cite{srinivas_ieee88}, which uses numeric values of variables to
+> reduce complexity. Analysis of input constraints using BDDs was used
+> in \cite{yuan:iccad99} to form a simulation environment to effectively
+> verify corner cases. Like all BDD-based techniques, there is a
+> possibility of memory explosion for some applications.
+> 
+> An algebraic approach to reducing the test vector
+> set was proposed in \cite{polynomial_sanchez99}, and later extended in
+> \cite{sanchez:hldvt05}. These works are based on abstracting the
+> system as a polynomial model, where all signal values are assumed to
+> be integral. The fundamental theorem of algebra, which enumerates
+> properties of the polynomial, is then used to limit the number of
+> simulation vectors necessary for verification. Such methods do not
+> take into account the bit-vector information, resulting in incorrect
+> modeling in some cases. 
+545c527
+< \subsection{Computer Algebra Systems}
+---
+> \section{Symbolic Algebra and Number Theory}
+581d562
+< \subsection{Finite Ring Theory}
+709c690
+< %applications. First, some preliminary concepts.
+---
+> %applications. First, some preliminary concepts.
+\ No newline at end of file

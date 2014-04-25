@@ -1,0 +1,135 @@
+\appendix{Canonical Forms for Polynomials over $Z_{2^{n_1}}\times Z_{2^{n_2}} \times \cdots \times
+Z_{2^{n_d}} \rightarrow Z_{2^{m}}$}\label{ch:appendix}
+
+The concept of reducibility can be also be extended to polynomials over
+$Z_{2^{n_1}}\times Z_{2^{n_2}} \times \cdots \times Z_{2^{n_d}}$ to
+$Z_{2^{m}}$, resulting in a minimal, canonical form. We mainly use the concepts
+presented in Sec. \ref{sec:ideal_multi} to present the following result.
+
+\begin{Theorem}\label{th:can_multi}
+Let $f$ be a polyfunction from $Z_{2^{n_1}}\times Z_{2^{n_2}} \times
+\cdots \times Z_{2^{n_d}}$ to $Z_{2^{m}}$. Then, $f$ can be uniquely
+represented by the polynomial
+\begin{equation} \label{eq:can_multi}
+F(\textbf{x}) = \sum_{\textbf{k}}c_\textbf{k}{Y}_\textbf{k}(\textbf{x})
+\end{equation}
+where 
+\begin{itemize}
+\item $c_{\bf k}$ is an arbitrary integer in $Z$ such that $0 \leq c_{\bf k} < {{2^m} \over
+  {(2^m,\prod_{i=1}^{d} k_i!)}}$ 
+\item $\textbf{Y}_\textbf{k}$ is as defined in Def. \ref{def:multi_ff} and
+\item $\textbf{k} = \langle k_1, \ldots, k_d \rangle$ for each $k_i = 0, 1, \ldots,
+      \mu_i-1$ and $\mu_i$ is defined according to Eqn.(\ref{eq:mu}).
+\end{itemize}
+\end{Theorem}
+
+{\bf Proof:} The proof closely follows from Theorem
+\ref{th:multi}. The key concepts which are relevant to this
+result are reviewed below.
+
+Given any polynomial $F({\bf x})$ corresponding to the polyfunction
+$f:Z_{2^{n_1}} \times Z_{2^{n_2}} \times \ldots Z_{2^{n_d}}
+\rightarrow Z_{2^m}$, we can represent it as
+
+\begin{equation}\label{eq:proof1_1}
+F({\bf x}) = \sum _{i=1}^d Q_i Y_{\mu_i}(x_i) + \sum_{\textbf{k}}c_\textbf{k}\textbf{Y}_\textbf{k} 
+\end{equation}
+where, $Y_{\mu_i}(x_i)$ is the falling factorial of degree $\mu_i$ in
+  variable $x_i$.
+
+From Lemma \ref{lem:multi_rule2}, $\sum _{i=1}^d Q_i({\bf x}) Y_{{\bf
+    \mu}(\textbf{i})}({\bf x}) \equiv 0 ~\% ~2^m$. This results in
+    reducing the F({\bf x}) to:
+\begin{eqnarray}
+F({\bf x}) &=& 0 + \sum_{\textbf{k}}c_\textbf{k}\textbf{Y}_\textbf{k} \nonumber \\
+           &=& \sum_{\textbf{k}}c_\textbf{k}\textbf{Y}_\textbf{k} 
+\end{eqnarray}
+where the degree $k_i$ of each $x_i$ is $< \mu_i$. We now analyze $F$
+using Lemma \ref{lem:multi_rule3}. Let, $b_{\bf k} = {{2^m} \over
+{(2^m,\prod_{i=1}^{d}k_i!)}}$, for all $k_i = 0, \ldots,
+\mu_i-1$. We have three possible situations:
+\begin{itemize}
+\item $b_{\bf k}|c_{\bf k}$ - This indicates that $F \equiv 0 ~\% ~2^m$.
+\item $b_{\bf k}$ does not divide $c_{\bf k}$ and $c_{\bf k} > b_{\bf
+  k}$, then $c_\textbf{k} \textbf{Y}_\textbf{k}(\textbf{x})$ can be
+  reduced by subtracting a suitable vanishing polynomial. 
+\item $b_{\bf k}$ does not divide $c_{\bf k}$ and $c_{\bf k} < b_{\bf
+  k}$, then $c_{\bf k}{\bf Y}_{\bf k}({\bf x})$ is already in reduced form.
+\end{itemize}
+{\hfill$\Box$}
+
+
+\subsection{Algorithm}
+We now describe an algorithm which can reduce any given polynomial
+over $Z_{2^{n_1}}\times Z_{2^{n_2}} \times \cdots \times Z_{2^{n_d}}$
+to $Z_{2^{m}}$ to its unique form. The algorithm takes as input $F$,
+in variables $\langle x_1, x_2, \ldots, x_d \rangle$ and the
+corresponding bit-widths $n_1, \ldots, n_d$.  The algorithm is given
+in Fig. \ref{algo:can_redmulti} and the procedure is outlined below.
+
+\begin{enumerate}
+\item  Impose a term ordering on the  monomials of $F$ in
+ degree lexicographic order.  
+\item Compute $\lambda = SF(2^m)$ using the procedure from
+Fig. \ref{algo:sf} and use this to obtain the $\mu_i$
+values.
+\item For each monomial, $mon$, in $F$,
+\begin{itemize}
+\item Note the value of its coefficient, $c_{\bf k}$ and the degrees
+  ${\bf k} = \langle k_1,k_2,...,k_d \rangle$ of all the variables.
+\item Coefficient reduction: Compute the value of $b_{\bf k}$. If $c_{\bf k} \geq
+b_\textbf{k}$, then it can be reduced. Subtract the corresponding
+vanishing polynomial from $mon$.
+\item Degree Reduction: If $k_i \geq \mu_i$ for any $i = 1, \ldots, d$,
+subtract he appropriate vanishing polynomial from $mon$.
+\item Update $F$ with the reduced monomial.
+\item Iteratively apply the above procedure to all monomial terms.
+\end{itemize}
+\end{enumerate}
+
+\begin{figure}[ht]
+  \begin{algorithm}
+    \small{\bf{Multivar\_Reduce}}(\emph{F}, $d$, ${\bf x}$, $m$, ${\bf n}$)
+    \  $\lambda$ = SF($2^m$)
+    \ {\bf{for}} $i$ = $1$ to $d$ {\bf{do}}
+    \ \ $\mu_i$ = $min\{2^{n_i}, \lambda\}$
+    \ {\bf{for each}} $mon$ in \emph{F} {\bf{do}}  
+    \ \ $c_{\bf k}$ = coefficient ($mon$)
+    \ \ $k_i$ = Degree of $x_i$ in \emph{mon}
+    \ \ $b_{\bf k} = {{2^m}\over{(2^m,\prod_{i=1}^d{k_i!}})}$ 
+    \ \ {\bf{if}} ($c_{\bf k} \geq b_{\bf k}$) 
+    \ \ \ $mon = mon - \lfloor{c_{\bf k}/b_{\bf k}}\rfloor \cdot a_{\bf k}\cdot {\bf Y}_{\bf k}({\bf x})$ 
+    \ \ {\bf{else if}} ($k_i \geq \mu_i$ for any $i$)
+    \ \ \ $mon = mon -{\bf Y}_{\bf k}({\bf x}$ 
+    \ \ Update \emph{F}
+    \ return \emph{F}
+  \end{algorithm}
+  \caption{\label{algo:can_redmulti} Algorithm Multivar\_Reduce: Reduce
+  a given multi-variate polynomial $F$ to its canonical form.}
+\end{figure}
+
+\begin{Example}
+Consider $F = 8x^2y$ over $Z_{2^3} \times Z_{2^4} \rightarrow
+Z_{2^4}$. The algorithm reduces $F$ according to:
+\begin{itemize}
+\item $\lambda = SF(2^4) = 6$  and 
+\begin{eqnarray}
+\mu_1 &=& min\{6, 2^3\} = 6 \nonumber \\
+\mu_2 &=& min\{6, 2^4\} = 6 \nonumber
+\end{eqnarray}
+\item Now, $mon = F = 8x^2y$.
+\item The degrees $\langle k_1, k_2 \rangle$ are $\langle 2, 1
+  \rangle$ and the coefficient $c_{\langle  2, 1 \rangle}$ is $8$.
+\item $b_{\langle  2, 1 \rangle} = {{2^4}\over{(2^4,2!\cdot
+    1!)}}$. Since $b_{\bf k} = c_{\bf k}$, the coefficient can be
+    reduced according to:
+\begin{eqnarray}
+mon &=& 8x^2y - \lfloor{c_{\langle  2, 1 \rangle}/b_{\langle  2, 1 \rangle}}\rfloor \cdot b_{\langle  2, 1
+    \rangle}\cdot Y_{\langle  2, 1 \rangle}(x, y)  ~\% ~2^4 \nonumber \\
+    &=& 8x^2y - 8x(x-1)y  ~\% ~2^4 \nonumber \\
+    &=& 8xy ~\% ~2^4
+\end{eqnarray}
+\item The canonical form of $F$ over $Z_{2^3} \times Z_{2^4}
+  \rightarrow Z_{2^4}$ is $8xy$.
+\end{itemize}
+\end{Example}

@@ -1,0 +1,72 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: thesis.aux
+A level-1 auxiliary file: ch2.aux
+A level-1 auxiliary file: ch3.aux
+A level-1 auxiliary file: ch4.aux
+A level-1 auxiliary file: ch5pk.aux
+A level-1 auxiliary file: ch6.aux
+A level-1 auxiliary file: ch7.aux
+A level-1 auxiliary file: ch8.aux
+The style file: ieee.bst
+Database file #1: logic.bib
+I was expecting a `,' or a `}'---line 1257 of file logic.bib
+ : 
+ : @inproceedings{GaoP01,
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
+Warning--empty institution in yices
+`volume' is a missing field, not a string, for entry shekhar:tcad07
+while executing---line 987 of file ieee.bst
+`volume' is a missing field, not a string, for entry Mukho
+while executing---line 987 of file ieee.bst
+Warning--empty journal in DGPS
+`volume' is a missing field, not a string, for entry DGPS
+while executing---line 987 of file ieee.bst
+Warning--empty journal in precosat
+`volume' is a missing field, not a string, for entry precosat
+while executing---line 987 of file ieee.bst
+Warning--empty booktitle in Lopez98
+`volume' is a missing field, not a string, for entry PengLi:GPU
+while executing---line 987 of file ieee.bst
+You've used 90 entries,
+            1802 wiz_defined-function locations,
+            908 strings with 16558 characters,
+and the built_in function-call counts, 22577 in all, are:
+= -- 2056
+> -- 822
+< -- 39
++ -- 314
+- -- 224
+* -- 1569
+:= -- 3235
+add.period$ -- 102
+call.type$ -- 90
+change.case$ -- 79
+chr.to.int$ -- 0
+cite$ -- 94
+duplicate$ -- 1178
+empty$ -- 2327
+format.name$ -- 224
+if$ -- 5325
+int.to.chr$ -- 0
+int.to.str$ -- 90
+missing$ -- 86
+newline$ -- 449
+num.names$ -- 87
+pop$ -- 413
+preamble$ -- 1
+purify$ -- 0
+quote$ -- 0
+skip$ -- 651
+stack$ -- 0
+substring$ -- 1390
+swap$ -- 423
+text.length$ -- 39
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 0
+warning$ -- 4
+while$ -- 207
+width$ -- 92
+write$ -- 967
+(There were 6 error messages)

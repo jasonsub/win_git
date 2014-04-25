@@ -1,0 +1,319 @@
+%In Algorithm \ref{algo:}, the number of multi-variate divisions is
+%bound by \textit{O{\textbf{$\mu$}}} = \textit{O($\prod_d\mu_i$)},
+%where $\mu_i$ is as defined previously and $d$ is the total number of
+%variables.
+
+\section{Experimental Setup and Results} \label{sec:expt}
+
+We have implemented the proposed algorithms in Perl with calls to
+\textsc{Maple} 7 \cite{Maple} for all the algebraic
+manipulations. Using our algorithms, we have been able to perform
+verification runs over a number of designs collected from a variety of
+benchmark suites. The results are presented in Table \ref{tab:res}.
+
+\begin{table*}[htb]
+\begin{center}
+\begin{footnotesize}
+\caption{Comparison of time taken by various approaches}
+\label{tab:res}
+\begin{tabular}{||l|c||c|c|c|c||} \hline
+{\bf Benchmark}       &{\bf Specs}                       &{\bf Our approach}&{\bf BDDs-VIS}      &{\bf BMD}    &{\bf SAT-ZChaff}  \\\hline
+                      &{\bf Var/Deg/$<n_1, \ldots, n_d>$/$m$}&{\bf Time (s)}&{\bf Nodes/Time(s)} &{\bf Nodes/Time(s)} &{\bf Vars/Clauses/Time(s)}  \\ \hline \hline
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\it Univariate}        &  & & & & \\ \hline
+Anti-alias function     & 1/6/$<16>$/16  & 1.1   & 1.2M/34.21  & 9K/96.48     & 47K/142K/$>$1000 \\ \hline
+%Horner Polynomial 1     & 1/4 /$<16>$/16 & 0.59  & 2355/85    & 13K/36K/$>$1000 & $>$1000         \\ \hline
+Poly$\_$unopt           & 1/4/$<16>$/16  & 0.59  & 0.5M/9.1   & 1.8K/14      & 10K/28K/$>$1000 \\ \hline 
+%Degree-4 filter 1       & 1/4/$<16>$/16  & 0.8   & 30M/  & 3.7K/24.3 & 25K/76K/$>$1000  \\ \hline
+$cos ~x$                & 1/6/$<32>$/32  & 0.59  & NA/$>$1000 & NA/$>$1000   & 60K/173K/$>$1000  \\ \hline
+$cot^{-1}x$             & 1/9/$<32>$/32  & 0.83  & NA/$>$1000 & NA/$>$1000   & 140K/406K/$>$1000  \\ \hline
+$erf ~x$                & 1/7/$<32>$/32  & 0.81  & NA/$>$1000 & NA/$>$1000   & 88K/255K/$>$1000 \\ \hline
+$ln({{1+x}\over{1-x}})$ & 1/7/$<32>$/32  & 0.55  & NA/$>$1000 & NA/$>$1000   & 86K/247K/$>$1000 \\ \hline
+Vanishing polynomial    & 1/10/$<8>$/8   & 2.18  & NA/$>$1000 & NA/$>$1000   & -NA- \\ \hline \hline
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\it Multivariate}    &  & & & & \\ \hline
+IRR                   & 2/4/$<12,8>$/16          & 2.13  & NA/$>$1000 & 1.5K/13.9   & 10K/30K/$>$1000 \\ \hline
+PSK                   & 2/4/$<11,14>$/16         & 1.07  & NA/$>$1000 & 14.4K/126.3 & 61K/183K/$>$1000   \\ \hline
+Cubic filter          & 3/3/$<24,28,31>$/32      & 1.14  & NA/$>$1000 & NA/$>$1000 & 120K/366K/$>$1000  \\ \hline
+Degree-4 filter      & 3/4/$<15,11,13>$/16      & 1.89  & NA/$>$1000 & NA/$>$1000 & 69K/205K/$>$1000   \\ \hline
+Savitzky-Golay filter & 5/3/$<16,16,14,12,8>$/16 & 1.17  & NA/$>$1000 & NA/$>$1000 & 64K/190K/$>$1000   \\ \hline
+$4^{th}$ Order IIR    & 2/4/$<24,29>$/32         & 1.39  & NA/$>$1000 & NA/$>$1000 & 214K/647K/$>$1000 \\ \hline 
+MIBENCH               & 2/9/$<16,12>$/16         & 4.85  & 26M/16.7  & NA/$>$1000 & 24K/69K/$>$1000    \\ \hline
+Horner Polynomial 1   & 3/4/$<14,14,16>$/16      & 1.18  & NA/$>$1000 & 3.3K/35.2  & 12K/37K/$>$1000    \\ \hline
+Horner Polynomial 2  & 2/4/$<13,13>$/16          & 0.62  & NA/$>$1000 & 5.4K/34.4  & 23K/70K/$>$1000    \\ \hline
+Vanishing polynomial  & 2/10/$<12,12>$/16        & 4.2   & NA/$>$1000 & NA/$>$1000 & 10K/29K/$>$1000    \\ \hline
+\end{tabular}
+\end{footnotesize}
+\end{center}
+\end{table*}
+
+The first set of examples are datapaths with a single input bit-vector
+variable, which are modeled as univariate polynomials. The
+anti-aliasing function is from \cite{demicheli:tcad_03} and was also
+described in Sec. \ref{sec:intro}. The second example is a polynomial
+expression from \cite{ienne}. The other univariate examples are
+implementations of elementary function computations. The first
+benchmark in the set of multivariate datapath instances represents an
+image rejection computation ({\sc irr}), as described in
+Sec. \ref{sec:intro}. The phase-shift keying ({\sc psk}) function is
+from \cite{demicheli:tcad_03} and is used in digital
+communication. The polynomial filters are Volterra models of
+polynomial signal processing applications taken from
+\cite{mathews:book}. {\sc mibench} is a $9^{th}$-degree polynomial
+from a set of automotive applications in \cite{mibench}. Horner
+polynomials are from \cite{ienne}.  Polynomial computations commonly
+used in DSP are often implemented in Horner's form using
+multiply-add-accumulate ({\sc mac}) units. In
+\cite{demicheli:tcad_03}, it was shown how computations by these
+\textsc{mac} units can be extracted as polynomials in Horner's 
+form. The vanishing polynomial examples, for both the univariate and
+multivariate cases, were specifically created to validate our
+algorithms.
+
+Some of these designs are available as RTL code. The others were
+available as high-level specifications in {\sc matlab} or {\sc c}
+code. RTL code for these reference designs was automatically generated
+using the {\sc matlab} Simulink and Filter Design toolboxes
+(particularly for the digital filter designs). 
+%
+%Our experimental setup is as follows: We have applied our technique to
+%high-level descriptions of systems, such as those in {\sc matlab}
+%\cite{matlab} and {\sc C}. These reference designs were parsed to
+%extract their polynomial representations; the corresponding datapath
+%sizes for both inputs and outputs ($n_1,\ldots, n_d$ and $m$) were
+%also recorded. Subsequently, their equivalent RTL descriptions were
+%obtained using the conversion tools available with
+%\cite{matlab}. 
+%
+Once the reference RTL descriptions were obtained, they were further
+optimized using techniques from \cite{demicheli:tcad_03} and
+\cite{sivaram:iwls06}. In \cite{demicheli:tcad_03}, application of
+high-level restructuring and symbolic algebra-based
+transformations was presented for high-level synthesis. These include
+factorization and expansion, tree-height reduction, etc. The recent
+work of \cite{sivaram:iwls06} has derived a sequence of polynomial
+algebra based transformations to reduce the area-cost of the
+implementation. This is achieved by modulating and segmenting the
+coefficients and subsequently removing algebraic redundancy (vanishing
+polynomials). In essense, the technique of \cite{sivaram:iwls06}
+attempts to search for a sparser implementation of a given polynomial
+that occupies lesser area. These transformations were applied to
+the original RTL description to obtain functionally equivalent
+implementations. The optimized RTL was then verified for equivalence 
+against the original one. 
+
+For the purpose of equivalence testing, both RTL descriptions were
+given to the high-level synthesis tool \textsc{Gaut} \cite{gaut} and
+their corresponding data-flow graphs (DFGs) were extracted. Traversing
+the DFGs from the inputs to the outputs, the polynomial
+representations were constructed and the datapath sizes were
+noted. The algorithms were invoked to find the difference between the
+two polynomials (both univariate and multivariate) and subsequently
+verified that it computes zero, to prove equivalency. We were able to
+solve all problems in $<5$ seconds. 
+
+Let us explain our approach using the polynomial benchmark {\it
+Poly$\_$unopt}. Fig. \ref{fig:poly1} depicts the dataflow graph for
+the original expression. We have used the optimization procedure
+presented in \cite{sivaram:iwls06} to apply a series of algebraic
+reductions yielding an equivalent representation with the minimum
+estimated cost (in terms of area). The corresponding graph is depicted
+in Fig. \ref{fig:poly2}. It is now required to show that the reduced
+cost implementation is the same as the original representation. Hence,
+we extract the polynomials corresponding to both designs and use them
+as inputs to Algorithm \ref{algo:uni}. The procedure correctly
+identifies their difference as a vanishing (zero) polynomial. 
+
+\begin{figure}[htb]
+%\epsfxsize=3cm
+\epsfysize=3.5cm
+\centerline{\epsffile{figures/figures_iwls/orig_poly_unopt.eps}}
+\caption{Original expression of {\it Poly$\_$unopt}}
+%\vspace{-0.2in}
+\label{fig:poly1}
+\end{figure}
+\begin{figure}[htb]
+%\epsfxsize=3cm
+\epsfysize=3.5cm
+\centerline{\epsffile{figures/figures_iwls/red_poly_unopt.eps}}
+\caption{Reduced expression of {\it Poly$\_$unopt}}
+%\vspace{-0.2in}
+\label{fig:poly2}
+\end{figure}
+
+%\begin{figure}[htb]
+%\begin{minipage}{1.6in}
+%\epsfysize=3.5cm
+%\epsfxsize=6cm
+%\centerline{\epsffile{figures/figures_iwls/orig_poly_unopt.eps}}
+%\caption{Original expression of {\it Poly$\_$unopt}}
+%\label{fig:poly1}
+%\end{minipage}
+%\hfill
+%\begin{minipage}{1.6in}
+%\epsfysize=3.5cm
+%\epsfxsize=6cm
+%\centerline{\epsffile{figures/figures_iwls/red_poly_unopt.eps}}
+% \caption{Reduced expression of {\it Poly$\_$unopt}}
+% \label{fig:poly2}
+%\end{minipage}
+%\end{figure}
+
+We have also performed equivalence checking of the given RTL designs
+using BDDs, BMDs and SAT based approaches.  
+ 
+{\bf BDD and SAT:} Since gate-level descriptions are required by both
+BDDs and SAT, we synthesized our designs using a commercially
+available logic synthesis tool. BDDs were used to verify the resulting
+netlists using the VIS \cite{BHEL96} package. It was found that BDDs
+could solve the problem for some of the smaller benchmarks (especially
+for univariate polynomials) due to the simplification achieved by
+propagating the corresponding coefficients (constants). However, they
+failed for the rest of the designs. 
+
+From the gate-level netlists corresponding to the two designs, we
+generated miter circuits and converted them to CNF format. ZChaff
+\cite{chaff} was used to prove equivalence via unsatisfiability
+testing. For all the designs, ZChaff could not solve the problem
+within the time-limit of 1000s.
+
+{\bf *BMD:} *BMDs have been shown to be effective for multiplier
+verification, as they have linear  size complexity for
+multipliers. However, for higher degree ($k$) polynomials, their size
+increases $O(n^k)$, where $n$ is the bit-vector size. We experimented
+with *BMDs for verification of our applications, and found that *BMDs
+also do not perform satisfactorily. Note that in our applications, not
+only do we need to construct *BMDs for higher-degree terms, the
+word-lengths of the vectors are also different. These finite
+word-lengths can distort the *BMD structure, which is explained below.
+
+Consider the computation $F[3:0] = X[1:0] * Y[1:0]$. The *BMDs for $F$
+is shown in Fig. \ref{fig:bmd1} below. Now consider $F[1:0] = X[1:0] *
+Y[1:0]$, a fixed-size 2-bit multiplier. The corresponding *BMD
+structure is shown in Fig. \ref{fig:bmd2}. Note that the regular
+structure of *BMD is disrupted due to the fixed bit-vector sizes.
+
+%BMDs can be directly constructed from the high-level
+%descriptions, without generating the gate-level netlists. Moreover, in
+%our case, the input and output word-lengths are predetermined and
+%fixed for all designs. Hence, we constructed the BMDs for
+%original and optimized descriptions, accomodating such finite bit-vector
+%sizes. In other words, the BMDs were {\it reduced modulo $2^m$}, where
+%$m$ denotes the size of the output vector. Consider, for instance, the
+%polynomial $F = x*y$, where $x, y$ and $F$ are all $3$-bits
+%wide. The resulting computation for $F[2:0] = x[2:0]*y[2:0]$ is:
+%\begin{eqnarray}
+%F &=& ((x_0 + 2x_1 + 4x_2)(y_0 + 2 y_1 + 4y_2)) ~~\% ~2^3 \nonumber \\
+%  &=&  x_0(y_0 + 2y_1 + 4y_2) + 2x_1(y_0 + 2y_1) + 4x_2y_0 ~~\% ~2^3
+%\end{eqnarray}
+
+
+\begin{figure}[htb]
+\epsfxsize=4cm
+\epsfysize=6cm
+\centerline{\epsffile{figures/bmd-2-bit.eps}}
+\caption{*BMD for $F = x*y$; $x, y$ are 2-bit wide, $F$ is $4$-bits
+  wide.} 
+%\vspace{-0.2in}
+\label{fig:bmd1}
+\end{figure}
+
+\begin{figure}[htb]
+\epsfxsize=4cm
+\epsfysize=6cm
+\centerline{\epsffile{figures/bmd-2-bit-fixed.eps}}
+\caption{*BMD for $F = x*y$; $x, y, F$ are all $2$-bits wide.}
+%\vspace{-0.2in}
+\label{fig:bmd2}
+\end{figure}
+
+%Since BMD packages are not available in
+%public domain, the TED \cite{ted_date} package was suitably modified
+%to construct BMDs. Note that BMD decomposition is a special case of
+%TEDs; when all variables are Boolean, the TED reduces to a
+%BMD. 
+%Because of the presence of high-degree polynomial terms, the graph
+%could be constructed only for the smaller benchmarks. The other
+%benchmarks, especially those with high degrees and large word sizes,
+%could not be verified within the time-out limit. The table indicates
+%the total time taken to construct BMDs for both descriptions.
+
+For our experiments, we used the concepts presented in
+\cite{arditi:bmd} to construct *BMDs directly from the RTL for
+given word-lengths. In \cite{arditi:bmd}, operations for bit-vector
+manipulations were described that allow  to perform bit-field
+extraction directly from a given BMD. Using these concepts, *BMDs 
+were constructed directly from the DFGs obtained for the corresponding
+RTL. *BMD computation terminated only for upto degree-4 polynomials,
+and the rest of the designs could not be verified within the
+time-limit. 
+
+
+\subsection{Faulty designs}
+We also wanted to analyze the performance of our approach in the
+presence of bugs. To verify that our algorithm can detect
+non-equivalence of designs, we experimented with some designs 
+by arbitrarily changing one or more of the coefficients. Table
+\ref{tab:bug} presents the results for some of the benchmarks. The
+algorithm was indeed able to verify that the designs were not
+equivalent, and that too very quickly. This result is not surprising. 
+The algorithm may not always have to perform $SF(2^m)$ iterations - if
+the conditions on the coefficients (Theorem \ref{th:uni} and
+\ref{th:red1}) are not satisfied in any iteration
+({\it i.e.} a bug is found), the algorithm terminates. 
+
+
+
+\begin{table}[htb]
+\begin{center}
+\begin{small}
+\caption{Time taken to detect non-equivalence}
+\label{tab:bug}
+\begin{tabular}{||l|c||} \hline
+{\bf Benchmark}     & {\bf Time (s)} \\ \hline \hline
+Anti-alias function & 0.53           \\ \hline
+Degree-4 filter 1   & 0.57           \\ \hline
+PSK                 & 0.49           \\ \hline
+Cubic filter        & 0.58           \\ \hline
+4$^{th}$ Order IIR  & 0.55           \\ \hline
+\end{tabular}
+\end{small}
+\end{center}
+\end{table}
+
+
+\subsection{Limitations of our approach}
+Many DSP systems implement some form of computation approximation, by
+incorporating various rounding schemes. Our approach is restricted
+inasmuch it cannot verify datapaths where the intermediate signals
+have varying precision (due to {\it rounding}). In such situations,
+the varying word-length paradigm cannot be easily captured by
+formulating it as an ideal membership testing instance. 
+
+In addition to truncation and rounding, saturation arithmetic is also
+a common mode of arithmetic approximation in the DSP
+domain. Traditionally, it has been difficult to model such
+descriptions as polynomials due to the presence of comparison
+operations. However, when the word-lengths are fixed, it might be
+possible in some cases to abstract them as polyfunctions. For example,
+consider the computation: \\
+{\it if (x $> 2'b10$) then $y = x*x*x$ else $y = x*x$;}\\
+The 5-bit output $y$ can be represented as a polyfunction from $Z_2
+\rightarrow Z_{2^5}$ as $Y = (3x^3 + 8x^2 + 22x) \%2^5$.  Moreover, 
+arithmetic datapaths often contain right-shift operations which
+cannot be easily modeled in our framework. Analysis of such
+computations requires substantially more work, and is the subject of
+our future investigations. 
+
+%Sample verification run for IRR:
+%\begin{eqnarray}
+%Y_{out1} &=& 16384(Ain^4 + Bin^4) + 64767(Ain^2 - Bin^2) + Ain - Bin + 57344AinBin(Ain - Bin)\\
+%Y_{out2} &=& 24576*Ain^2*Bin + 15615*Ain^2 + 8192*Ain*Bin^2 + 32768*Ain*Bin + Ain + 17153*Bin^2 + 65535*Bin\\
+%\end{eqnarray}
+%$2^{n_1} = 2^{12}$, $2^{n_2} = 2^{8}$, $2^m = 2^{16}$\\
+%$SF{2^{16}} = 18$, $\mu_1 = 18$, $\mu_2 = 18$\\
+%$poly = 16384(Ain^4 + Bin^4) + 32768*Ain*Bin (Ain + 1) + 49152(Ain^2 + Bin^2)$\\
+%Dividing by $Y_{<4,0>}$,

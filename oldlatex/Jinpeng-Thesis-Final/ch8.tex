@@ -1,0 +1,145 @@
+\chapter{Conclusions and Future Work}\label{ch:concl}
+{\ls{1.65}{
+
+
+This dissertation presents approaches to performing equivalence checking for arithmetic circuits over finite fields 
+$\mathbb{F}_{2^k}$. In particular, we target two specific problems: i) verifying the correctness of a custom-designed
+arithmetic circuit implementation against a given word-level polynomial specification over ${\mathbb{F}_{2^k}}$; 
+and ii) gate-level equivalence checking of two structurally dissimilar arithmetic circuits. 
+We propose polynomial abstractions over finite fields to model and represent the circuit constraints. 
+Subsequently, decision procedures based on modern computer algebra techniques --
+notably Gr\"obner bases related theory and technology -- are
+engineered to solve the verification problem efficiently. 
+
+\section{Computer Algebra Based Approaches for Equivalence Checking of Arithmetic Circuit over ${\mathbb{F}_{2^k}}$}
+
+The arithmetic circuit is modeled as a polynomial system in the ring ${\mathbb{F}}_{2^k}[x_1,x_2,\cdots$, $x_d]$, and computer-algebra and
+algebraic-geometry based results (Hilbert's Nullstellensatz) over finite fields are exploited for verification. Two formulations are
+presented to address the implementation verification and the equivalence checking problems.
+
+Using the results of Strong Nullstellensatz over finite fields, 
+the first verification problem is formulated as an ideal membership testing. 
+For this ideal membership test, it is required to compute a Gr\"obner basis. 
+The Gr\"obner basis computation is known to have double-exponential worst-case complexity in the input data,
+which makes this approach impractical. 
+Therefore, straight-forward use of Gr\"obner basis engines for verification is
+infeasible for large circuits. To overcome this complexity, 
+we analyze the given circuit topology to get more theoretical insights
+into the polynomial ideals corresponding to the circuit constraints. 
+Based on this circuit information,  we derive efficient
+term orderings to represent the polynomials. Subsequently, using
+the theory of Gr\"obner bases over finite fields, we prove that our
+term orderings render the set of polynomials itself a Gr\"obner basis
+-- thus obviating the need for Buchberger's algorithm. 
+To fulfill our verification purpose, we simply conduct a polynomial reduction to test whether
+the equality property is a member of the ideal representing the circuit constraints.
+
+
+The equivalence checking for two structurally dissimilar arithmetic circuits is still a challenge for contemporary techniques.
+By utilizing computer algebra theory, we formulate this problem as a weak Nullstellensatz proof using Gr\"obner bases computation. 
+Once again, this would require the computation of a reduced Gr\"obner basis, which is expensive for large circuits. 
+To overcome this complexity, we want to exploit our circuit-based term ordering for polynomial representation. 
+Unfortunately, unlike in the previous case, the set of polynomials corresponding to this verification instance does 
+not constitute a Gr\"obner basis. Instead of computing a Gr\"obner basis for the the whole circuit, 
+we identify a minimal number of S-polynomial computations that are sufficient to prove equivalence or 
+to detect bugs for the whole circuit.
+
+The verification of composite field circuits is a successful application of our computer algebra based approaches.
+To construct a composite field circuit over $\mathbb{F}_{(2^m)^n}$, the finite field $\mathbb{F}_{2^k}$ is 
+decomposed as $\mathbb{F}_{(2^m)^n}$, for a $k = m\cdot n$, 
+and the arithmetic operations are then performed over $\mathbb{F}_{(2^m)^n}$. 
+The decomposition introduces a hierarchy (modularity) in the design by lifting the ground field from $\mathbb{F}_2$
+(bits) to $\mathbb{F}_{2^m}$ (words).
+We formulate the verification problem as an (radical) ideal membership test at different abstraction levels.
+By combining the circuit hierarchy information,  
+we first verify the correctness of lower-level building-blocks (adders and 	multipliers) over the ground field $\mathbb{F}_{2^m}$; 
+then verify the overall arithmetic at the higher-level over the extension field $\mathbb{F}_{(2^m)^n}$. 		
+
+\section{Future Work}
+The approaches and theories presented in this dissertation can be further extended to enhance 
+the efficiency of equivalence checking of arithmetic circuits. Some future research directions are proposed here.
+
+
+\subsection{Speeding up Verification using a Graphics Processing Unit}
+As shown in Figure \ref{fig:2bitadder}, the equivalence of ``CIRCUIT1" and ``CIRCUIT2" 
+is formulated as a single miter at word-level. However, since the circuits have multiple outputs ($k$),
+we can create $k$ miters for each output bit.
+In such cases, we will have to compute $Spoly(f_m,f_o) \stackrel{F,F_0}{\longrightarrow}_+ r$ 
+for each of the $k$ outputs, and check if $r = 1$ in each case. 
+These are going to be $n$ independent computations.
+In that regard, they will immensely benefit from parallelization. 
+
+It is desirable to implement this technique on a hardware accelerator -
+particularly on a NVIDIA Graphics Processing Unit (GPU). In the
+Electronic Design Automation (EDA) community, there has been a lot of
+interest in exploiting GPU computing to improve synthesis and
+verification algorithms. Significant speed-ups have
+been observed in GPU implementation of circuit simulation algorithms
+(see for example \cite{PengLi:GPU}). It is needed to further study how to
+efficiently implement our circuit verification problem using
+independent $S$-polynomial reductions on a general purpose GPU. 
+
+\subsection{Extraction of Circuit Abstraction}
+
+Suppose that we are given a circuit that implements a polynomial
+function over $\mathbb{F}_{2^{k}} \rightarrow \mathbb{F}_{2^{k}}$, 
+but we do not know what function does it implement. 
+Can we identify a polynomial representation of this
+function: $f(X, Y)$ where $X$ represents the input bit-vector and $Y$
+the output? This problem is one of hierarchy abstraction and is used
+in component matching and resource allocation in high-level synthesis. 
+
+To explain this idea, let us re-visit the example of
+Figure \ref{fig:2bitmul}, a 2-bit multiplier. It implements a polynomial
+function $Z = A * B; ~Z, A, B  \in {\mathbb{F}}_{2^2}$. Here $A= a_0 +
+a_1\alpha, B = b_0 + b_1 \alpha, Z = z_0 + z_1\alpha$. Let us
+represent a polynomial for each gate in the circuit. We will impose
+the following term order: {\bf lex term order} with ``circuit
+Variables'' $>$ ``Inputs, A, B'' $>$ ``Output Z''. That is, we use lex
+term order with $c_0 > c_1 >  c_2 >  c_3 >  r_0 > a_0 > 
+a_1 > b_0 > b_1 > z_0 > z_1 > A > B > Z$. If we use this order to compute a Gr\"obner basis of the circuit
+polynomials, then we obtain the following polynomials: 
+\begin{eqnarray}
+f_1: z_0+z_1\alpha +Z  \nonumber \\
+f_2: b_0+b_1\alpha +B  \nonumber \\
+f_3: a_0+a_1\alpha +A \nonumber \\
+f_4: c_3+r_0+z_1  \nonumber \\
+f_5: c_1+c_2+r_0  \nonumber \\
+f_6: c_0+c_3+z_0  \nonumber \\
+f_7:  A\cdot B+Z 		 \nonumber \\
+f_8: a_1\cdot b_1+a_1\cdot B+b_1\cdot A+z_1  \nonumber \\
+f_9: r_0+a_1\cdot b_1+z_1 		 \nonumber \\
+f_{10}: c_2+a_1\cdot b_0  \nonumber 
+\end{eqnarray}
+Notice that the polynomial $f_7: A*B + Z$ is indeed the polynomial representation of the
+function implemented by the circuit. And we were able to ``extract''
+the polynomial representation using Gr\"obner basis. 
+
+Polynomial interpolation techniques for this problem were studied
+in  \cite{demicheli:iccad_98} \cite{demicheli:dac_99}. Further research should be conducted to  
+investigate if we can use Gr\"obner basis techniques to efficiently
+interpolate a polynomial representation from a circuit.
+
+
+\subsection{Simulation Based Verification of Circuits}
+ 
+In our group's previous work \cite{shekhar:tvlsi} \cite{shekhar:fmcad06}, we
+show that given two polynomial functions $f, g$ over $\mathbb{Z}_{2^k}$,  exhaustive
+simulation is not always necessary to prove their equivalence. We
+identified an integer $\lambda$ such that functions (polynomials) $f,g$ 
+need to be evaluated only for $\lambda$ inputs vectors: $\{V_1,
+\dots, V_{\lambda}\}$. If $f = g$ for these $\lambda$ vectors, then $f= g$ 
+over the entire design space. If $f \neq g$, then we guarantee to
+catch the bug within these $\lambda$ vectors. In practice, $\lambda <<2^k$. 
+
+Unfortunately, this result did not find much practical application as
+it required that $f, g$ be polynomial functions. Not every function
+(circuit) $f: \mathbb{Z}_{2^k} \rightarrow \mathbb{Z}_{2^k}$ is a polynomial
+function. Instead of modeling a $k$-input/output circuit as a function
+from $f: \mathbb{Z}_{2^k} \rightarrow \mathbb{Z}_{2^k}$, 
+We conjecture the model can be viewed as a polynomial function over finite fields 
+$f: \mathbb{F}_{2^k} \rightarrow \mathbb{F}_{2^k}$. Though this way, 
+we can then prove equivalence of two polyfunctions $f, g: \mathbb{F}_{2^k} \rightarrow \mathbb{F}_{2^k}$
+without resorting to exhaustive simulation. 
+It is promising to solve the same problem as in \cite{shekhar:tvlsi} \cite{shekhar:fmcad06}, 
+but now over a different domain: $\mathbb{F}_{2^k}$. 

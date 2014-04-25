@@ -1,0 +1,180 @@
+With the increase in size and complexity of digital designs, it has
+become imperative to address critical validation and verification
+issues at early stages of the design cycle. This requires robust
+automated, verification tools that can address design at the
+high-level such as, descriptions in HDL, MATLAB, C and so on.  While
+there exist tools that can efficiently perform verification of control
+properties, tools for datapath verification have not yet achieved the
+desired degree of sophistication and automation. Some examples of such
+compute-intensive designs are typical of digital signal-processing for
+audio, video and multi-media applications.
+
+The word-lengths of input and output signals are predetermined and
+fixed according to the desired precision, while the datapath can
+perform a variety of arithmetic computations, primarily a series {\sc
+add} and {mult} but also including, {\sc shift}, {\sc compare} and so
+on. Polynomial representations are a natural model for
+capturing the functionality of such arithmetic-intensive designs. For
+correct modeling, however, it is important to account for the effect
+of bit-vector sizes of the operands on the resulting computation. For
+example, the largest (unsigned) integer value that a bit-vector of
+size $m$ can represent is $2^m -1$; implying that the corresponding
+integer values are reduced modulo $2^m$ ($\% 2^m$). This suggests that
+bit-vector arithmetic can be efficiently modeled as algebra over
+finite integer rings, where the corresponding input and output sizes
+($n_1, n_2, \ldots, n_d$ and $m$) dictate the cardinality of the
+ring. The problem of RTL verification is subsequently reduced to that
+of polynomial equivalence over the system of finite integer rings of
+residue classes $Z_{2^{n_1}} \times Z_{2^{n_2}} \times \cdots \times
+Z_{2^{n_d}}$ to $Z_{2^m}$.\\
+
+Contemporary symbolic algebra tools provide a variety of approaches to
+solve the polynomial equivalence problem. However, these are
+restricted to prime rings, Galois fields and other Euclidean and
+integral domains - collectively called unique factorization domains
+(UFDs). However, integer rings modulo a power of $2$ are non-UFDs as
+they have zero divisors and also lack inverses. This dissertation
+proposes an integrated framework for for equivalence verification
+based on commutative algebra and number theory concepts to prove
+polynomial equivalence. We then use techniques from number, ring and
+ideal theory to develop a systematic, complete algorithmic procedure
+to prove zero equivalence. Experimentally, we demonstrate how this
+approach can be applied within a practical CAD setting. Using our
+implementation, we verify a set of arithmetic datapaths at RTL where
+contemporary approaches prove to be infeasible.
+
+
+This paper addresses the problem of equivalence verification of RTL
+descriptions that implement arithmetic computations (such as {\sc add,
+mult}) over bit-vectors with finite widths. A bit-vector of size $m$
+represents integer values from $0$ to $2^m -1$; implying that the
+corresponding integer values are reduced modulo $2^m$ ($\% 2^m$). This
+suggests that bit-vector arithmetic can be efficiently modeled as
+algebra over finite integer rings, where the bit-vector size ($m$)
+dictates the cardinality of the ring ($Z_{2^m}$). This paper models the
+arithmetic datapath verification problem as equivalence testing of
+polynomial functions from $Z_{2^{n_1}} \times Z_{2^{n_2}} \times
+\cdots \times Z_{2^{n_d}} \rightarrow Z_{2^m}$. We formulate the
+equivalence problem $f \equiv g$ into that of proving whether $f-g
+\equiv 0 \% 2^m$. Fundamental concepts and results from {\it number,
+ring} and {\it ideal theory} are subsequently employed to develop
+systematic, complete algorithmic procedures to solve the problem. We
+demonstrate application of the proposed theoretical concepts to
+high-level (behavioral/RTL) verification of bit-vector arithmetic
+within practical CAD settings. Using our approach, we verify a set of
+arithmetic datapaths at RTL where contemporary verification approaches
+prove to be infeasible.
+
+This paper addresses simulation-based verification of high-level
+descriptions of arithmetic datapaths. Such designs are typically found
+in digital signal processing (DSP) applications; where the
+word-lengths of input and output signals are predetermined and fixed
+according to the desired precision. Initial descriptions of such
+systems are usually specified as Matlab/C code, which can be
+automatically translated into behavioral/RTL descriptions (HDL). This
+paper derives some important results that show that exhaustive
+simulation is not necessary to prove/disprove their equivalence.  We
+model the datapath computations as polynomials over finite integer
+rings of the form $Z_{2^m}$; where $m$ corresponds to the bit-vector
+length. Using some number-theoretic and algebraic properties of these
+rings, we derive an upper bound on the number of simulation vectors
+required to prove equivalence or to identify bugs. We also identify
+exactly those vectors that need to be simulated. Experiments are
+performed within practical CAD settings to demonstrate the validity
+and applicability of these results.
+
+This paper addresses the problem of equivalence verification of RTL
+descriptions that implement arithmetic computations (such as {\sc add,
+mult, shift}) over bit-vectors with finite widths. Examples of such
+systems abound in DSP for audio, video and multi-media applications,
+where the input and output sizes are dictated by the desired
+precision. 
+This paper addresses simulation-based verification of high-level 
+(algorithmic, behavioral or RTL) descriptions of arithmetic datapaths 
+that perform polynomial computations over finite word-length
+operands. Such designs are typically found in digital signal
+processing (DSP) for audio/video and multi-media applications; where
+the word-lengths of input and output signals (bit-vectors) are 
+predetermined and fixed according to the desired precision. Initial 
+descriptions of such systems are usually specified as Matlab/C
+code. These are then automatically translated into behavioral/RTL
+descriptions (HDL) for subsequent hardware synthesis. In order to
+verify that the initial Matlab/C model is {\it bit-true equivalent} to
+the translated RTL, how many simulation vectors need to be applied? 
+
+This paper derives some important results that show that {\it exhaustive
+simulation is not necessary} to prove/disprove their equivalence. To
+derive these results, we model the datapath computations as polynomial
+functions over finite integer rings of the form $Z_{2^m}$; where $m$
+corresponds to the bit-vector word-length. Subsequently, by exploring
+some number-theoretic and algebraic properties of these rings, 
+we derive an {\it upper bound on the number of simulation vectors}
+required to prove equivalence or to identify bugs. Moreover, these
+vectors cannot be arbitrarily generated.  We identify exactly those
+vectors that need to be simulated. Experiments are performed within 
+practical CAD settings to demonstrate the validity and applicability
+of these results. While our results cannot prove equivalence of an RTL
+description against its gate-level netlist, we show that their exists
+a large class of practical applications that can benefit from these
+results.  
+
+
+%\begin{abstract}
+%\noindent 
+The Boolean Satisfiability Problem (SAT) is a %fundamental
+decision-problem, finding wide application in Electronic
+Design Automation (EDA) and non-EDA areas.  Examples abound in optimization,
+testing, verification, and artificial intelligence, among many others.
+It belongs to a class of NP-complete
+problems, for which algorithmic solutions exhibit worst-case exponential time
+or space complexity.  
+%Despite this, advancements in SAT-solving 
+%have enabled SAT to find wide applicability, including: circuit verification
+%and testing, electronic design automation (EDA), theorem proving, and
+%artificial intelligence (AI).  
+As a result, advancements in SAT-solving, even small, can create lasting impacts.
+
+The constraints forming a SAT-instance  come in a variety of
+representations, the most popular being Conjunctive Normal Form (CNF).
+However, problem-representation, especially in CNF, 
+can affect how SAT-solving performs.
+Unnecessary information, in the form of redundant constraints, 
+can be present.  Furthermore, automated conversion can produce 
+``unoptimized'' instances for CNF---those with constraints and variables 
+that do not provide useful information.  As a result, time and resources 
+are wasted.
+
+A recent area 
+of research has therefore formed around formulae transformation and 
+simplification as a {\it preprocessing step} prior to SAT-solving.
+Nearly all SAT-instances can benefit from some level of preprocessing;
+however, the level of benefit varies greatly.  
+Contemporary SAT-preprocessors
+generally rely on resolution for simplifying the structure of a SAT-instance.
+While powerful, resolution has limitations, and in some cases no preprocessing
+can be performed.
+
+This thesis investigates a CNF-formulae transformation framework, which exploits
+the power of polynomial-ring algebra to transform CNF-constraints for faster
+SAT-solving.  CNF-formulae are represented as polynomials over Boolean rings, 
+enabling constraints to be reduced in a mathematical framework.  Contrary
+to the precepts of contemporary preprocessing techniques, this transformation
+approach adds new information to the SAT-instance.
+The strategy behind this approach is that, despite the larger problem size, 
+the SAT-instance contains more information about the problem itself, and is
+therefore easier to solve.
+
+A new engine employing \Grobner bases as the main computational
+framework is presented.  Heuristics for 
+constraint-selection and monomial-orderings are
+described and implemented, which improve the efficiency of the \Grobner basis
+engine and the overall transformation approach.  Experiments are performed on
+a variety of SAT-benchmarks, and the
+results are compared against non-preprocessed instances, as well as those
+preprocessed by contemporary techniques.  Based on  analysis of the
+experimental results, conclusions are drawn about the efficacy of 
+polynomial-ring algebra for CNF-transformation---highlighting upon the
+benefits and limitations of such an approach.   Furthermore, suggestions are
+made for how this technique may be improved beyond the work
+presented by this research.
+%\end{abstract}

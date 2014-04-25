@@ -1,0 +1,265 @@
+.model outputBDD
+.inputs a0 b0 a1 b1 a2 b2 a3 b3 a4 b4 a5 b5 a6 b6 a7 b7 a8 b8 a9 b9 a10 b10 a11 b11 a12 b12 a13 b13 a14 b14 a15 b15 a16 b16 a17 b17 a18 b18 a19 b19 a20 b20 a21 b21 a22 b22 a23 b23 a24 b24 a25 b25 a26 b26 a27 b27 a28 b28 a29 b29 a30 b30 a31 b31 a32 b32 
+.outputs R
+.names b0 a1 d0
+11 1
+.names a0 a6 c1
+01 1
+10 1
+.names b1 c1 d1
+11 1
+.names a6 a15 c2
+01 1
+10 1
+.names b2 c2 d2
+11 1
+.names a12 a23 c3
+01 1
+10 1
+.names b3 c3 d3
+11 1
+.names a21 a31 c4
+01 1
+10 1
+.names b4 c4 d4
+11 1
+.names a14 a32 c5
+01 1
+10 1
+.names b5 c5 d5
+11 1
+.names a1 a2 c6
+01 1
+10 1
+.names b6 c6 d6
+11 1
+.names a15 a23 c7
+01 1
+10 1
+.names b7 c7 d7
+11 1
+.names a19 a26 c8
+01 1
+10 1
+.names b8 c8 d8
+11 1
+.names a28 a30 c9
+01 1
+10 1
+.names b9 c9 d9
+11 1
+.names a13 a17 c10
+01 1
+10 1
+.names b10 c10 d10
+11 1
+.names a22 a25 c11
+01 1
+10 1
+.names b11 c11 d11
+11 1
+.names a3 a16 c12
+01 1
+10 1
+.names b12 c12 d12
+11 1
+.names a10 a31 c13
+01 1
+10 1
+.names b13 c13 d13
+11 1
+.names a5 a22 c14
+01 1
+10 1
+.names b14 c14 d14
+11 1
+.names a2 a7 c15
+01 1
+10 1
+.names b15 c15 d15
+11 1
+.names a12 a26 c16
+01 1
+10 1
+.names b16 c16 d16
+11 1
+.names a10 a29 c17
+01 1
+10 1
+.names b17 c17 d17
+11 1
+.names a20 a25 c18
+01 1
+10 1
+.names b18 c18 d18
+11 1
+.names a8 a24 c19
+01 1
+10 1
+.names b19 c19 d19
+11 1
+.names a18 a30 c20
+01 1
+10 1
+.names b20 c20 d20
+11 1
+.names a4 a24 c21
+01 1
+10 1
+.names b21 c21 d21
+11 1
+.names a11 a14 c22
+01 1
+10 1
+.names b22 c22 d22
+11 1
+.names a3 a7 c23
+01 1
+10 1
+.names b23 c23 d23
+11 1
+.names a19 a21 c24
+01 1
+10 1
+.names b24 c24 d24
+11 1
+.names a11 a18 c25
+01 1
+10 1
+.names b25 c25 d25
+11 1
+.names a8 a16 c26
+01 1
+10 1
+.names b26 c26 d26
+11 1
+.names a28 a29 c27
+01 1
+10 1
+.names b27 c27 d27
+11 1
+.names a9 a27 c28
+01 1
+10 1
+.names b28 c28 d28
+11 1
+.names a17 a27 c29
+01 1
+10 1
+.names b29 c29 d29
+11 1
+.names a9 a20 c30
+01 1
+10 1
+.names b30 c30 d30
+11 1
+.names a4 a13 c31
+01 1
+10 1
+.names b31 c31 d31
+11 1
+.names a5 a32 c32
+01 1
+10 1
+.names b32 c32 d32
+11 1
+.names d0 d1 tmp0
+01 1
+10 1
+.names tmp0 d2 tmp1
+01 1
+10 1
+.names tmp1 d3 tmp2
+01 1
+10 1
+.names tmp2 d4 tmp3
+01 1
+10 1
+.names tmp3 d5 tmp4
+01 1
+10 1
+.names tmp4 d6 tmp5
+01 1
+10 1
+.names tmp5 d7 tmp6
+01 1
+10 1
+.names tmp6 d8 tmp7
+01 1
+10 1
+.names tmp7 d9 tmp8
+01 1
+10 1
+.names tmp8 d10 tmp9
+01 1
+10 1
+.names tmp9 d11 tmp10
+01 1
+10 1
+.names tmp10 d12 tmp11
+01 1
+10 1
+.names tmp11 d13 tmp12
+01 1
+10 1
+.names tmp12 d14 tmp13
+01 1
+10 1
+.names tmp13 d15 tmp14
+01 1
+10 1
+.names tmp14 d16 tmp15
+01 1
+10 1
+.names tmp15 d17 tmp16
+01 1
+10 1
+.names tmp16 d18 tmp17
+01 1
+10 1
+.names tmp17 d19 tmp18
+01 1
+10 1
+.names tmp18 d20 tmp19
+01 1
+10 1
+.names tmp19 d21 tmp20
+01 1
+10 1
+.names tmp20 d22 tmp21
+01 1
+10 1
+.names tmp21 d23 tmp22
+01 1
+10 1
+.names tmp22 d24 tmp23
+01 1
+10 1
+.names tmp23 d25 tmp24
+01 1
+10 1
+.names tmp24 d26 tmp25
+01 1
+10 1
+.names tmp25 d27 tmp26
+01 1
+10 1
+.names tmp26 d28 tmp27
+01 1
+10 1
+.names tmp27 d29 tmp28
+01 1
+10 1
+.names tmp28 d30 tmp29
+01 1
+10 1
+.names tmp29 d31 tmp30
+01 1
+10 1
+.names tmp30 d32 tmp31
+01 1
+10 1
+.names tmp31 d32 R
+01 1
+10 1
+.end

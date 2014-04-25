@@ -1,0 +1,29 @@
+Dates & Chapters
+==============
+
+03/10/07 - 03/16/07     1)  Introduction                              
+02/07/07 - 02/28/07     2)  Previous work
+Status: 20%
+01/15/07 - 01/25/07     3)  Preliminaries
+Status: 70%
+03/01/07- 03/03/07      4)  Theory: Univariate case
+Status: 30%
+03/04/07 - 03/07/07     5)  Theory: Multivariate case
+
+03/08/07- 03/10/07      6)  Three approaches 
+                                        a) Zero equivalence : Algorithm and results
+                                        b) Canonical forms : Algorithm and results
+                                        c) Simulation : Algorithm and results
+
+03/16/07- 03/21/07      7) Limitations and Grobner's basis/GP
+                                       a) theory
+                                       b) Algorithm and results
+
+03/21/07 - 03/25/07   8) Future work
+                                       a) GB based methods?
+                                              
+First draft: 04/01/07
+Second draft: 04/09/07
+Third draft: 04/16/07
+Submit to Committee: 04/30/07
+Defense: 05/09/07

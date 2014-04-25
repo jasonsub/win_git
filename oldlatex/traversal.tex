@@ -1,0 +1,77 @@
+% LaTeX file for a 1 page document
+\documentclass[12pt]{article}
+%\usepackage{e-jc}
+
+\title{Implicit FSM traversal on $F(2^k)$}
+
+\author{Xiaojun Sun \ \ \ \ Prof. Priyank Kalla\\
+\small Department of Electrical \& Computer Engineering\\[-0.8ex]
+\small University of Utah, Salt Lake City\\
+\small \texttt{\{xiaojun.sun,kalla\}@ece.utah.edu}
+}
+
+\date{Last Update: Mar 6, 2013}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+N/A
+\end{abstract}
+
+\section{Introduction}
+
+N/A
+
+\section{Theory}
+\textbf{BFS traversal}
+
+\textit{\underline{Main Loop:} \\
+Input: $\Delta$, $S^0$ \\
+$from^0$ = $S^0$ =reached. \\
+while(1)\{\\
+\indent i++;\\
+\indent $to^i$ = Img($\Delta$, $from^{i-1}$)\\
+\indent $new^i$ = $to^i\bigcap\overline{reached}$\\
+\indent if $new^i$ == 0 then return (reached); \\
+\indent reached = reached $\bigcup new^i$\\
+\indent $from^i$ = $new^i$ \\
+\}\\
+}
+
+\textbf{Image Function}
+\\ \indent Easy stuff.\par
+
+\textbf{Union, Intersect \& Complement}
+\begin{itemize}
+\item[-] \textbf{Theorem 1}\ \ \ \ If I and J are ideals in $k[x_1,...,x_n]$, then $V(I+J)=V(I)\bigcap V(J)$.
+\item[-] \textbf{Theorem 2}\ \ \ \ If I and J are ideals in $k[x_1,...,x_n]$, then $V(I \cdot J)=V(I)\bigcup V(J)$.
+\item[-] \textbf{Theorem 3}\ \ \ \ Let V and W be varieties in $k^n$. Then $I(V):I(W)=I(V-W)$.
+\end{itemize}
+Suppose we take only one polynomial only contains T(next state), like\\
+\hspace{8mm}\par
+$ideal\ G = T^2 + (1+X) \cdot T + X$\\
+\hspace{8mm}\par
+Since we get G from GB based image function, so G is already a Groebner Basis itself.
+Considering Theorem 1 $\sim$ 3, it's easy to do ideal operation if its generator is only one polynomial.
+So using $G+G'$ we can get intersection, using $G \cdot G'$ we can get union. If we take V = Universe = $<vanishing\ polynomial>$, we can get ideal quotient $I(V):I(W)$ as complementary set for
+specific varieties.
+
+\hspace{8mm}\par
+\textbf{More about Ideal Quotient}
+\begin{itemize}
+\item[-] \textbf{Definition 1}\ \ \ \ If I,J are ideals in $k[x_1,...,x_n]$, then $I:J$ is the set \\ \indent $\{f\in k[x_1,...,x_n]:fg\in I\ for \ all\ g\in J\}$
+\end{itemize} \par
+Why we can get complementary set $\overline {reached}$ through this?\par
+First, we only care about varieties. Say we redefine the "equal" as $V(I)==V(J)\Leftrightarrow I == J$.\par
+Second, we only care about the ideal/GB {\bf G} contains only 1 generator f. Say this polynomial f is a function about next state (word level) T, then $f(T=V(\bf{G}))==0$. To ensure then unique of generator f, we'll reduce f (or say {\bf G}) every time.\par
+Third, for ideal quotient ${\bf U:G}$ here, we need to find f from $g~f==vanish$. This means $<f>\bigcup <g>==<vanish>$. How can we develop a division algorithm to get exactly a factor without any remainders? Let's see 3 examples following:\\
+\hspace{8mm}\par
+\indent $T^2+(1+X)\cdot T+X$\\
+\hspace{8mm}\par
+\indent $T^2+T$\\
+\hspace{8mm}\par
+\indent $T^2+1$\\
+
+
+\end{document}

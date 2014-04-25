@@ -1,0 +1,443 @@
+\chapter{Introduction} \label{ch:intro}
+
+
+With the rapidly increasing complexity of hardware systems,
+verification of the correctness of  designs poses serious challenges. 
+Design flaws can be extremely costly. For example, the Intel Pentium 
+floating point divide bug resulted in 475 million dollars of extra
+costs in $1993$. %Design flaws can also be catastrophic. 
+In many safety-critical applications, such as cryptography systems,
+arithmetic bugs can be especially catastrophic. In
+\cite{crypto:bug_attacks}, it is shown that incorrect (buggy) hardware
+can lead to full leakage of the secret key, which can 
+compromise the security of such systems. Therefore, it is
+of utmost importance to verify the correctness of hardware designs. 
+
+
+\section{Hardware Verification}
+Today, hardware verification averages about 70 percent of the overall
+hardware design effort and is believed to be the largest source of risk and
+cost. Hardware verification is becoming even more challenging as the
+design complexity increases. 
+
+The hardware design flow typically starts with a high-level
+specification or a property of the design. This specification
+is then translated into a register-transfer-level (RTL) description
+which is further  optimized and translated to its corresponding
+netlist representation.  Then the logic-level netlist is translated to
+a physical layout which is subsequently fabricated into integrated
+circuits.  Fig.\ref{fig:cadflow} shows a typical design flow for
+realizing a hardware system. The design flow can be automated by
+Computer-Aided Design (CAD) tools available from  both academia and
+industry. However, one critical question emerges: how to prove
+equivalent functionality between the different levels of
+representations?  This is the objective of hardware verification. 
+For example, after the RTL description is transformed into a
+gate-level netlist, it is important to ensure that its functionality
+remains the same. Similarly, after logic optimization is performed on
+the gate-level un-optimized netlist, it has to be ensured that the
+optimization process does not introduce a bug in the original design.  
+Therefore, as shown in Fig. \ref{fig:cadflow}, verification is needed
+between different levels of abstractions, i.e.,  between design
+specification and the ``golden model", RTL-level model and netlist-level
+model, and between un-optimized and optimized netlists, etc. 
+
+{\epsfxsize=3.5in
+\begin{figure}[t]
+\centerline{
+\epsffile{./figures/cadflow.eps}
+}
+\caption{Typical circuit design and verification flow.}
+\label{fig:cadflow}
+\end{figure}
+}
+
+There are two main methodologies applied to hardware verification:
+simulation and formal verification. In a traditional design flow,
+simulation is the primary methodology for design validation.
+The effectiveness of simulation is achieved by exhaustive assignments
+of inputs to excite all possible behaviors of the system and then
+analyzing the output values. However, the increasing complexity of
+designs makes impossible for simulation to provide complete coverage. 
+%For example, given a $32$-bit multiplier,  the whole simulation space is $2^{32}$ test vectors, 
+%which fails current simulators.
+
+In recent years, formal verification has emerged as an alternative
+technique to ensure the correctness of hardware designs, overcoming
+some of the limitations of simulation. Formal verification is the
+process of utilizing mathematical theory to reason about the
+correctness of hardware designs. Formal verification in hardware
+usually takes one of the forms: property checking and equivalence
+checking. Property checking is a process of checking whether a design
+conforms to its given behavior or properties. Equivalence checking is
+conducted to prove the equivalent functionality of two given designs. 
+Usually, equivalence checking is applied at various stages of the
+design cycle to verify correctness of the applied
+transformations. Figure \ref{fig:cadflow} shows the role of
+equivalence checking in a typical hardware design flow. 
+
+Techniques utilized by property checking include model checking,
+theorem proving and approaches that integrate both.  Equivalence
+checking makes use of Binary Decision Diagrams (BDDs), Satisfiability
+(SAT) solvers, and And-Inverter-Graph (AIG) based reductions, among
+others.  As an emerging technique for equivalence checking,
+computer-algebra based decision procedures are gaining
+popularity. This kind of verification technique is believed to be more
+sophisticated in verifying arithmetic hardware designs in that they
+exploit the powerful applications of mathematics rather than ad-hoc
+techniques. 
+
+
+\subsection{Property Checking}
+Property verification refers to proving the correspondence between
+designs and given properties. Usually property verification is
+achieved by two main formal methods: theorem proving and model
+checking.   
+
+{\it Theorem proving} \cite{theoremproving:91} requires the existence
+of mathematical descriptions for both the specification and
+implementation, allowing these descriptions to be manipulated in a
+formal mathematical framework. Theorem provers apply primitive proof
+(mathematical) rules to a specification in order to derive new
+properties of a specification.  Through this way, theorem proving
+can reduce a proof goal to simpler sub-goals  that can be easily
+proved/disproved automatically by primitive proof steps. 
+The benefit of this approach is its generality and
+completeness. However, despite several advances, generating
+the proof requires extensive guidance from the user. As a result,
+theorem proving lacks the level of automation that is desirable for a
+CAD framework to be practically useful. Theorem proving has gained
+commercial use in verifying that division and other operations are
+correctly implemented in processors at AMD and Intel. 
+%Commercial use of automated theorem proving is mostly concentrated in integrated circuit design and verification. Since the Pentium FDIV bug, 
+%the complicated floating point units of modern microprocessors have been designed with extra scrutiny. AMD, Intel and others use automated 
+%theorem proving to verify that division and other operations are correctly implemented in their processors.
+
+{\it Model checking} \cite{modelcheck:99} is an approach to formally
+verifying finite-state systems.  Properties about the system are
+modeled as temporal logic formulas, and the model defined by the
+system is traversed to check if the properties hold or not. Therefore,
+model checking consists of specifying the desired  properties of the
+system and checking if there are violations of specified properties
+for all possible behaviors of the system. 
+
+{\it Model checking} is one of the most successful approaches for
+property verification up to date.  Model checking tools \cite{BHEL96}
+\cite{SMV} \cite{spin} have achieved a significant level of automation
+and maturity and are widely in use in both academia and industry. A
+good aspect of model checking that is extremely important in practice
+is the ability to generate counterexamples. Such counterexamples
+provide a way to trace the incorrect behaviors (bugs). However, these
+tools tend to be memory intensive and are more applicable to at most
+medium sized designs or at the block-level, rather than at the
+system-level. 
+
+\subsection{Equivalence Checking}
+Equivalence checking is used to formally prove that two representations of
+circuit designs have exactly equivalent functionality.  As shown in
+Fig. \ref{fig:cadflow}, once a high-level representation is validated
+(by simulation or property checking),  it is transformed into a
+gate-level netlist so that logic synthesis tools can be used to
+optimize the design according to the desired area/delay/power
+constraints. Then the design proceeds through a varied set of 
+optimization and transformation operations. During various
+transformation stages, different  implementations of the design, or
+parts of the design, are examined depending upon the constraints, such
+as area, performance, testability, etc. As the design is modified by
+replacing one of its components  by another equivalent implementation,
+it needs to be verified whether or not the modified design is
+functionally equivalent to the original one.
+
+Equivalence checking has important applications in arithmetic circuit
+verification. Hardware designs contain a large number of
+custom-designed circuits such as adders, multipliers, dividers, and so 
+on. Such circuits are usually not synthesized by CAD tools because of
+area and performance constraints. Therefore, this raises the potential
+for errors/bugs in the implementation. Consequently, it remains a
+challenge to conduct equivalence checking for these large scale
+arithmetic circuits. 
+
+As an intensively investigated topic, techniques and approaches for
+equivalence checking have been well established.  
+With various techniques employed for equivalence checking, BDDs and
+SAT-based techniques are the two dominant approaches widely used in
+both academia and industry. BDD-based approaches try to construct 
+canonical representations of given circuits and conduct a linear
+comparison to determine whether they are equivalent or not. SAT based
+equivalence checking approaches try to find the unsatisfiability of a
+``miter" representing two designs. 
+
+There are also many promising generalizations of SAT and BDDs: 
+Binary Moment Diagrams (BMDs) which have shown their 
+superiority of verifying integer multipliers \cite{bmd},  and
+Satisfiability Modulo Theories (SMT) solvers which are the next
+generation of SAT. These approaches, to some extent, have gained
+some successes in equivalence checking. However, these approaches are
+beginning to show signs of inadequacy in two cases.  First, large
+scale hardware designs still hinder the equivalence checking as the
+level of design complexity grows rapidly. For example, the
+verification of a $16$-bit modular multiplier becomes infeasible for
+the current SAT/BDD based approaches. Secondly, for structurally
+similar circuits, this problem can be efficiently solved using the
+techniques of AIG based reductions \cite{abc} and
+subsequent use of circuit-SAT solvers \cite{csat}. However, when the circuits
+are functionally equivalent but structurally very dissimilar,  none of
+the contemporary techniques, including BDDs, SAT and AIG-based
+approaches, are able to prove equivalence.  
+
+Ideally, approaches for equivalence checking should maintain a
+high-level of abstraction while still retaining sufficient information
+so as to not lose lower-level of functional details \cite{gupta_survey}. 
+For instance, implementing arithmetic functions at bit-level can
+provide highly optimized implementations while word-level abstraction
+usually has much less structural information for solvers to analyze. 
+
+Arithmetic Bit Level (ABL) \cite{abl:2001} abstraction techniques come
+close to achieving these requirements  by extracting an arithmetic bit
+level representation from a given circuit. Through this way, the
+method can use the ABL information to prune the search space of SAT solvers. 
+The drawback of this approach is it can only identify ABL information
+locally when analyzing the given circuit, which results in a
+exponential blowup when looking at sophisticated circuits consisting
+of several arithmetic blocks. 
+
+{\bf Focus of this work:}
+In this dissertation, we focus on equivalence checking problems for
+finite field arithmetic circuits. Such circuits are found in many
+applications such as in cryptography, coding theory, signal
+processing, among others. We utilize the theory of computer-algebra
+and algebraic-geometry, notably, Gr\"obner Bases related theory and
+technology, as the underlying verification engines. Our approach is
+sophisticated enough to take into account both high-level (word-level)
+specifications and low-level (bit-level) implementation details.  
+
+\section{Computer Algebra Based Formal Verification}
+
+The first computer algebra based verification technique dates back to
+$1996$  when Gr\"{o}bner bases were utilized for SAT solving and
+formal verification \cite{CEI:stoc-96}. Indeed, there have been many
+attempts to solve verification problems using Gr\"obner basis
+formulations  \cite{Avrunin:CAV} \cite{condrat-tacas07}
+\cite{gbverify:2007}. The standard flow of these approaches is:
+\begin{enumerate}
+	\item The verification problem is first formulated as a polynomial system.
+	\item The polynomial system is fed into a Gr\"obner basis
+          engine to check whether the desired property is satisfied. 
+\end{enumerate}
+ 
+The critical step of this approach is the Gr\"obner basis
+computation. Unfortunately, the computation is known to have
+worst-case double-exponential complexity in the input data. In
+practice, Gr\"obner basis algorithms have not been capable of
+satisfactorily solving problems derived from real-world
+applications. Besides, these methods are employed for verification by
+modeling constraints over the Boolean level $\mathbb{Z}_2$; word-level
+abstractions, which can be powerfully modeled in algebra, are not
+utilized. 
+
+Recent advances \cite{wienand:cav08} \cite{lv:hldvt2011}
+\cite{wedler:date11} \cite{lv:vlsi2012} \cite{lv:date2012} suggest a
+new direction of utilizing computer algebra theory to conduct hardware
+verification.  These works show that it is feasible to overcome the
+complexity of Gr\"obner basis algorithm by efficiently engineering
+the integration of Gr\"obner bases theory and circuit analysis
+techniques. 
+
+
+\section{Objective and Contributions of this Dissertation}
+
+This dissertation focuses on verification of hardware implementations
+of arithmetic circuits over finite fields of the type
+$\mathbb{F}_{2^k}$. Specifically, the following verification problems
+are addressed:
+%, name $-$ e.g., verifying correctness of: 
+\begin{enumerate}
+\item Formal verification of a custom-designed finite field arithmetic
+  circuit implementation against its given word-level polynomial
+  specification. 
+\item Gate-level equivalence checking of two finite field arithmetic
+  circuit implementations.  
+\end{enumerate}
+
+Verification of only {\it combinational logic circuits} over finite
+fields is considered in this work. Sequential circuit verification is
+a very different problem for arithmetic circuits -- and it is beyond
+the scope of this dissertation. 
+
+
+
+The {\it motivation} for this work stems from applications
+in cryptography circuits; though our techniques can be applied to
+verify arbitrary finite field arithmetic circuits. In cryptosystems,
+the datapath size (operand size) $k$ in the circuits can very
+large. For example, the U.S. National Institute for Standards and
+Technology (NIST) recommends the use of finite fields corresponding to datapath
+sizes of $k = 163$-bits or more. The large size and high complexity of
+such circuits  makes design verification quite challenging. Indeed,
+contemporary combinational verification techniques are unable to
+verify such large arithmetic circuits.  
+
+
+\subsection{Contributions of this Dissertation}
+We propose the application of {\it computer-algebra techniques},
+notably, {\it Gr\"obner bases} related theory and technology
+\cite{buchberger_thesis} \cite{gb_book}, as the underlying
+verification framework for our applications. The advantage of using
+computer-algebra techniques is that it allows to integrate finite
+field arithmetic, circuit models and algebraic reasoning in a common
+verification framework. The circuits are modeled as a system of
+multi-variate polynomials in the field $\mathbb{F}_{2^k}$.  The formal
+verification problem is then formulated using {\it Hilbert's
+  Nullstellensatz} \cite{ideals:book} as ideal membership testing. A
+Gr\"obner basis engine is subsequently employed as a decision
+procedure to solve this verification problem. 
+
+
+Gr\"obner basis theory is very powerful as it enables one to 
+solve many polynomial decision questions. Unfortunately, the
+computational algorithms are known to have worst-case
+double-exponential complexity in the input data.  Therefore, in order
+to make verification practical and scalable,  we engineer efficient
+application of Gr\"obner basis by integrating it with circuit analysis
+techniques.  Specifically, we analyze the topology of the given
+circuit and derive efficient {\it variable and term orders} to
+systematically represent and manipulate the polynomials. Subsequently,
+using the theory of Gr\"obner bases over finite fields, we prove that
+our term orderings impose specific constraints on the polynomials that
+can {\it obviate the need to compute a Gr\"obner basis}. Under this
+term ordering, either the polynomials themselves constitute a
+Gr\"obner basis, or the term ordering allows us to identify a minimum
+number of computations in the Gr\"obner basis algorithm that are
+sufficient for verification. This significantly scales verification --
+we are able to verify circuits for which contemporary verification
+methods are infeasible. To further improve our approach, we implement
+an efficient polynomial reduction (division) algorithm that operates
+on a matrix-based representation of the polynomial system. 
+
+Experiments are conducted over various custom-designed arithmetic
+circuits over $\mathbb{F}_{2^k}$. These include three different
+modulo-multiplier architectures and point-addition circuits used in
+elliptic curve cryptosystems. Using our approach and tools, we can
+verify the correctness of, and detect bugs in, up to $163$-bit finite
+field arithmetic circuits, whereas contemporary approaches are
+infeasible. 
+
+
+%\subsection{Motivation of this Dissertation}
+
+% Verification of security applications has become a problem of great
+% importance and at the software-level, it is attracting a lot of
+% research -- e.g., verification of crypto-protocols.  However,
+% hardware verification of cryptography primitives -- many of which rely
+% on finite field arithmetic $-$ has not seen much breakthrough. 
+% Therefore, the main motivation behind this dissertation stems from
+% applications in cryptographic circuits.  
+
+% As opposed to integer datapath circuits used in general purpose
+% microprocessors and ASICs,  the datapath size in cryptographic
+% circuits can be very large. For example,  datapath size can be $163$
+% bits or more, which is recommended by National Institute of Standards
+% and Technology (NIST) as the  Elliptic Curve Cryptography (ECC)
+% standard. Another feature of such circuits is such large and
+% complicated circuits require custom and semi-custom design. This
+% raises the potential for errors and bugs in the implementation.  
+% This may cause not only erroneous operation but also security
+% vulnerabilities which can be maliciously exploited \cite{ms:research}.
+% The recent work \cite{crypto:bug_attacks} shows that incorrect (buggy)
+% hardware in cryptographic circuits can lead to  full leakage of the
+% secret key. Unfortunately, for cryptographic hardware design, not many
+% Electronic Design Automation (EDA) tools are available for their
+% synthesis, optimization and verification. Therefore, it is of utmost
+% importance to verify the correctness of cryptographic hardware.
+% The reason is these techniques rely mostly on solver-based
+% technology, such as Satisfiability or Sat-Modulo-Theory solvers.  
+% Such techniques are impractical for data-path verification $-$
+% particularly for crypto-systems. 
+
+% Therefore, we exploit computer algebra techniques, particularly the
+% theory of polynomial ideals, varieties and Gr\"obner basis to solve
+% verification problems \cite{Avrunin:CAV} \cite{CEI:stoc-96}
+% \cite{wienand:cav08}.  
+
+
+% \section{Contributions of this Dissertation}
+
+% The contributions of this PhD research are twofold. First, we address
+% the problem of verifying correctness of a custom designed circuit
+% implementation against a given word-level specification for cryptographic purpose. 
+% Second, since equivalence checking of structural similar circuits can be efficiently solved
+% by techniques of AIG based and circuit-SAT solvers, we propose a generic methodology for gate-level equivalence checking of 
+% two structurally dissimilar circuit implementations. 
+% Our contributions and approaches are described in the following sections.
+
+% \subsection{Formal verification of cryptographic circuits}
+% We are given a custom designed circuit over $\mathbb{F}_{2^k}$ ($k$ is
+% the circuit size)  at bit-level and a word-level specification for
+% $\mathbb{F}_{2^k}$, We are to prove or disprove their functional
+% equivalence.  
+% \begin{itemize}
+% \item{we model the constraints as a polynomial system $\{f_1,\dots,
+%     f_s\}$ in $\mathbb{F}_{2^k}[x_1,x_2,\dots,x_d]$}.  
+% \item{Using the theory of {\it Strong Nullstellensatz} over
+%            finite fields, we formulate the verification problem as an
+%            ideal membership testing}. 
+% \item{Ideal membership test, requiring to compute a Gr\"obner
+%             basis \footnote{Gr\"obner basis is a canonical
+%               representation of polynomials},  is computationally
+%             intensive since its efficiency is highly susceptible to
+%             the term orderings. To overcome this complexity,  
+% 	we derive a term order by analyzing the circuit topology to
+%         represent the polynomial ideal}. 
+% 	\item{Subsequently, by integrated use of finite fields,
+%             Gr\"obner bases and circuit analysis, we show that using
+%             our term order,  	the polynomial system itself
+%             represents a Gr\"obner basis of the verification
+%             instance}. 
+% 	\item{This obviates the Gr\"obner basis computation and thus
+%             the verification can be done using only a simple
+%             polynomial reduction,  provided in polynomial time}. 
+% 	\item{As shown in \cite{lv:date2012}, we can verify 163-bit datapath circuits used in cryptography which was  intractable}.
+% \end{itemize}
+
+% \subsection{Equivalence checking of custom designed circuits at bit level}
+% In this application, we are given two combinational arithmetic circuits A and B, as bit-level flattened netlists.
+% We have to prove or disprove their functional equivalence. 
+% \begin{itemize}
+% 	\item{As opposed to the previous case, this equivalence checking (via the miter) is formulated as a 
+% 	{\it Weak Nullstellensatz} proof using Gr\"obner bases method}.
+% 	\item{Once again, this verification instance requires a Gr\"obner bases computation which is expensive. 
+% 	As in the previous case, we wish to derive a term order to represent the polynomials as a Gr\"obner basis}.
+% 	\item{Unfortunately, the structure of the miter for the  verification instance does not constitute a Gr\"obner basis}.
+% 	\item{We show that using our term order, we can identify an absolute minimum number of computations required to proof equivalence or 
+% 	to detect all bugs for the whole circuit. (this minimum number is a polynomial reduction for each output bit)}.
+% 	\item{Using this approach, we can verify $96$-bit structurally very dissimilar implementations}.
+% \end{itemize}
+% An efficient implementation of our approach and our benchmark circuits are available \cite{satsmtbench:2011}. 
+% Our overall contribution is efficiently combining Gr\"obner basis theory, circuit analysis and 
+% reasoning to solve the verification problem for large scale arithmetic circuits. 
+
+
+\section{Thesis Organization}
+
+The rest of this dissertation is organized as follows.  Chapter
+\ref{ch:prev} reviews previous approaches and highlights their
+drawbacks with respect to the given verification problem. 
+Chapter \ref{ch:prelim} briefly describes the construction and
+properties of finite fields $\mathbb{F}_{2^k}$. Arithmetic circuit
+design over such fields is also reviewed to shed some light on the
+difficulty of the verification problem. Chapter \ref{ch:ideals} covers
+preliminary theoretical background related to % corresponding to theory of
+computer-algebra, algebraic-geometry and Gr\"obner bases. Chapter
+\ref{ch:date} describes our approach to verify a circuit implementation
+against a word-level polynomial specification using ideal membership
+testing. We show how the Gr\"obner basis computation can be obviated
+using efficient term orderings derived from the given circuit. 
+Chapter \ref{ch:ecbit} presents our approach to equivalence
+checking of two arithmetic circuit implementations. Efficient term
+orderings and matrix-based polynomial reduction procedures are
+derived. Chapter \ref{ch:cf} describes a hierarchical verification
+methodology to verify arithmetic circuits over composite fields
+$\mathbb{F}_{(2^m)^{n}}$, where $k=m \cdot n$.  Finally, Chapter
+\ref{ch:concl} concludes the dissertation with a perspective on
+current and future research directions on computer algebra methods for
+verification.  

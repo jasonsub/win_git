@@ -1,0 +1,78 @@
+\vspace{-0.05in}
+\section{Related Work}\label{sec:prev}
+\vspace{-0.05in}
+
+Contemporary high-level synthesis tools are quite adept in extracting
+control/data-flow graphs (CDFGs) from the given RTL descriptions, and
+also in performing scheduling, resource-sharing, retiming, and control
+synthesis.  However, they are limited in their capability to employ
+sophisticated algebraic manipulations to reduce the cost of the
+implementation \cite{demicheli:tcad_03}. To overcome this limitation, 
+there has been increasing interest in exploring the use of
+algebraic manipulation for RTL synthesis of arithmetic datapaths. The
+works of \cite{demicheli:iccad_98} \cite{demicheli:date_99} derive new
+polynomial models of complex computational blocks for efficient
+synthesis. In \cite{demicheli:tcad_03}, Symbolic Computer Algebra 
+tools are used to search for a decomposition of a given polynomial
+according to available library elements using a 
+Gr\"{o}bner's bases based
+approach. However, the derived polynomial models represent the
+computations over the fields of reals ($R$), fractions ($Q$) or over
+the integral domain ($Z$) - collectively called the {\it unique
+factorization domains} (UFDs). This often results in a polynomial
+approximation \cite{demicheli:tvlsi_01}, without properly accounting
+for the effect of bit-vector size ($m$) on the resulting
+computation. Moreover, Buchberger's algorithm on Gr\"{o}bner's bases
+which has been used in \cite{demicheli:tcad_03} operates only on UFDs
+and cannot be directly ported over non-UFDs of the type
+$Z_{2^m}$. While the work of \cite{multi-word-synth} does account for
+the datapath-size for allocation, it operates directly on the original
+(given) arithmetic expression - thus limiting the degree of freedom in
+searching for a better implementation.
+
+
+%Finite rings of the type $Z_{2^m}$ are non-UFDs, due to the presence
+%of nilpotent elements. 
+%(An element $x$ of a ring is nilpotent if
+%$x^n = 0$ for some positive integer $n$.) 
+%Unfortunetly, this 
+%disallows the use of fundamental computer algebra results on Euclidean
+%division and factorization over non-UFDs. As a result, contemporary
+%(algebra-based) high-level synthesis frameworks are limited in their
+%capability to employ sophisticated algebraic manipulations to reduce
+%the cost of the  implementation \cite{demicheli:tcad_03}.
+
+Other algebraic transforms have also been explored for efficient
+hardware synthesis: factorization  and common sub-expression
+elimination \cite{anup:iccad_04} \cite{anup:vlsi_05}, exploiting
+the structure of arithmetic circuits \cite{ienne}, term re-writing
+\cite{arvind:term-rewrite}, etc. However, these techniques employ
+straight-forward algebraic transforms and
+also overlook the effect of bit-vector size on the given computation.
+
+In the area of logic optimization, various spectral transforms of
+boolean functions have been derived for efficient synthesis of
+arithmetic circuits \cite{spectra:book}. Similar polynomial models for
+random logic circuits have also been derived over Galois Fields
+GF($2^m$) \cite{pradhan_galois}  \cite{pradhan_modd} \cite{galois}- so
+that polynomial algebra based manipulation can be employed for logic
+optimization. While these works find application at the {\it circuit-netlist
+level}, they are not scalable enough to address polynomial bit-vector
+computations. 
+
+
+Note that our approach does not preclude some of the above mentioned
+synthesis procedures \cite{anup:vlsi_05} \cite{anup:iccad_04}
+\cite{multi-word-synth}; it can be combined with these approaches
+as an additional optimization step. Modulo arithmetic has also been
+applied to the task of circuit/RTL verification %\cite{at:zilic}
+\cite{Huang:tcad01}. The concept of polynomial
+functions over finite rings has also been applied to the equivalence
+verification of arithmetic datapaths in \cite{iccad05}
+\cite{nam:date06}.  This paper demonstrates its application to {\it
+optimization} of arithmetic datapaths. 
+
+
+
+
+

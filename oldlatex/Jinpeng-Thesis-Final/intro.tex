@@ -1,0 +1,242 @@
+\begin{abstract}
+This paper addresses the problem of equivalence verification of RTL
+descriptions that implement arithmetic computations (such as {\sc add,
+mult}) over bit-vectors with finite widths. A bit-vector of size $m$
+represents integer values from $0$ to $2^m -1$; implying that the
+corresponding integer values are reduced modulo $2^m$ ($\% 2^m$). This
+suggests that bit-vector arithmetic can be efficiently modeled as
+algebra over finite integer rings, where the bit-vector size ($m$)
+dictates the cardinality of the ring ($Z_{2^m}$). This paper model the
+arithmetic datapath verification problem as equivalence testing of
+polynomial functions from $Z_{2^{n_1}} \times Z_{2^{n_2}} \times
+\cdots \times Z_{2^{n_d}} \rightarrow Z_{2^m}$. We formulate the
+equivalence problem $f \equiv g$ into that of proving whether $f-g
+\equiv 0 \% 2^m$. Fundamental concepts and results from {\it number,
+ring} and {\it ideal theory} are subsequently employed to develop
+systematic, complete algorithmic procedures to solve the problem. We
+demonstrate application of the proposed theoretical concepts to
+high-level (behavioural/RTL) verification of bit-vector arithmetic
+within practical CAD settings. Using our approach, we verify a set of
+arithmetic datapaths at RTL where contemporary verification approaches
+prove to be infeasible.
+\end{abstract}
+
+\begin{keywords}
+Bit-Vector Arithmetic, Equivalence Checking, Finite Ring Algebra,
+Ideal theory
+\end{keywords}
+
+\section{Introduction}\label{sec:intro}
+RTL descriptions of integer datapaths that implement polynomial
+computations over bit-vectors are found in many practical designs;
+{\it e.g.}, in Digital Signal Processing (DSP) for audio, video and
+multimedia applications \cite{mathews:book}. The growing market for
+such applications requires sophisticated CAD support for design,
+analysis and verification. Such designs implement a sequence of {\sc
+add, mult} type of algebraic computations over bit-vectors for
+which contemporary verification frameworks do not possess the
+requisite modeling and manipulation capabilities. Polynomial algebra
+provides an ideal platform for modeling such arithmetic-intensive
+designs. However, the word-lengths of the bit-vector variables in the
+design are usually predetermined and fixed according to the desired
+precision. For correct modeling of such systems, the effect of these
+word-lengths need to be accounted for. For example, the largest
+(unsigned) integer value that a bit-vector of size $m$ can represent
+is $2^m-1$; implying that the bit-vector represents integer values
+reduced modulo $2^m$ ($\% 2^m$). This suggests that bit-vector
+arithmetic can be efficiently modeled as {\it algebra over finite
+  integer rings of residue classes $Z_{2^m}$} \cite{allenby:book}.
+This requires the use of number, ring and ideal theory concepts for
+their manipulation. 
+
+This paper addresses the problem of equivalence verification of
+arithmetic datapath computations over bit-vectors where the operands
+have finite bit-widths. The problem is addressed at the algorithmic
+level, behavioral level or register-transfer level
+(RTL). Fig. \ref{fig:matlab} depicts the overall design flow for such
+applications and the corresponding verification problem as it appears
+in the context of our work.
+
+\begin{figure}[htb]
+%\epsfxsize=8cm
+\epsfysize=5cm
+\centerline{\epsffile{figures/matlab.eps}}
+\caption{The Equivalence Verification problem: Matlab to RTL design flow.}
+%\vspace{-0.2in}
+\label{fig:matlab}
+\end{figure}
+
+Initial algorithmic specifications (such as {\sc matlab} models) of
+most signal processing applications involve data representation using
+floating-point formats.  However, they are often implemented with
+fixed-point architectures in order to optimize the area, delay and
+power related costs of the implementations. Various automated tools
+exist for this translation \cite{float-to-fixed:cases02}.
+Subsequently, the fixed-point model (``specification'') can be
+translated into an RTL description (``implementation''); performed
+either manually, or by using automated conversion utilities, such as
+\cite{mvhdl} \cite{matlab}. The resulting RTL models can also be
+optimized using high-level synthesis/re-structuring operations (such
+as \cite{demicheli:tcad_03} \cite{fallah-poly-factor})
+\cite{sivaram:iwls06}), leading to (bit-true) equivalent RTL
+descriptions. The verification problem is to prove that the
+fixed-point model is computationally equivalent to the converted RTL
+model or to its optimized/transformed counterpart.
+
+Let us consider specific problem instances that necessitate the use of
+finite ring algebra for equivalence testing purposes.
+
+\subsection{Finite Word-length Bit-vector Arithmetic:} 
+For polynomial datapath implementations, the design choice is often
+that of a {\it uniform system word-length} for the computations
+\cite{word-len-opt-hlsynth}. The datapath word-length is fixed to a
+constant (say, $m$) which is defined by the desired precision. In such
+cases, $m$-bit adders and multipliers produce an $m$-bit output; only
+the lower $m$-bits of the outputs are used and the higher-order bits
+are ignored. Usually, such computations require appropriate scaling of
+coefficients and/or signals such that 'overflow' can be
+avoided/ignored and standard fixed-point arithmetic can be
+implemented. When the datapath size ($m$) over the entire design is
+kept constant, then fixed-size bit-vector arithmetic manifests itself
+as {\it polynomial algebra over the finite integer ring} of residue
+classes $Z_{2^m}$; {\it i.e.}  addition and multiplication is closed
+within the finite set of integers $\{0, \ldots, 2^{m} -1 \}$. In such
+cases, symbolically distinct polynomials (those with different degrees
+and coefficients) can become computationally (bit-true)
+equivalent. The equivalence verification problem then reduces to that
+of proving the {\it computational equivalence} of polynomials: $f(x_1,
+x_2, \ldots, x_d) \% 2^m \equiv g(x_1, x_2, \ldots, x_d) \%2^m$, where
+$f, g$ are polynomials in $d$ variables $x_1, x_2, \ldots, x_d$ and $m
+=$ datapath size.
+
+However, the fixed word-length paradigm is somewhat restrictive. Most
+designs usually contain operands with different word-lengths.  For
+instance, a digital audio-video mixer, may perform polynomial
+arithmetic over a 20-bit audio and a 32-bit video signal
+\cite{mathews:book}. As a practical example, consider the computation
+performed by a digital image rejection/separation unit that takes as
+input two signals: a 12-bit vector $A[11:0]$ and another 8-bit vector
+$B[7:0]$. These signals are outputs of a mixer wherein one signal
+emphasizes on the image signal and the other emphasizes on the desired
+signal. The design produces a 16-bit output $F$. The computation
+performed by the design is described in RTL as shown in
+Eqn. \ref{eq:ex1}. Note that because of the specified bit-vector
+sizes, the computation can be {\it equivalently} implemented as
+another polynomial $G$, as shown in Eqn. \ref{eq:ex2}.\\
+%
+{\small
+\texttt{input $A[11:0], ~B[7:0]$};\\
+\texttt{output $F[15:0],~G[15:0]$};\\
+\vspace{-0.1in}
+\begin{eqnarray}
+F &=& 16384* (A^4 + B^4) + 64767 * (A^2 - B^2) + A \nonumber \\
+      & & - B + 57344 * A * B * (A - B) \label{eq:ex1} \\
+G &=& 24576* A^2 *B + 15615* A^2 + 8192* A*B^2 + \nonumber \\
+      & & 32768*A * B + A + 17153*B^2 + 65535*B \label{eq:ex2}
+\end{eqnarray}
+}
+%
+Such arithmetic datapaths with multiple word-length architectures can
+be analyzed as polynomial functions from  $Z_{2^{n_1}}
+\times Z_{2^{n_2}} \times \cdots \times Z_{2^{n_d}} \rightarrow
+Z_{2^m}$ \cite{chen_96}, where $n_1, n_2, \ldots, n_d$ are the
+bit-widths of input vectors and $m$ is the output width. So how do we
+prove the equivalence of such computations? Efficient algorithmic
+solutions to such problems is the subject of this paper.
+
+\subsection{Problem Modeling}
+We model the arithmetic computations over bit-vectors as follows. Let
+$x_1, x_2, \ldots, x_d$ denote the $d$-variables (bit-vectors) in the
+design. Let $n_1, n_2, \ldots, n_d$ denote the size of the
+corresponding bit-vectors.  Therefore, $x_1 \in Z_{2^{n_1}}, x_2 \in
+Z_{2^{n_2}}, \ldots, x_d \in Z_{2^{n_d}}$. Here, $Z_{2^{n_i}}$
+corresponds to the finite set of integers $\{0, 1, \ldots, 2^{n_i} -
+1\}$. Let $m$ correspond to the size of the output bit-vector $f$;
+hence, $f \in Z_{2^m}$. Subsequently, we model the arithmetic datapath
+computation as a {\it polynomial function} (or polyfunction) over
+$Z_{2^{n_1}} \times Z_{2^{n_2}} \times \cdots \times Z_{2^{n_d}}$ to
+$Z_{2^m}$ \cite{chen_96}. Here $Z_a \times Z_b$ represents the {\it
+Cartesian product} of $Z_a$ and $Z_b$. In other words, the computation
+is modeled as a multi-variate polynomial $F(x_1, x_2, \ldots, x_d) ~\%
+2^m$, where each $x_i \in Z_{2^{n_i}}$. The equivalence problem then
+corresponds to checking the congruence of two polynomials: $F ~\% ~2^m
+\equiv G\%2^m$. Note that modeling fixed-size datapaths can be treated as a
+special case of the above, where the bit-vectors sizes $n_1, n_2,
+\ldots, n_d$ are all equal to $m$ and the polynomial is computed over
+$Z_{2^m}[x_1, x_2, \ldots, x_d]$, denoted as $Z_{2^m}^d$.
+
+\subsection{Solution Overview}
+Solutions for $F(x_1, x_2, \ldots, x_d) ~\% ~2^m \equiv G (x_1, x_2,
+\ldots, x_d) ~\% ~2^m$ are available for fields ($R, Q, C$), prime
+rings $Z_p$, Galois fields ($GF(p^n)$), integral and Euclidean domains
+- collectively called the {\it unique factorization domains (UFDs)}
+\cite{allenby:book}. In our context, the finite ring formed by the
+specific modulo value $2^m$ is a non-UFD, due to the presence of zero
+divisors ({\it e.g.}, $4 \neq 2 \neq 0, 4\cdot 2 = 0 \%8$), and
+correspondingly due to lack of multiplicative inverses. Unfortunately,
+this {\it disallows} the use of many efficient factorization-based
+techniques developed over UFDs.
+
+The problem $F(x_1, \ldots, x_d)\% n = G(x_1, \ldots, x_d) \% n$ is
+decidable and is shown to be NP-Hard for $n \geq 2$ \cite{ibarra}. We
+transform our problem $F \%2^m \equiv G\%2^m$, into proving $(F-G)
+\%2^m \equiv 0$; the well-known {\bf zero-equivalence} problem
+\cite{ibarra}. For the example described in Eqns. (\ref{eq:ex1} -
+\ref{eq:ex2}), we can compute $(F-G) \%2^{16}$: 
+%
+{\small
+\begin{eqnarray}
+F - G &=& 16384 (A^4 + B^4) + 32768 * A * B *(A + 1) + \nonumber\\
+      & & 49152 * (A^2 + B^2)
+\end{eqnarray}
+}
+%
+Note that $(F-G)$ is a polynomial with non-zero
+coefficients. However,  $ \forall A \in Z_{2^{12}}, B \in Z_{2^{8}}$,
+$( F-G ) \%2^{16} = 0$; {\it i.e.}, $( F-G )$
+{\it vanishes} as a function from $Z_{2^{12}} \times Z_{2^8}$ to
+$Z_{2^{16}}$. Therefore, our problem reduces to that of testing
+whether or not $(F-G)$ is a {\it vanishing polynomial} $\%2^m$. 
+
+Formulating the problem in this manner ($ F-G \equiv 0$) has its
+appeal because it belongs to a class of {\bf ideal membership testing}
+problems. Moreover, properties of polynomial functions over finite
+rings have been well studied topics in number theory and commutative
+algebra \cite{niven} \cite{singmaster} \cite{chen_95} \cite{chen_96}.
+This paper analyzes and extends these results (particularly those of
+\cite{singmaster} and \cite{chen_96}) to derive systematic and
+efficient algorithmic procedures for equivalence checking, and
+demonstrates their application within a practical CAD-based
+verification framework.
+
+\subsection{Scope of the Paper} 
+The approach presented in this paper has been applied to verify
+high-level descriptions of arithmetic datapaths, such as those in {\sc
+C} and {\sc RTL} ({\sc verilog/vhdl}), some of which were
+automatically generated by {\sc Matlab} (Simulink and filter design
+toolboxes) \cite{matlab}. Our technique is applicable to designs that
+implement unsigned and two's complement (overflow) arithmetic. In the
+DSP domain, rounding and saturation are also common modes of
+approximation. Modeling such architectures as polynomial functions
+over finite rings is significantly more involved and is not the
+subject of this paper. For the same reason, verification of
+(behavioral) RTL against its corresponding gate-level implementation
+(netlist) is also not dealt with in the paper. Even within this scope,
+we demonstrate that there exists a large class of applications where
+our approach can very efficiently solve the problem whereas
+contemporary verification techniques infeasible.
+
+\subsection {Paper Organization} 
+The paper is organized as follows: The next section reviews related
+work in VLSI-CAD, symbolic and polynomial algebra. Section
+\ref{sec:prelim} covers preliminary concepts regarding ring and ideal
+theory and describes how our problem relates to ideal membership
+testing. Section \ref{sec:univar} describes the mathematical aspects
+related to proving equivalence of univariate polynomials and provides
+a solution overview.  These results are extended in Section
+\ref{sec:multivar} to provide an algorithm for multi-variate
+computations with arbitrary input-output word-lengths. Section
+\ref{sec:expt} describes the experimental setup and compares our
+results with those of contemporary techniques. Finally, Section
+\ref{sec:concl} concludes the paper citing future research directions.
+

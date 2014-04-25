@@ -1,0 +1,343 @@
+\section{Equivalence of Multi-variate Polynomials}\label{sec:multivar}
+%We now proceed to extend the results of the previous section to
+%polynomials over $d$ variables. For this purpose, we use the following
+%multi-index notation: $\textbf{k} = \langle k_1, k_2, \ldots , k_d
+%\rangle$ are the degrees corresponding to the $d$ variables
+%$\textbf{x} = \langle x_1, x_2, \ldots ,x_d \rangle$, respectively.
+
+In Section \ref{sec:intro}, we had shown how multiple-word-length
+bit-vector computations can be modeled as polynomial functions from
+$Z_{2^{n_1}}\times Z_{2^{n_2}} \times \cdots \times Z_{2^{n_d}}$ to
+$Z_{2^{m}}$.  Moreover, we had noted that a fixed-size datapath with
+multiple variables is a special case of the above, where $n_1 = \cdots
+= n_d = m$. Furthermore, in the previous section, we had sought to
+exploit the concept of vanishing polynomials to determine the required
+number of simulation vectors over $Z_{2^m}[x]$. We will now extend
+these concepts to address multi-variate polynomials.
+
+In what follows, we use the multi-index notation: $\textbf{k} =
+\langle k_1, k_2, \ldots , k_d \rangle$ are the (non-negative) degrees
+corresponding to the $d$ input variables $\textbf{x} = \langle x_1,
+x_2, \ldots ,x_d \rangle$, respectively. Here, ${\bf k}$ and ${\bf x}$
+are $d$-tuples, where $k_i \in Z^+$ and $x_i \in Z_{2^{n_i}}$, for $i
+= 1, 2, \ldots, d$. $Z^+$ denotes the set of non-negative integers
+
+\begin{Definition}
+Let $\textbf{k} = \langle k_1, k_2, \ldots , k_d \rangle \in
+(Z^+)^d$. We define,
+\begin{equation}\label{eq:falling_fact}
+\textbf{Y}_\textbf{k}(\textbf{x}) = \prod_{i=1}^{d}Y_{k_i}(x_i) =
+Y_{k_1}(x_1) \cdot Y_{k_2}(x_2) \cdots Y_{k_d}(x_d),
+\end{equation}
+where $Y_{k_i}(x_i)$ is the falling factorial of degree $k_i$ in
+variable $x_i$, as defined in Definition \ref{def:ff}.
+\end{Definition}
+
+We now extend Newton's interpolation formula for $d$ variables.
+
+\begin{Definition}
+Let $F$ be a polynomial in $d$ variables $x_1, x_2, \ldots, x_d$ with
+degrees ${\bf p} = \langle p_1, p_2, \ldots, p_d \rangle$. We define
+the multi-variate ${\bf \Delta}$ operator as:
+\begin{equation}
+({\bf \Delta}^{\bf p}F)({\bf x}) = (\Delta^{p_1}_1F)({\bf x})\circ \cdots
+  \circ (\Delta^{p_d}_dF)({\bf x})\\
+\end{equation}
+Here, $\circ$ denotes the successive application of the $\Delta$ operator
+for each of the $d$ variables.
+\end{Definition}
+
+\begin{Example}
+Let us now apply the ${\bf \Delta}$ operation to the polynomial
+$F(x_1, x_2) = 4x_1x_2$. The degrees of $\langle x_1, x_2 \rangle$ are
+$\langle 1, 1\rangle$. 
+\begin{eqnarray}
+({\bf \Delta}^{\langle 0, 1\rangle}F)( x_1, x_2) &=& 4 x_1 (x_2 + 1) - 4 x_1 x_2  \nonumber \\
+                                                 &=& 4 x_1 \nonumber \\
+({\bf \Delta}^{\langle 1, 0\rangle}F)( x_1, x_2) &=& 4 (x_1 + 1) x_2 - 4 x_1 x_2  \nonumber \\
+                                                 &=& 4 x_2 \nonumber \\
+({\bf \Delta}^{\langle 1, 1\rangle}F)( x_1, x_2) &=& 4 (x_2 + 1) - 4 x_2  \nonumber \\
+                                                 &=& 4 \nonumber 
+\end{eqnarray}
+\end{Example}
+
+\begin{Proposition}\label{def:newt_multi}
+Let $F(x_1, x_2, \ldots, x_d)$ be a polynomial with degree ${\bf
+p}$. Then, Newton's formula can be written in multi-index notation as,
+\begin{eqnarray}
+F({\bf x}) &=& \sum_{{\bf k}\leq {\bf p}}({\bf \Delta}^{{\bf k}}F)({\bf
+0}){{\bf x} \choose {\bf k}} \nonumber \\
+           &=& \sum_{{\bf k}\leq {\bf p}}\frac{({\bf \Delta}^{{\bf
+      k}}F)({\bf 0})}{k_1!\dots k_d!}\prod_{i=1}^{d}Y_{k_i}(x_i)\nonumber \\
+           &=& \sum_{{\bf k}\leq {\bf p}}\frac{({\bf \Delta}^{{\bf
+      k}}F)({\bf 0})}{\bf k!}{\bf Y}_{\bf k}({\bf x}) \nonumber \\
+           &=& \sum_{{\bf k} \leq {\bf p}}c_{\bf k} {\bf Y}_{\bf k}({\bf x})
+\end{eqnarray}
+where $c_{\bf k} = \frac{({\bf \Delta}^{{\bf k}}F)({\bf 0})}{\bf k!}$. 
+\end{Proposition} 
+
+In the above, ${\bf k}\leq {\bf p}$ implies that $k_1 \leq p_1$, $k_2 \leq
+p_2,$ $\ldots,$ $k_d \leq p_d$. The coefficients $c_{\bf k}$ are computed
+for all vectors ${\bf k} = \langle k_1, \ldots, k_d \rangle$, where each $k_i =
+0,\ldots, p_i-1$. This corresponds to a maximum of $\prod_{i=1}^d (p_i
++ 1) $ coefficients. 
+
+\begin{Example}\label{ex:newt_multi}
+Let us represent the polynomial $F = 3x_2^2 + 4x_1x_2$ according to
+Proposition \ref{def:newt_multi}. Here, the degrees of $x_1$ and $x_2$ can be
+represented as ${\bf p} = \langle 1,2 \rangle$. 
+\begin{eqnarray}
+F &=& \sum_{{\langle k_1, k_2 \rangle} \leq {\langle 1, 2
+    \rangle}}c_{\langle k_1, k_2 \rangle} Y_{\langle k_1, k_2
+    \rangle}(x_1, x_2) \nonumber \\
+  &=& \frac{({\bf \Delta}^{{\bf k}}F)(0,0)}{0! \cdot 0!}Y_{\langle 0, 0
+    \rangle}(x_1, x_2) + \cdots \nonumber \\
+  & & + \frac{({\bf \Delta}^{{\bf k}}F)(0,0)}{1! \cdot 2!}Y_{\langle 1, 2
+    \rangle}(x_1, x_2)\nonumber \\
+  &=&  3 \cdot x_2 + 3 \cdot x_2(x_2 -1) + 4 \cdot x_1 \cdot x_2 \nonumber \\
+  &=& 3 \cdot Y_{\langle 0, 1 \rangle}(x_1, x_2) + 3 \cdot Y_{\langle
+    0, 2 \rangle}(x_1, x_2) \nonumber \\
+  & & + 4 \cdot Y_{\langle 1, 1 \rangle}(x_1, x_2) \nonumber 
+\end{eqnarray}
+\end{Example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Multi-variate Vanishing Polynomials}
+As in the univariate case, we review results related to nil
+polyfunctions. Lemma \ref{lem:rule1} can be extended as follows: If a
+polynomial in $d$ variables can be factorized into a product of
+$\lambda$ consecutive numbers in {\it at least one of the variables}
+$x_i$, then it vanishes $\% ~2^m$. The following example illustrates
+this idea.
+
+\begin{Example}\label{ex:rule1_multi}
+Consider the polynomial $F(x_1, x_2) = x_1^4 x_2 + 2x_1^3 x_2 + 3x_1^2
+x_2 + 2x_1 x_2$ over $Z_{2^2}$. Here, $\lambda = 4$ and the highest
+degrees of $x_1$ and $x_2$ are $k_1 = 4$, and $k_2 = 1$,
+respectively. Now $F ~\% ~2^2$ can be equivalently written as $F =
+Y_{4}(x_1)\cdot Y_{1}(x_2) ~\% ~2^2 = Y_{<4,1>}(x_1, x_2) ~\% ~2^2
+$. Since $F ~\% ~2^2$ can be represented as a product of $4$
+consecutive numbers in $x_1$, $2^2|F$ and $F \equiv 0$ in $Z_{2^2}$.
+\end{Example}
+
+In the above example, both the input variables $x_1, x_2$, as well as
+the output $F$ are in $Z_{2^2}$. We wish to generalize these results
+to analyze any arbitrary polynomial over $Z_{2^{n_1}} \times
+Z_{2^{n_2}} \times \ldots \times Z_{2^{n_d}}$ to $Z_{2^{m}}$. For this
+purpose, we define another quantity, $\mu_i$ \cite{chen_96}:
+
+\begin{Definition}
+\begin{equation} \label{eq:mu}
+\mu_i = min\{2^{n_i}, \lambda \};  i = 1, 2, \ldots, d
+\end{equation}
+where $\lambda = SF(2^m)$.
+\end{Definition}
+
+We now present the following results from \cite{chen_96}:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{Lemma}\label{lem:req1}
+Let $\textbf{k} = \langle k_1, k_2, \ldots, k_d \rangle \in (Z^+)^d$,
+where $Z^+$ denotes the set of non-negative integers. Then,
+$\textbf{Y}_\textbf{k} ({\bf x})\equiv 0$ if and only if $k_i
+\geq \mu_i$, for some $i$.
+\end{Lemma}
+
+\begin{Example}\label{ex:req1}
+Let $F = x_1^2 x_2 - x_1 x_2$ be a polynomial corresponding to
+$f:Z_{2} \times Z_{2^2} \rightarrow Z_{2^3}$. We show that $F$ is a
+vanishing polynomial as $F$ can be written according to:
+\begin{eqnarray}
+x_1^2 x_2 - x_1 x_2 &\equiv& x_1(x_1-1)x_2 \nonumber\\
+          &\equiv& Y_{ \langle 2,1 \rangle}(x_1, x_2) \nonumber\\
+          &\equiv& 0 \nonumber
+\end{eqnarray}
+Here, $\lambda = 4$ and the degrees of $x_1$ and $x_2$ are $k_1 = 2$
+and $k_2 = 1$. Now $\mu_1 = min\{2, 4\} = 2 = k_1$ and $\mu_2 =
+min\{2^{2}, 4\} = 4 > k_2$. Since the condition in Lemma
+\ref{lem:req1} is satisfied ($\mu_1 = k_1$), $F \equiv 0 ~\% ~2^3$.
+\end{Example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{Lemma}\label{lem:req2}
+The expression $c_\textbf{k}\cdot \textbf{Y}_\textbf{k}({\bf x}) \equiv 0$ if
+and only if $ {{2^m} \over {
+    (2^m,\prod_{i=1}^{d}k_i!)}}|c_\textbf{k}$; where:
+\begin{itemize}
+\item $\textbf{k} = \langle k_1, k_2, \ldots, k_d \rangle$ represents
+  the degrees of the variables ${\bf x} = \langle x_1, x_2, \ldots,
+  x_d \rangle$ and $k_i < \mu_i$ for all $i
+  = 1, \ldots, d$,
+\item $c_\textbf{k}$ is an arbitrary integer,
+\item ${\bf Y}_{\bf k} ({\bf x})$ is as defined above and
+\item ${(2^m,\prod_{i=1}^{d}k_i!)}$ is the greatest common divisor (GCD)
+  of $2^m$ and $\prod_{i=1}^{d}k_i!$.
+\end{itemize}
+Alternately, $ c_{\bf k} \equiv 0 ~\% ~{{2^m} \over {
+    (2^m,\prod_{i=1}^{d}k_i!)}}$ implies that $c_\textbf{k}\cdot
+    \textbf{Y}_\textbf{k}({\bf x}) \equiv 0$.
+\end{Lemma}
+
+\begin{Example}\label{ex:req2}
+Consider the polynomial $F = 4x_1 x_2^2 + 4x_1 x_2$ corresponding to
+$f(x_1, x_2): Z_{2} \times Z_{2^2} \rightarrow Z_{2^3}$. We can use
+Lemma \ref{lem:req2} to prove that $f$ is a nil polyfunction.  Here,
+$2^{n_1}=2$, $2^{n_2} = 4$ and $2^m = 8$. Also, $\lambda = 4$;
+$\mu_1 = min\{2, 4\} = 2$, $\mu_2 = min\{4, 4\} = 4$.
+\begin{eqnarray}
+F &\equiv& 4x_1 x_2^2 + 4x_1 x_2 \nonumber \\ 
+  &\equiv& 4 \cdot x_1\cdot x_2\cdot(x_2-1)\nonumber\\ 
+  &\equiv& c_{\langle 1, 2 \rangle} \cdot Y_{\langle 1,2 \rangle}(x_1, x_2) \nonumber\\ 
+  &\equiv& 0 \nonumber
+\end{eqnarray}
+because $c_{\langle 1, 2 \rangle} = 4  \equiv 0 ~\% ~{{8}\over{(8,1!\cdot 2!)}}$.
+\end{Example}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{ Application to Equivalence Verification }
+The results of Sec. \ref{sec:univar} can be easily extended to
+multivariate polynomials as well. Given any polynomial $F({\bf x})$
+corresponding to the polyfunction $f:Z_{2^{n_1}} \times Z_{2^{n_2}}
+\times \ldots Z_{2^{n_d}} \rightarrow Z_{2^m}$, we can represent it as
+
+\begin{equation}\label{eq:proof1_1}
+F({\bf x}) =  \sum _{i=1}^d Q_i({\bf x}) Y_{{\bf \mu}(\textbf{i})}({\bf x}) + R({\bf x})
+\end{equation}
+where, 
+\begin{itemize}
+\item  ${\bf \mu(i)} = \langle 0,...,\mu_i, ...,0 \rangle$ is a $d$-tuple, where
+  $\mu_i$ is in position $i$ and  $\mu_i$ is defined according to
+  Eqn.(\ref{eq:mu}),
+\item $Q_i({\bf x}) \in Z[x_1, \ldots, x_d]$ are arbitrary polynomials,
+  possibly zero,
+\item $Y_{\bf \mu(i)}({\bf x})$  is the falling factorial of degree $\mu_i$ in
+  variable $x_i$,
+\item $R({\bf x})$ is an arbitrary polynomial in $\langle x_1, x_2,
+  \ldots, x_d \rangle$, such that $ degree ~(x_i) < \mu_i$, for all $i
+  = 1, 2, \ldots, d$. 
+\end{itemize}
+
+From Lemma \ref{lem:req1}, $\sum _{i=1}^d Q_i({\bf x}) Y_{{\bf
+    \mu}(\textbf{i})}({\bf x}) \equiv 0 ~\% ~2^m$. This results in
+    reducing the given polynomial to $R({\bf x})$, where the degree
+    $k_i$ of each $x_i$ is $< \mu_i$. This is illustrated in the
+    example below.
+
+\begin{Example} \label{ex:proof1_1}
+Let $F({\bf x}) = x_1^2 + 3x_2^2 + 4x_1x_2 + 7x_1$ over $Z_{2}
+\times Z_{2^2} \rightarrow Z_{2^3}$. Here, $\lambda = 4$, and $\mu_1 =
+min\{2,\lambda\} = 2$ and $\mu_2 = min\{4,\lambda\} = 4$. We represent
+the polynomial as,
+\begin{equation}
+F(x_1,x_2) = Y_{<2,0>}(x_1,x_2) + 3x_2^2 + 4x_1x_2 \nonumber
+\end{equation}
+In this case, $Y_{<2,0>}(x_1,x_2)$ is a product of $\mu_1 = 2$
+consecutive numbers in $x_1$ and vanishes $~\% ~2^3$. Hence, $F({\bf
+x}) = R({\bf x}) = 3x_2^2 + 4x_1x_2$, where the maximum degrees of
+$x_1$ and $x_2$ are respectively, $k_1 = 1 < \mu_1$ and $k_2 = 2 < \mu_2$. 
+\end{Example}
+
+We now state the following theorem:
+
+\begin{Theorem}\label{th:proof1}
+Let $F({\bf x}) \in Z[x_1, \ldots, x_d]$ and let $f:Z_{2^{n_1}} \times
+Z_{2^{n_2}} \times \ldots Z_{2^{n_d}} \to Z_{2^m}$ be its associated
+polyfunction. To prove that $F({\bf x})$ vanishes, it is sufficient to
+show that $F({\bf x}) \equiv 0 ~\% ~2^m$ for any $\prod_{i=1}^d \mu_i$
+values of ${\bf x}$. Here $\mu_i$ is defined as the $min \{2^{n_i},
+\lambda\}$. Note that every such 'value' for ${\bf x} = \langle x_1,
+\ldots, x_d \rangle$ is a $d$-tuple, such that each $x_i$ can take
+{\bf any $\mu_i$ consecutive} values.
+\end{Theorem}
+
+\begin{proof}
+The proof is based on the corresponding procedure for univariate
+polynomials, which is extended and reproduced below. 
+
+Given any polynomial $F({\bf x})$ corresponding to the polyfunction
+$f:Z_{2^{n_1}} \times Z_{2^{n_2}} \times \ldots Z_{2^{n_d}}
+\rightarrow Z_{2^m}$, we can reduce it according to Eqn. (\ref{eq:proof1_1}):
+\begin{eqnarray}
+F({\bf x}) &=&  \sum _{i=1}^d Q_i({\bf x}) Y_{{\bf \mu}(\textbf{i})}({\bf x}) + R({\bf x}) \nonumber \\
+           &=& 0 + R({\bf x}) \nonumber \\
+           &=& R({\bf x})
+\end{eqnarray}
+
+From Newton's formula in Proposition \ref{def:newt_multi}, we can now
+reinterpret the polynomial as:
+\begin{eqnarray}\label{eq:proof1_2}
+F({\bf x}) = R({\bf x}) &=& \sum_{{\bf k} < {\bf \mu}}\frac{({\bf \Delta}^{{\bf
+      k}}R)({\bf 0})}{\bf k!}Y_{\bf k}({\bf x}) \nonumber \\
+                        &=& \sum_{{\bf k} < {\bf \mu}}c_{\bf k} Y_{\bf k}({\bf x})
+\end{eqnarray}
+
+We know that if all the $c_{\bf k}$ coefficients are $\equiv 0 ~\%
+  ~{{2^m} \over {(2^m,\prod_{i=1}^d k_i!)}}$, then the polynomial
+  vanishes. Thus, we need to compute and compare the $c_{\bf k}$
+  values for the tuples ${\bf k} = \langle k_1, k_2, \ldots, k_d \rangle$, where
+  each $k_i$ can take any $\mu_i$ consecutive values. This requires
+  evaluation of $F({\bf x})$ for a maximum of $\prod_{i=1}^d \mu_i$ times.
+
+Theorem \ref{th:proof1} follows from the above results.
+\end{proof}
+
+\begin{Example}\label{ex:proof1_2}
+Consider the reduced polynomial from Example \ref{ex:proof1_1}. To
+determine if $F(x_1, x_2)$ vanishes, we need to compute $c_{\bf k}$
+for $\prod_{i=1}^2 \mu_i = 8$ values, where $0 \leq k_1 < \mu_1 = 2$
+and $0 \leq k_2 < \mu_2 = 4$.
+\begin{itemize}
+\item $c_{\langle 0, 0\rangle} = \frac{(\Delta^{{\bf
+      k}}F)(0,0)}{0! \cdot 0!} ~\% ~{{2^3} \over {(2^3, 0! 0!)}} = 0$
+\item $c_{\langle 0, 1\rangle} = \frac{(\Delta^{{\bf
+      k}}F)(0,0)}{0! \cdot 1!} ~\% ~{{2^3} \over {(2^3, 0!
+      1!)}}  = 3$
+\end{itemize}
+Since $c_{\langle 0, 1\rangle} = 3 ~\% ~2^3$, $F(x_1, x_2)$ is not a
+vanishing polynomial.
+\end{Example}
+
+\begin{Corollary}\label{cor:proof1}
+Let $F_1({\bf x})$ and $F_2({\bf x})$ be two polynomials with
+coefficients in $Z$. Let $f_1, f_2:Z_{2^{n_1}} \times Z_{2^{n_2}}
+\times \ldots Z_{2^{n_d}} \to Z_{2^m}$ be their associated
+polyfunctions. To prove that $F_1({\bf x})$ is equivalent to $F_2({\bf
+x})$, it is sufficient to show that $F_1({\bf x}) ~\% ~2^m \equiv
+F_2({\bf x}) ~\% ~2^m$ for any $\prod_{i=1}^d \mu_i$ values of ${\bf
+x}$. Here $\mu_i$ is defined as the $min \{2^{n_i}, \lambda\}$. Each
+$x_i$ in the $d$-tuple $\langle x_1, \ldots, x_d \rangle$ can take
+{\bf any $\mu_i$ consecutive} values.
+\end{Corollary}
+
+\begin{proof}
+It is required to show that:
+\begin{eqnarray}
+            F_1({\bf x}) ~\% ~2^m &\equiv& F_2({\bf x}) ~\% ~2^m \nonumber \\
+\Rightarrow F_1({\bf x}) - F_2({\bf x}) &\equiv& 0 ~\% ~2^m
+\end{eqnarray}
+Since $\prod_{i=1}^d \mu_i$ values are sufficient to show that $F_1({\bf x})
+- F_2({\bf x})$ vanishes, it follows that these values are sufficient
+to prove $F_1({\bf x}) ~\% ~2^m\equiv F_2({\bf x}) ~\% ~2^m$.
+\end{proof}
+
+\begin{Example}\label{ex:cor_proof1}
+Let us now consider the polynomials $F(x_1,x_2) = x_1x_2^3 + 5x_1x_2^2
++ 2x_1x_2$ and $F_2 = x_1^4 x_2 + 2x_1^3 x_2 + 3x_1^2 x_2 + x_1 x_2^3
++ 5x_1 x_2^2 + 4x_1x_2 $ over $Z_{2} \times Z_{2^2} \rightarrow
+Z_{2^3}$. Here, $\mu_1 = 2$ and $\mu_2 = 4$. We need to check if $F_1
+~\% ~2^3 \equiv F_2 ~\% ~2^3$. Therefore, we evaluate both polynomials
+for a maximum of $\mu_1 \cdot \mu_2 = 8$ tuples. Here, $x_1$ can take
+any $\mu_1 = 2$ consecutive values and $x_2$ can take any $\mu_2 = 4$
+consecutive values. Evaluating for $x_1 = 0, 1$ and $x_2 = 0, 1, 2, 3$
+for $Z_{2^3}$, we get
+%\vspace{-0.1in}
+\begin{eqnarray}
+F_1(x_1 = 0) = 0 &;& ~~F_2(x_1 = 0) = 0 \nonumber \\
+F_1(x_1 = 1; x_2 = 0) = 0 &;& ~~F_2(x_1 = 1; x_2 = 0) = 0 \nonumber \\
+F_1(x_1 = 1; x_2 = 1) = 0 &;& ~~F_2(x_1 = 1; x_2 = 1) = 0 \nonumber\\
+F_1(x_1 = 1; x_2 = 2) = 0 &;& ~~F_2(x_1 = 1; x_2 = 2) = 0 \nonumber \\
+F_1(x_1 = 1; x_2 = 3) = 6 &;& ~~F_2(x_1 = 1; x_2 = 3) = 6\nonumber 
+\end{eqnarray}
+Since $F_1 ({\bf x}) \equiv F_2({\bf x})$ for all $8$ tuples, the two
+polynomials are equivalent.
+\end{Example}

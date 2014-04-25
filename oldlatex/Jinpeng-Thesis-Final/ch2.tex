@@ -1,0 +1,286 @@
+\chapter{Previous Work and Limitations}\label{ch:prev}
+
+
+Equivalence checking has been extensively investigated  and many well-developed theories and techniques
+have been successfully applied in both academica and industry.
+The fundamental techniques used in equivalence checking include BDDs \cite{BRYA86} and SAT solvers \cite{dll}.
+Recently, Gr\"obner bases based approaches are also gaining popularity.
+This chapter reviews widely used techniques in equivalence checking domain and discusses their limitations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{BDDs and Their Variants} 
+Reduced Ordered Binary Decision Diagrams (ROBDDs or BDDs) are a canonical Directed Acyclic Graph (DAG)
+representation of a Boolean function. Circuits are usually described as a DAG.
+Two functionally equivalent circuits can be represented by the same BDDs. Therefore,
+equivalence checking between two circuits can be simply achieved by a comparison of their BDDs.
+
+BDDs have found wide applications in many verification problems, including equivalence checking of arithmetic circuits, 
+symbolic model checking \cite{emerson_90} \cite{SMV}, among many others.  
+However, along with the increasing complexity of designs, the size-explosion problem of 
+BDDs becomes a bottleneck for many applications. 
+This problem becomes especially serious when applied on designs containing large arithmetic data-path units.
+For example, BDD representation of multipliers requires memory that is exponential in the number of
+variables. As a result, BDDs fail to represent multipliers beyond $16$-bit.
+As an attempt to control the exponential size, partitioned BDDs \cite{part_bdd}
+introduce intermediate variables to represent sub-BDDs, thus partitioning the original BDD. 
+Unfortunately, it is an intractable problem to find an optimum partition.
+This issue renders partitioned ROBDDs impractical for general verification problems.
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Other efforts to extend the capabilities of BDDs are derived from generic Word Level Decision
+Diagrams (WLDDs) which are graph-based representations for functions with a Boolean
+domain and an integer range. These representations include ADDs \cite{add},
+ *BMDs \cite{bmd}, etc.  A thorough review of WLDDs can be found in \cite{WLS}.
+
+Algebraic decision diagrams (ADDs) \cite{add} provide an efficient means for representing and performing arithmetic
+operations on functions from the binary domain ($\{0,1\}$) to the integer domain, i.e., $\{0,1\} \rightarrow \mathbb{Z}$.
+However, the mapping/decomposition at each node/variable is still binary and leads to exactly two terms. 
+Restricting the decomposition to a binary type limits the abstraction of integer variables, 
+as they have to be decomposed into their constituent bits. 
+Consequently, ADDs face the same problem that BDDs do: the exponential size of the number of input bits.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+BMDs \cite{bmd} and their
+variants, such as HDDs \cite{hdd}, K*BMD \cite{kbmd}, among others,
+perform a moment-based decomposition of a linear function. 
+BMDs represent binary variables as $(0,1)$ integers instead of Boolean variables.
+Moment diagrams provide a concise representation of integer-valued
+functions defined over vectors of bits, or words, such as $X = 2^{n-1}
+x_{n-1} + \ldots + 2 x_1 + x_0$, for an $n$-bit word $X$, where each
+$x_i$ is a binary variable. 
+\begin{figure}[b]
+%\epsfxsize=4cm
+\epsfysize=5cm
+\centerline{\epsffile{figures/bmd-2-bit.eps}}
+\caption{BMD for $F = x*y$; $x, y$ are 2-bit wide, $F$ is $4$-bits
+  wide.}
+\label{fig:bmd1}
+\end{figure}
+BMDs are linear in size for integer multiplier circuits, as shown in Figure \ref{fig:bmd1}.
+The multiplicative constants of this representation reside in the terminal nodes.
+Moreover, the constants can also be represented as multiplicative
+terms and assigned to the edges of the graph, giving a rise to the
+Multiplicative Binary Moment Diagram (*BMD) \cite{bmd}. Several rules
+for manipulating edge weights are imposed on the graph to ensure canonicity. 
+
+One of the main limitations of BMDs is that performing some arithmetic operations on functions 
+represented by BMDs is very expensive.
+%Arithmetic operations represented by linear polynomials have a BMD
+%representation that is linear with the number of variables. 
+For example, for an $n$-bit vector $X$, the BMD for $X^k$ requires $O(n^k)$ nodes. 
+In addition, BMDs for modular operations on bit-vectors are distorted, losing the compactness of word-level expression.
+One such example is depicted in Figure \ref{fig:bmd2}.
+
+\begin{figure}[t]
+\epsfysize=5cm
+\centerline{\epsffile{figures/bmd-2-bit-fixed.eps}}
+\caption{BMD for $F = x*y$; $x, y, F$ are all $2$-bits wide.}
+\label{fig:bmd2}
+\end{figure}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+{\it Taylor Expansion Diagrams} (TEDs) \cite{ted_date}
+\cite{ted_hldvt} \cite{ted_hldvt02} \cite{ted:priyank_thesis} are derived from Taylor series
+and canonical DAG representations for functions that can be abstracted as
+polynomials. TEDs represent bit-vectors ($x_0, x_1, \ldots, x_{n-1}$)
+as algebraic symbols ($X [0:n-1]$), raising the abstraction from bits
+(Boolean) to words (integers). Let $f(x, y, \ldots)$ be a real
+differentiable function. Using the Taylor series expansion with
+respect to a variable $x$, the function $f$ can be represented as
+\begin{eqnarray}
+f(x,y, \ldots) &=& f(x=0, y, \ldots) ~+ ~x\cdot f'(x=0, y, \ldots) ~+ \nonumber \\
+               & & ~(1/2)x^2 \cdot f''(x=0,y,\ldots) ~+ \cdots 
+\end{eqnarray} 
+The derivatives of $f$ at $x=0$ are independent of $x$, and can be further
+decomposed w.r.t the remaining variables, one variable at a time. This resulting
+recursive decomposition can be represented using a non-binary tree called the
+TED, with memory requirements much smaller than other representations. TEDs are
+applicable to modeling, symbolic simulation and equivalence verification,
+provided that a polynomial abstraction is feasible. For binary operations, the
+diagram reduces to a *BMD, inheriting all its limitations. Besides, TEDs cannot model
+modulo operations over bit-vectors. Therefore TEDs are incapable of solving the
+equivalence problems presented in this dissertation. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{SAT solvers and SMT solvers}
+The SAT problem is a decision-problem. 
+In principle, any decidable decision problem 
+can be modeled in terms of SAT, and because of this, SAT solvers are used  
+in an enormous variety of applications. 
+
+The objective of SAT solvers is to find variable assignments such that the given constraints (formulas) can be satisfied.  
+If this is not possible, SAT solvers have to prove that no assignments satisfy the constraints (UNSAT).  
+
+Solving SAT-instances of any useful size was not possible until the introduction of the Davis-Putnam  (DP) \cite{davis_putnam:60} algorithm.  
+The DP algorithm works by eliminating variables through deriving new constraints from the original constraints containing the variables. 
+Still, this has its limitations: though the variable is eliminated, the cost of elimination can be large because of the 
+clauses needed to represent the variable in its absence.  As a result, the algorithm did not see much use, 
+but was used as a stepping stone for a more versatile technique based on searching.
+
+The foundation of nearly all modern SAT solvers lies in the DPLL approach \cite{dll}.
+DPLL algorithm adopts a technique called backtracking search, whereby variables are recursively
+assigned, simplifying the formula at each step, building candidates to the solutions,
+abandoning each partial solution that is not possibly be completed to a valid solution (backtracking).
+DPLL algorithm also utilizes rules such as unit-propagation and pure-literal elimination to 
+reduce formula size and reduce the number of decisions needed. However, in essence,
+DPLL algorithm is an exhaustive search for satisfying assignment.
+
+Based on the basic DPLL framework, many improvements have been proposed. 
+A major advance is conflict driven clause learning \cite{grasp:96}. 
+Conflict driven clause learning takes a strategy that new clauses are learned from conflicts during backtrack search
+and the structure of conflicts is exploited during clause learning. 
+%Locality based search puts an emphasis on exhaustively searching local sub-spaces and therefore has more 
+%opportunities to find a solution since most of the variables are common.
+With this technique, the size of problem search space is greatly reduced and SAT solvers
+achieve the performance improvement by orders of magnitude.
+However, there are still many problems that are intractable for SAT solvers, 
+such as problems from cryptography domain where the designs often involve tens of millions of variables.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+One major drawback that limits the capacity of SAT solvers is the lack of ability for word-level reasoning.
+To resolve this limitation, Satisfiability modulo theories (SMT) are proposed and have gained significant popularity since $2003$.
+The SMT problem is to decide the satisfiability of a formula expressed in a first-order background theory, 
+such as linear inequalities, bit vectors, linear arithmetic and uninterpreted functions, etc.  
+In fact, SMT can be considered as an extension of SAT to first-order logic. In other words, 
+SMT solvers first apply highly optimized decision procedures for different first-order theories
+and then check the satisfiability using SAT solvers. 
+For example, $X>Y \wedge Y=Z$ is first interpreted into $X>Z$ and then $X>Z$ is fed into a SAT solver to check the satisfiability.
+
+For our problems of interest, bit-vector (BV) theories have been shown to be useful and important for hardware equivalence checking.
+In our case, equivalence checking problems are first compiled into the formula. Then decision procedures 
+for bit-vector theories, such as term rewriting techniques,
+are applied on the compiled formula to obtain further optimization. Next, the optimized formula is bit-blasted to 
+an equisatisfiable Boolean formula. Finally, an integrated SAT solver is used to enumerate assignments to the Boolean formula
+to find a satisfying assignment.
+
+One advantage of bit-vector theories in SMT is that all problems are described and operated upon 
+word-level (bit-vector), proving to be effective for computationally intensive designs, such as arithmetic circuits. 
+For example, at word level, a $32$-bit multiplication can be represented as one term with two $32$-bit words,
+while at bit-level, it is represented as thousands of Boolean variables. Moreover, some instances can be fully decided on the word-level, 
+thus achieving a high performance. 
+
+As mentioned above, SMT formulas obviously provide a much richer modeling language than what is possible with Boolean SAT formulas, 
+even allowing word-level representations of datapath operations. Solvers based on these
+theories \cite{yices} \cite{mathsat4} \cite{boolector} \cite{beaver} have improved abilities to represent
+arithmetic computations, but ultimately rely on SAT tools to solve the verification instance, making them prone to the same limitations,
+as shown in our experiments.
+For equivalence checking of gate-level circuits, word-level information is not available. Then SMT solvers have no benefits as they have to 
+rely on SAT solvers to solve the bit-level verification instance. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Circuit Based Solvers}
+The above SAT and SMT solvers do not take into consideration circuit topology, thus inefficient in verifying circuit designs.
+Instead, circuit based solvers, such as C-SAT \cite{csat} \cite{csat:dac}, focus specifically on the mechanics of checking the equivalence 
+of pairs of combinational circuits.
+The main strategy utilized by C-SAT solver is signal correlation guided learning, 
+which attempts to identify common  sub-circuit structure. In other words, an internal node in the first circuit
+may be equivalent to an internal node in the second circuit, thus combining the identical sub-circuit as one node.
+Though this way, if two circuits are structurally similar, the original problem becomes a problem with much smaller space.
+To identify the common sub-circuits, a technique called {\it structural hashing} \cite{abc} is used. This is achieved by random simulation:
+first sending random vectors through the two circuits and then collecting pairs of candidate equivalent nodes.
+%We have to point out that random simulation is probabilistic. Thus the performance cannot be guaranteed theoretically.
+Practical use \cite{abc} has shown that this technique can detect potentially many, high probability, candidate equivalent nodes.
+
+AIG \cite{AIG:2002}, on the other hand, is a pseudo canonical representation of a circuit. 
+One good property of AIGs is the operations based on AIG are fast, such as adding nodes, merging nodes. By representing the circuit with AIGs, 
+many equivalent nodes over a large circuit can be identified quickly.
+
+When coupled with AIG as the circuit representation and techniques used in C-SAT, circuit based SAT solvers
+can achieve remarkable speedups in solving a wide variety of circuit equivalence checking problems.
+
+%However, since random simulation, playing a key role in circuit based SAT solvers, has a high probability when two circuits have similar structures, 
+When two circuits are structurally very dissimilar, structural hashing is able to identify the common sub-circuits, thus reducing the problem size.
+However, these techniques are infeasible when verifying structurally dissimilar circuits.
+For example, in our experiments, we have shown that equivalence checking of Mastrovito versus Montgomery multipliers 
+using ABC \cite{abc} and C-SAT \cite{csat} is infeasible beyond 16-bit circuits.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Computer Algebra Based Approaches}
+Computer algebra based approaches were first proposed in $1996$ for SAT solving and formal verification \cite{CEI:stoc-96} \cite{Avrunin:CAV}. 
+The principle idea of these approaches is to reason about the existence of solutions in polynomial domain: 
+verification problems are first formulated as polynomials; then the polynoial system is fed into a Gr\"obner basis engine 
+to check the existence of solutions. 
+There have been many attempts to solve verification problems using this Gr\"obner basis formulations \cite{gbverify:2007}.
+Instead of analyzing the entire problems for proof-refutation, 
+the work of \cite{condrat-tacas07} utilized Gr\"obner bases to preprocess SAT instance 
+to obtain additional information about the problem. This information is then fed back into the SAT solver, thus benefiting the SAT solving.
+
+One limitation of these approaches is that the Gr\"obner basis computation 
+which is known to have worst-case double-exponential complexity in the input data.
+Besides, in practice, the implementations of Gr\"obner basis algorithm have not been capable of satisfactorily
+solving problems derived from real-world applications.
+
+Recent advances \cite{wienand:cav08}  \cite{wedler:date11} 
+suggest a new direction of utilizing computer algebra theory to conduct hardware verification. 
+It is feasible to overcome the complexity of Gr\"obner basis algorithm
+by efficiently engineering Gr\"obner bases theory and integration of circuit analysis techniques.
+
+The work described in \cite{wienand:cav08} addresses verification of finite
+precision integer datapath circuits using the concepts of  Gr\"obner
+bases over the ring ${\mathbb{Z}}_{2^k}$. They model the circuit
+constraints by way of arithmetic-bit-level (ABL) polynomials
+($\{G\}$), and formulate the verification test as an equivalent
+variety subset problem. To solve this, first they derive a term order
+that already makes $\{G\}$ a Gr\"obner basis. Then they compute a
+normal form $f$ of the specification $g$ w.r.t. $\{G\}$. If $f$ is a
+vanishing polynomial over ${\mathbb{Z}}_{2^k}$ \cite{shekhar:tcad07},
+circuit correctness is established. In \cite{wedler:date11}, the
+authors further show that  the vanishing polynomial test can be
+omitted by formulating the problem directly over $Q :=
+{\mathbb{Z}}_{2^k} [X]/\langle x^2-x : x \in X \rangle$. 
+
+However, such approaches are effective only over ring $\mathbb{Z}_{2^k}$
+while our problems are derived from finite fields $\mathbb{F}_{2^k}$.
+The mathematical theories differ significantly in these two domains.
+Therefore, these approaches cannot be applied for our problems.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Verification of Finite Field Applications}
+There has not been much research by the design verification community
+to verify finite field applications. 
+The following works that specifically targeted automated decision
+procedures for verification of finite field applications:
+\cite{Morioka} \cite{Mukho} \cite{pradhan_modd}. 
+%\cite{gao:gf-gb-ms} \cite{gao:qe-gf-gb}. 
+
+
+The theorem-proving approach of \cite{Morioka} verifies a finite
+field $\mathbb{F}_{2^k}$ implementation against a given polynomial
+specification. They devise a decision procedure based on polynomial
+division, variable elimination, term re-writing, etc., and demonstrate
+a correctness proof of a sub-block of a Reed-Solomon decoder. Their
+decision procedures were partly built upon BDDs (requiring decision
+over ${\mathbb{F}}_2$), and that is infeasible for large circuits. 
+
+The work of \cite{Mukho} solves similar problems as those of
+\cite{Morioka}. However, they make use of OKFDDs \cite{okfdd} to 
+canonically represent the circuit constraints. Moreover, instead of
+verifying circuits over $\mathbb{F}_{2^k}$ directly, \cite{Mukho} verifies the
+circuits over its equivalent composite field $\mathbb{F}_{(2^m)^{n}}$
+representation, where a {\it non-prime} $k = m\cdot n$. Their approach
+has no benefit if $k$ is prime -- say, when $k = 163$ for elliptic
+curves. Moreover, the size-explosion of FDDs limits their
+approach to 16-bit (${\mathbb{F}}_{2^{16}}$) circuits, as shown in
+their experiments. 
+
+MODDs \cite{modd} were proposed as a canonical representation of the characteristic function
+of a circuit over finite field $\mathbb{F}_{2^k}$. However, as each node in the
+DAG may have up to $k$ children, MODDs have been shown to be exponential in the number of
+variables, thus infeasible beyond 32-bit circuits.  
+
+%The work of \cite{gao:gf-gb-ms} shows how to use Gr\"obner bases
+%techniques to count the zeros of an ideal $J$ over ${\mathbb{F}}_q$
+%(i.e. count $V_{{\mathbb{F}}_q}(J)$). The authors then follow-up with
+%an approach for {\it quantifier elimination} over Galois fields
+%${\mathbb{F}}_q$ \cite{gao:qe-gf-gb}. 
+
+None of the above approaches provide a scalable and efficient solution to the problem of verification of large finite field arithmetic circuits.
+

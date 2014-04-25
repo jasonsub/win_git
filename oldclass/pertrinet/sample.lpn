@@ -1,0 +1,15 @@
+.inputs a b c
+.outputs d e
+.graph
+A a c
+a B C
+B b
+b D
+C e
+D e
+e A
+c E
+E d
+d C D
+.marking {A}
+.end
