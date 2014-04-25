@@ -1,0 +1,21 @@
+LIB "teachstd.lib";
+
+ring rr = (2,X), (e,f,g,h,k,l,m,Z,b,c,d),lp;
+
+minpoly = X^4 + X + 1;
+/* output word Z is 4-bit */
+
+ideal I = Z+e*X^3+f*X^2+g*X+h, /* word representation for output*/
+	    /* following polys are gate descriptions */
+	    e+1+k+l, f+1+d+b, g+1+c+m, h+1+d,
+	    k+b*c, l+c*d, m+b+d+b*d,
+	    /* vanishing polynomials */
+	    Z^16+Z, e^2+e, f^2+f, g^2+g, h^2+h, k^2+k, l^2+l, m^2+m, b^2+b, c^2+c, d^2+d;
+	    
+ideal I0 = slimgb(I); /* may check whether exists fast GB */
+
+ideal J = sort(I0)[1];
+
+short = 0;
+
+J[4];

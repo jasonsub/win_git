@@ -1,0 +1,30 @@
+LIB "teachstd.lib";
+
+ring rr = (2,X),(z0,z1,CO,s0,s1,d,g1,g0,p1,Z,c0,c1,c2,c3,c4,c5,a0,b0,a1,b1),lp;
+minpoly = X^2+X+1;
+
+ideal I = Z+z0+z1*X, z0+c0*s0+c1*s1+c2*CO, z1+c3*s0+c4*s1+c5*CO,
+			s0+a0+b0, CO+d+g1+d*g1, d+g0*p1, s1+g0+p1, g0+a0*b0, g1+a1*b1, p1+a1+b1,
+			Z^4+Z, a0^2+a0, b0^2+b0, a1^2+a1, b1^2+b1, z0^2+z0, z1^2+z1,
+			CO^2+CO, s0^2+s0, s1^2+s1, d^2+d, g1^2+g1, g0^2+g0, p1^2+p1,
+			c0^2+c0, c1^2+c1, c2^2+c2, c3^2+c3, c4^2+c4, c5^2+c5;
+
+ideal I_0 = slimgb(I);
+/*
+ideal J = sort(I_0)[1];
+
+poly f = J[11];
+poly f1 = subst(f,c0,0,c1,0,c2,1,c3,0,c4,1,c5,0);
+poly f2 = Z+a0*b0*a1+a0*b0*b1+(X)*a0*b0+a1*b1+(X)*a1+(X)*b1;
+
+f1-f2;
+*/
+
+poly f = Z+a0*b0*a1+a0*b0*b1+(X)*a0*b0+a1*b1+(X)*a1+(X)*b1;
+poly f0 = reduce(f,I_0);
+subst(f0,c0,1,c1,0,c2,0,c3,0,c4,1,c5,0);
+subst(f0,c0,1,c1,0,c2,0,c3,0,c4,0,c5,1);
+subst(f0,c0,0,c1,1,c2,0,c3,1,c4,0,c5,0);
+subst(f0,c0,0,c1,1,c2,0,c3,0,c4,0,c5,1);
+subst(f0,c0,0,c1,0,c2,1,c3,1,c4,0,c5,0);
+subst(f0,c0,0,c1,0,c2,1,c3,0,c4,1,c5,0);

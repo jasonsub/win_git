@@ -1,0 +1,107 @@
+LIB "teachstd.lib";
+
+proc or2(poly f, poly g)
+{
+    return (f+g+f*g);
+}
+
+proc nor(poly f1, poly f2)
+{
+    poly g = or2(f1,f2);
+    return (1+g);
+}
+
+proc nor3(poly f1, poly f2, poly f3)
+{
+    poly g = or2(f1,f2);
+    g = or2(g,f3);
+    return (1+g);
+}
+
+proc nor4(poly f1, poly f2, poly f3, poly f4)
+{
+    poly g = or2(f1,f2);
+    g = or2(g,f3);
+    g = or2(g,f4);
+    return (1+g);
+}
+
+proc nor5(poly f1, poly f2, poly f3, poly f4,poly f5)
+{
+    poly g = or2(f1,f2);
+    g = or2(g,f3);
+    g = or2(g,f4);
+    g = or2(g,f5);
+    return (1+g);
+}
+
+ring rr = (2,X), (Z,e,f,g,h,CO,s3,s2,s1,s0,tmp10,tmp9,tmp8,tmp7,t3,r3,t2,r2,t1,r1,t0,tmp6,tmp5,tmp4,tmp3,
+tmp2,tmp1,p3,p2,g3,p1,g2,p0,g1,g0,pa0,pa1,pa2,pa3,pb0,pb1,pb2,pb3,ci,a3,b3,a2,b2,a1,b1,a0,b0,cn_e,cn_f,cn_g,cn_h,ce_CO,cg_CO,cf_CO,ch_CO,ce3,ce2,ce1,ce0,cf3,cf2,cf1,cf0,cg3,
+cg2,cg1,cg0,ch3,ch2,ch1,ch0,cb_A0,cb_A1,cb_A2,cb_A3,cb_B0,cb_B1,cb_B2,cb_B3,cc_A0,cc_A1,cc_A2,cc_A3,cc_B0,cc_B1,
+cc_B2,cc_B3,cd_A0,cd_A1,cd_A2,cd_A3,cd_B0,cd_B1,cd_B2,cd_B3,b,c,d),lp;
+
+/* note tmp1~tmp6 are not in reverse topo order, I put them before g_i,p_i; as well as t_i, before p3; and Z in first */
+
+minpoly = X^4 + X + 1;
+/* output word Z is 4-bit */
+
+ideal J = Z+e*X^3+f*X^2+g*X+h, /* word representation for output*/
+	    /* following polys are gate descriptions */
+	    CO+nor5(p3,tmp10,tmp9,tmp8,tmp7), s3+t3+r3, s2+t2+r2, s1+t1+r1, s0+t0+ci,
+	    t3+g3*(1+p3), r3+nor4(p2,tmp6,tmp5,tmp4), t2+g2*(1+p2), r2+nor3(p1,tmp3,tmp2), 
+	    t1+g1*(1+p1), r1+nor(p0,tmp1), t0+g0*(1+p0), 
+	    tmp10+p2*g3, tmp9+p1*g3*g2, tmp8+p0*g3*g2*g1, tmp7+g0*g1*g2*g3*(1+ci),
+	    tmp6+p1*g2, tmp5+p0*g2*g1, tmp4+g2*g1*g0*(1+ci), 
+	    tmp3+p0*g1, /* on 74F283 diagram it's p0*g0 */ tmp2+g1*g0*(1+ci), tmp1+g0*(1+ci),
+	    g3+1+a3*b3, p3+nor(a3,b3), g2+1+a2*b2, p2+nor(a2,b2), g1+1+a1*b1, p1+nor(a1,b1), g0+1+a0*b0, p0+nor(a0,b0), 
+	    /* following polys are templates */
+	    /* outputs templates */
+	    e+cn_e+ce_CO*CO+ce3*s3+ce2*s2+ce1*s1+ce0*s0,
+	    f+cn_f+cf_CO*CO+cf3*s3+cf2*s2+cf1*s1+cf0*s0,
+	    g+cn_g+cg_CO*CO+cg3*s3+cg2*s2+cg1*s1+cg0*s0,
+	    h+cn_h+ch_CO*CO+ch3*s3+ch2*s2+ch1*s1+ch0*s0,
+	    /* inputs templates */
+	    a3+pa3+cb_A3*b+cc_A3*c+cd_A3*d, b3+pb3+cb_B3*b+cc_B3*c+cd_B3*d,
+	    a2+pa2+cb_A2*b+cc_A2*c+cd_A2*d, b2+pb2+cb_B2*b+cc_B2*c+cd_B2*d,
+	    a1+pa1+cb_A1*b+cc_A1*c+cd_A1*d, b1+pb1+cb_B1*b+cc_B1*c+cd_B1*d,
+	    a0+pa0+cb_A0*b+cc_A0*c+cd_A0*d, b0+pb0+cb_B0*b+cc_B0*c+cd_B0*d
+	    /* vanishing polynomials */
+	    /* use perl to generate */
+	    e^2+e, f^2+f, g^2+g, h^2+h, CO^2+CO, s3^2+s3, s2^2+s2, s1^2+s1, s0^2+s0, p3^2+p3, tmp10^2+tmp10, 
+	    tmp9^2+tmp9, tmp8^2+tmp8, tmp7^2+tmp7, t3^2+t3, r3^2+r3, t2^2+t2, r2^2+r2, t1^2+t1, r1^2+r1, t0^2+t0, 
+	    p2^2+p2, g3^2+g3, p1^2+p1, g2^2+g2, p0^2+p0, g1^2+g1, g0^2+g0, tmp6^2+tmp6, tmp5^2+tmp5, tmp4^2+tmp4, 
+	    tmp3^2+tmp3, tmp2^2+tmp2, tmp1^2+tmp1, a3^2+a3, b3^2+b3, a2^2+a2, b2^2+b2, a1^2+a1, b1^2+b1, a0^2+a0, 
+	    b0^2+b0, ci^2+ci, cn_e^2+cn_e, cn_f^2+cn_f, cn_g^2+cn_g, cn_h^2+cn_h, ce_CO^2+ce_CO, 
+	    cg_CO^2+cg_CO, cf_CO^2+cf_CO, ch_CO^2+ch_CO, ce3^2+ce3, ce2^2+ce2, ce1^2+ce1, ce0^2+ce0, cf3^2+cf3, 
+	    cf2^2+cf2, cf1^2+cf1, cf0^2+cf0, cg3^2+cg3, cg2^2+cg2, cg1^2+cg1, cg0^2+cg0, ch3^2+ch3, ch2^2+ch2, 
+	    ch1^2+ch1, ch0^2+ch0, cb_A0^2+cb_A0, cb_A1^2+cb_A1, cb_A2^2+cb_A2, cb_A3^2+cb_A3, cb_B0^2+cb_B0, 
+	    cb_B1^2+cb_B1, cb_B2^2+cb_B2, cb_B3^2+cb_B3, cc_A0^2+cc_A0, cc_A1^2+cc_A1, cc_A2^2+cc_A2, 
+	    cc_A3^2+cc_A3, cc_B0^2+cc_B0, cc_B1^2+cc_B1, cc_B2^2+cc_B2, cc_B3^2+cc_B3, cd_A0^2+cd_A0, 
+	    cd_A1^2+cd_A1, cd_A2^2+cd_A2, cd_A3^2+cd_A3, cd_B0^2+cd_B0, cd_B1^2+cd_B1, cd_B2^2+cd_B2, 
+	    cd_B3^2+cd_B3, /*pb^2+pb, pc^2+pc, pd^2+pd,*/ b^2+b, c^2+c,d^2+d,
+	    Z^16+Z;
+	    
+ideal I0 = slimgb(I); /* may check whether exists fast GB */
+ideal I = sort(J)[1];
+//ideal I0 = a3^2+a3, b3^2+b3, a2^2+a2, b2^2+b2, a1^2+a1, b1^2+b1, a0^2+a0, b0^2+b0, ci^2+ci, Z^16+Z;
+poly f = Z+(X^3)*b*c+(X)*b*d+(X^2+X)*b+(X^3)*c*d+(X)*c+(X^2+X+1)*d+(X^3+X^2+X+1);
+
+//poly rem = reduce(f,I);
+/*
+int i;
+for(i=2; i<= size(I)-1; i=i+1)
+{
+    if(gcd(lead(I[i-1]),lead(I[i])) != 1)
+    {
+	"Repeating: ",I[i-1]," AND ",I[i];
+    }
+    if(gcd(lead(I[i+1]), lead(I[i])) != 1)
+    {
+	"Repeating: ",I[i+1]," AND ",I[i];
+    }
+}
+/*
+subst(rem,cn_e,1,cn_f,0,cn_g,1,cn_h,0,ce_CO,0,cg_CO,0,cf_CO,0,ch_CO,0,ce3,1,ce2,0,ce1,0,ce0,0,cf3,0,cf2,0,cf1,1,cf0,0,cg3,0,
+cg2,1,cg1,0,cg0,0,ch3,0,ch2,0,ch1,0,ch0,1,cb_A0,0,cb_A1,1,cb_A2,0,cb_A3,0,cb_B0,0,cb_B1,0,cb_B2,0,cb_B3,0,cc_A0,0,
+cc_A1,0,cc_A2,1,cc_A3,0,cc_B0,0,cc_B1,0,cc_B2,0,cc_B3,0,cd_A0,1,cd_A1,0,cd_A2,0,cd_A3,0,cd_B0,0,cd_B1,0,cd_B2,0,cd_B3,0);
+*/

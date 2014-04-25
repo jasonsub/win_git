@@ -1,0 +1,14 @@
+LIB "teachstd.lib";
+
+ring rr = (2,X),(z0,z1,t,g1,p1,ci,t1,t2,Z,a0,b0,a1,b1),lp;
+minpoly = X^2+X+1;
+
+ideal J = Z+z0+z1*X, z0+t+g1+t*g1, t+t1+t2+t1*t2, g1+a1*b1,
+			t1+a1*ci, t2+b1*ci, ci+a0*b0, z1+p1+ci, p1+a1+b1,
+			z0^2+z0, z1^2+z1, t^2+t, g1^2+g1, t1^2+t1, t2^2+t2, p1^2+p1, ci^2+ci,
+			a0^2+a0, b0^2+b0, a1^2+a1, b1^2+b1, Z^4+Z;
+
+ideal J0 = slimgb(J);
+
+J0 = sort(J0)[1];
+J0[5];
